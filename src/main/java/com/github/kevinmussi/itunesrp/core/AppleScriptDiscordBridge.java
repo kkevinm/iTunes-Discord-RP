@@ -1,13 +1,22 @@
 package com.github.kevinmussi.itunesrp.core;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+import com.github.kevinmussi.itunesrp.data.Application;
 import com.github.kevinmussi.itunesrp.data.Track;
+import com.github.kevinmussi.itunesrp.data.TrackMessage;
 import com.github.kevinmussi.itunesrp.data.TrackState;
+import com.github.kevinmussi.itunesrp.observer.Observable;
 import com.github.kevinmussi.itunesrp.observer.Observer;
 
-public class AppleScriptDiscordBridge implements Observer<String> {
+public class AppleScriptDiscordBridge 
+		extends Observable<TrackMessage> implements Observer<String> {
 	
-	private Track previousTrack;
-	private Track currentTrack;
+	private final Lock lock = new ReentrantLock();
+	
+	private volatile Track previousTrack;
+	private volatile Track currentTrack;
 	
 	public AppleScriptDiscordBridge() {
 		this.previousTrack = null;
@@ -19,21 +28,24 @@ public class AppleScriptDiscordBridge implements Observer<String> {
 		if(message == null || message.length() == 0) {
 			return;
 		}
-		if(message.equals("INACTIVE") || message.equals("STOPPED")) {
+		TrackMessage trackMessage;
+		if(message.equals("STOPPED")) {
 			// There's no song playing or paused
-			
-		}
-		
-		currentTrack = fromRecord(previousTrack, message, AppleScriptHelper.TRACK_RECORD_SEPARATOR);
-		if(previousTrack == currentTrack) {
-			// The new track is the same, so at most only its status has changed
-			
+			trackMessage = TrackMessage.NO_TRACK_MESSAGE;
 		} else {
-			// The new track is different
-			
+			lock.lock();
+			try {
+				currentTrack = fromRecord(previousTrack, message, AppleScriptHelper.TRACK_RECORD_SEPARATOR);
+				boolean isNewTrack = previousTrack != currentTrack;
+				trackMessage = new TrackMessage(currentTrack, isNewTrack);
+				
+				// Set previousTrack = currentTrack for the next update
+				previousTrack = currentTrack;
+			} finally {
+				lock.unlock();
+			}
 		}
-		// Set previousTrack = currentTrack for the next update
-		previousTrack = currentTrack;
+		notifyObservers(trackMessage);
 	}
 	
 	/**
@@ -77,7 +89,7 @@ public class AppleScriptDiscordBridge implements Observer<String> {
 			return null;
 		}
 		
-		TrackState state = TrackState.valueOf(fields[4]);
+		TrackState state = TrackState.fromString(fields[4]);
 		if(fields[0].equals("N")) {
 			previousTrack.setState(state);
 			return previousTrack;
@@ -91,7 +103,8 @@ public class AppleScriptDiscordBridge implements Observer<String> {
 		else
 			return null;
 		
-		return new Track(fields[1], fields[2], fields[3], isArtworkAvailable, state);
+		return new Track(fields[1], fields[2], fields[3],
+		        isArtworkAvailable, Application.ITUNES, state);
 	}
 
 }

@@ -8,14 +8,16 @@ public class Track {
 	private final String artist;
 	private final String album;
 	private final boolean isArtworkAvailable;
+	private final Application app;
 	private TrackState state;
 	
-	public Track(String name, String artist, String album, boolean isArtworkAvailable, TrackState state) {
+	public Track(String name, String artist, String album, boolean isArtworkAvailable, Application app, TrackState state) {
 		super();
 		this.name = Objects.requireNonNull(name);
 		this.artist = Objects.requireNonNull(artist);
 		this.album = Objects.requireNonNull(album);
 		this.isArtworkAvailable = isArtworkAvailable;
+		this.app = Objects.requireNonNull(app);
 		this.state = Objects.requireNonNull(state);
 	}
 	
@@ -33,6 +35,10 @@ public class Track {
 	
 	public boolean isArtworkAvailable() {
 		return isArtworkAvailable;
+	}
+	
+	public Application getApplication() {
+	    return app;
 	}
 	
 	public TrackState getState() {
@@ -54,6 +60,7 @@ public class Track {
 				album.equals(other.album) &&
 				artist.equals(other.artist) &&
 				isArtworkAvailable == other.isArtworkAvailable &&
+				app == other.app &&
 				state == other.state;
 	}
 	
@@ -65,6 +72,7 @@ public class Track {
 		result = prime * result + ((artist == null) ? 0 : artist.hashCode());
 		result = prime * result + (isArtworkAvailable ? 1231 : 1237);
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((app == null) ? 0 : app.hashCode());
 		result = prime * result + ((state == null) ? 0 : state.hashCode());
 		return result;
 	}

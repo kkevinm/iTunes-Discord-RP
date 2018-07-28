@@ -1,4 +1,3 @@
-set STR_INACTIVE to "INACTIVE"
 set STR_STOPPED to "STOPPED"
 set STR_PLAYING to "PLAYING"
 set STR_PAUSED to "PAUSED"
@@ -11,10 +10,10 @@ property savedPlayerState : missing value
 
 repeat
     delay 1
-    # If iTunes is not running, set the state to "INACTIVE" and do nothing
+    # If iTunes is not running, set the state to "STOPPED" and do nothing
     if application "iTunes" is not running then
-        if state is not STR_INACTIVE then
-            set state to STR_INACTIVE
+        if state is not STR_STOPPED then
+            set state to STR_STOPPED
             log state
         end if
     else
@@ -75,8 +74,8 @@ repeat
                 end if
             end tell
         on error
-            # If iTunes is closed, set the state to "INACTIVE" and do nothing
-            set state to STR_INACTIVE
+            # If iTunes is closed, set the state to "STOPPED" and do nothing
+            set state to STR_STOPPED
             log state
         end try
     end if

@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import com.github.kevinmussi.itunesrp.core.AppleScriptDiscordBridge;
 import com.github.kevinmussi.itunesrp.core.AppleScriptHelper;
+import com.github.kevinmussi.itunesrp.core.DiscordHelper;
 
 public final class Main {
 	
@@ -40,10 +41,12 @@ public final class Main {
 		}
 		
 		String script = getScript();
-		AppleScriptHelper helper = new AppleScriptHelper();
+		AppleScriptHelper scriptHelper = new AppleScriptHelper();
 		AppleScriptDiscordBridge bridge = new AppleScriptDiscordBridge();
-		helper.addObserver(bridge);
-		new Thread(() -> helper.execute(script)).start();
+		DiscordHelper discordHelper = new DiscordHelper();
+		scriptHelper.addObserver(bridge);
+		bridge.addObserver(discordHelper);
+		new Thread(() -> scriptHelper.execute(script)).start();
 	}
 	
 }

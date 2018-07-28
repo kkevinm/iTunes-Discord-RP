@@ -10,6 +10,10 @@ public enum TrackState {
 		this.description = description;
 	}
 	
+	public static TrackState fromString(String string) {
+	    return TrackState.valueOf(string.toUpperCase());
+	}
+	
 	@Override
 	public String toString() {
 		return description;
