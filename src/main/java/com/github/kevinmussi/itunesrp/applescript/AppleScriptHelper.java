@@ -1,44 +1,35 @@
 package com.github.kevinmussi.itunesrp.applescript;
 
 import java.io.IOException;
-import java.util.Objects;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class AppleScriptHelper {
+import com.github.kevinmussi.itunesrp.observer.Observable;
+
+public class AppleScriptHelper extends Observable<String> {
 	
-	private static final Logger logger;
-	
-	static {
-		logger = Logger.getLogger("iTunesDiscordRP." + AppleScriptHelper.class.getSimpleName() + " logger");
-	}
-	
-	private Runtime runtime;
-	private String[] args = {"osascript", "-e", null};
+	private final Logger logger;
 	
 	public AppleScriptHelper() {
-		this.runtime = Runtime.getRuntime();
+		logger = Logger.getLogger("iTunesDiscordRP." + this.getClass().getSimpleName() + " logger");
 	}
 	
-	public String execute(String script) {
-		String result = "";
-		args[2] = Objects.requireNonNull(script);
-		
+	public void execute(String script) {
 		try {
 			ProcessBuilder builder = new ProcessBuilder("osascript", "-e", script);
 			Process process = builder.start();
 			Scanner scanner = new Scanner(process.getInputStream());
 			scanner.useDelimiter("\\A");
-			if(scanner.hasNext()) {
-				result = scanner.next();
+			while(process.isAlive()) {
+				if(scanner.hasNext()) {
+					notifyObservers(scanner.next());
+				}
 			}
 			scanner.close();
-			return result;
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "The script:\n " + script + "\ndid not execute correctly", e);
 		}
-		return result;
 	}
 	
 }
