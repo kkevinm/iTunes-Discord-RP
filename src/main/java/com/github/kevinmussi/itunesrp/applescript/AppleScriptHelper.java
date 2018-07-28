@@ -18,9 +18,11 @@ public class AppleScriptHelper extends Observable<String> {
 	public void execute(String script) {
 		try {
 			ProcessBuilder builder = new ProcessBuilder("osascript", "-e", script);
+			// The script logs its messages to stderr, so we need to redirect it to the stdout
+			builder.redirectErrorStream(true);
 			Process process = builder.start();
 			Scanner scanner = new Scanner(process.getInputStream());
-			scanner.useDelimiter("\\A");
+			scanner.useDelimiter("\n");
 			while(process.isAlive()) {
 				if(scanner.hasNext()) {
 					notifyObservers(scanner.next());

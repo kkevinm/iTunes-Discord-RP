@@ -4,6 +4,8 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.github.kevinmussi.itunesrp.applescript.AppleScriptHelper;
+
 public final class Main {
 	
 	private static final Logger logger;
@@ -37,7 +39,9 @@ public final class Main {
 		}
 		
 		String script = getScript();
-		
+		AppleScriptHelper helper = new AppleScriptHelper();
+		helper.addObserver(message -> System.out.println(message));
+		new Thread(() -> helper.execute(script)).start();
 	}
 	
 }
