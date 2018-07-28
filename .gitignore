@@ -1,0 +1,16 @@
+# ignore all bin directories
+# matches "bin" in any subfolder
+bin/
+# ignore all target directories
+target/
+# ignore Eclipse settings
+.project
+.classpath
+.settings
+# ignore all files ending with ~
+*~
+# ignore metadata directories
+.metadata
+# ignore DS_Store and files starting with ._ (for Mac)
+.DS_Store
+
