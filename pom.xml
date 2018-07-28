@@ -2,10 +2,10 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.kevinmussi</groupId>
-    <artifactId>SAMPLE-APP</artifactId>
+    <artifactId>itunes-discord-rich-presence</artifactId>
     <version>0.1</version>
     <packaging>jar</packaging>
-    <name>SAMPLE NAME</name>
+    <name>iTunes Discord RP</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <exec.mainClass> </exec.mainClass>
@@ -14,9 +14,21 @@
         <sonar.language>java</sonar.language>
         <sonar.host.url> http://localhost:9000/ </sonar.host.url>
     </properties>
-    <description>SAMPLE DESCRIPTION</description>
+    <description></description>
+    <repositories>
+        <repository>
+            <id>jcenter</id>
+            <name>jcenter-bintray</name>
+            <url>http://jcenter.bintray.com</url>
+        </repository>
+    </repositories>
     <dependencies>
-        
+        <dependency>
+            <groupId>net.dv8tion</groupId>
+            <artifactId>JDA</artifactId>
+            <version>3.7.1_386</version>
+            <type>pom</type>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -42,7 +54,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.0.0</version>
@@ -54,7 +66,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
         </plugins>
     </build>
 </project>
