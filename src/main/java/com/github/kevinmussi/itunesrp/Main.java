@@ -13,7 +13,7 @@ public final class Main {
 	
 	static {
 		logger = Logger.getLogger("iTunesDiscordRP." + Main.class.getSimpleName() + " logger");
-		scriptFileName = "/itunes_track_info_script.txt";
+		scriptFileName = "/itunes_track_info_script.applescript";
 	}
 	
 	private Main() {
