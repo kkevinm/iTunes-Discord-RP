@@ -33,7 +33,7 @@ repeat
                     end if
                 else
                     set currentTrack to current track
-                    set artworkChanged to "N"
+                    set newTrack to "N"
                     set artworkMissing to "N"
                     
                     # If the current song or the player status has changed, log the new track information
@@ -46,7 +46,7 @@ repeat
                         
                         # Write the song artwork to a file
                         if currentTrack is not savedTrack then
-                            set artworkChanged to "Y"
+                            set newTrack to "Y"
                             set albumArtwork to null
                             if artworks of current track exists then
                                 set albumArtwork to data of front artwork of current track
@@ -66,7 +66,7 @@ repeat
                         
                         # Write the track main information in the log
                         # player position & ";;" & duration of currentTrack & ";;" &
-                        log name of currentTrack & ";;" & artist of currentTrack & ";;" & album of currentTrack & ";;" & state & ";;" & artworkChanged & ";;" & artworkMissing
+                        log newTrack & ";;" & name of currentTrack & ";;" & artist of currentTrack & ";;" & album of currentTrack & ";;" & state & ";;" & artworkMissing
                     end if
                     
                     # Update the player state and song name to detect when the track changes

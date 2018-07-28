@@ -1,4 +1,4 @@
-package com.github.kevinmussi.itunesrp.applescript;
+package com.github.kevinmussi.itunesrp.core;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -8,6 +8,8 @@ import java.util.logging.Logger;
 import com.github.kevinmussi.itunesrp.observer.Observable;
 
 public class AppleScriptHelper extends Observable<String> {
+	
+	public static final String TRACK_RECORD_SEPARATOR = ";;";
 	
 	private final Logger logger;
 	

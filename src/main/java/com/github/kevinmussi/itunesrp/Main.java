@@ -4,7 +4,8 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.github.kevinmussi.itunesrp.applescript.AppleScriptHelper;
+import com.github.kevinmussi.itunesrp.core.AppleScriptDiscordBridge;
+import com.github.kevinmussi.itunesrp.core.AppleScriptHelper;
 
 public final class Main {
 	
@@ -40,7 +41,8 @@ public final class Main {
 		
 		String script = getScript();
 		AppleScriptHelper helper = new AppleScriptHelper();
-		helper.addObserver(message -> System.out.println(message));
+		AppleScriptDiscordBridge bridge = new AppleScriptDiscordBridge();
+		helper.addObserver(bridge);
 		new Thread(() -> helper.execute(script)).start();
 	}
 	
