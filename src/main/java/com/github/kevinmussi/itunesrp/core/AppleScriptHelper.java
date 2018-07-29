@@ -1,6 +1,7 @@
 package com.github.kevinmussi.itunesrp.core;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,12 +15,12 @@ public class AppleScriptHelper
 	
 	public static final String TRACK_RECORD_SEPARATOR = ";;";
 	
-	private final Logger logger;
+	private final Logger logger = Logger.getLogger(getClass().getSimpleName() + "Logger");
+	
 	private final ProcessBuilder builder;
 	private volatile Process process;
 	
 	public AppleScriptHelper(String script) {
-		this.logger = Logger.getLogger(this.getClass().getSimpleName() + "Logger");
 		this.builder = new ProcessBuilder("osascript", "-e", script);
 		// The script logs its messages to stderr, so we need to redirect it to the stdout
 		this.builder.redirectErrorStream(true);
@@ -46,6 +47,7 @@ public class AppleScriptHelper
 		}
 		try {
 			process = builder.start();
+			logger.log(Level.INFO, () -> LocalDateTime.now().toString() + " The script started execution.");
 			Scanner scanner = new Scanner(process.getInputStream());
 			scanner.useDelimiter("\n");
 			while(process.isAlive()) {
@@ -55,13 +57,14 @@ public class AppleScriptHelper
 			}
 			scanner.close();
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, "The script did not execute correctly", e);
+			logger.log(Level.SEVERE, LocalDateTime.now().toString() + " The script did not execute correctly", e);
 		}
 	}
 	
 	public void stopScript() {
 		if(process != null && process.isAlive()) {
 			process.destroy();
+			logger.log(Level.INFO, () -> LocalDateTime.now().toString() + " The script stopped execution.");
 		}
 		process = null;
 	}

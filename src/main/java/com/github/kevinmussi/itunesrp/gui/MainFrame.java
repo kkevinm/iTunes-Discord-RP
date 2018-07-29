@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class MainFrame extends JFrame {
@@ -96,6 +97,10 @@ public class MainFrame extends JFrame {
 	
 	public void addOnDisconnectButtonClickedListener(ActionListener listener) {
 		this.disconnectButton.addActionListener(listener);
+	}
+	
+	public void showDialog(String title, String message, int messageType) {
+		JOptionPane.showMessageDialog(null, message, title, messageType);
 	}
 	
 }

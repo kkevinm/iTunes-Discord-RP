@@ -40,8 +40,7 @@ repeat
                         end if
                         
                         # Write the track main information in the log
-                        # player position & ";;" & duration of currentTrack & ";;" &
-                        log name of currentTrack & ";;" & artist of currentTrack & ";;" & album of currentTrack & ";;" & state
+                        log name of currentTrack & ";;" & artist of currentTrack & ";;" & album of currentTrack & ";;" & state & ";;" & player position & ";;" & duration of currentTrack
                     end if
                     
                     # Update the player state and song name to detect when the track changes

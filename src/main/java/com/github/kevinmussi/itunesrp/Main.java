@@ -1,5 +1,7 @@
 package com.github.kevinmussi.itunesrp;
 
+import java.awt.EventQueue;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,11 +13,11 @@ import com.github.kevinmussi.itunesrp.gui.MainFrame;
 
 public final class Main {
 	
-	private static final Logger LOG;
+	private static final Logger LOGGER;
 	private static final String SCRIPT;
 	
 	static {
-		LOG = Logger.getLogger("iTunesDiscordRP." + Main.class.getSimpleName() + " logger");
+		LOGGER = Logger.getLogger(Main.class.getSimpleName() + "Logger");
 		SCRIPT = "/itunes_track_info_script.applescript";
 	}
 	
@@ -36,8 +38,10 @@ public final class Main {
 	}
 	
 	public static void main(String[] args) {
-		if(!getOsVersion().startsWith("Mac OS X")) {
-			LOG.log(Level.SEVERE, "This application works only on MacOS!");
+		LOGGER.log(Level.INFO, () -> LocalDateTime.now().toString() + " Application started running.");
+		
+		if(!getOsVersion().startsWith("Mac OS")) {
+			LOGGER.log(Level.SEVERE, () -> LocalDateTime.now().toString() + " This application works only on MacOS!");
 			return;
 		}
 		
@@ -69,7 +73,9 @@ public final class Main {
 		discordHelper.addObserver(scriptHelper);
 		
 		// Show the frame
-		frame.init();
+		EventQueue.invokeLater(frame::init);
+		
+		LOGGER.log(Level.INFO, () -> LocalDateTime.now().toString() + " GUI invoked.");
 	}
 	
 }

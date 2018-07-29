@@ -38,6 +38,8 @@ public class AppleScriptDiscordBridge
 	 * <li>track artist (it can be empty).</li>
 	 * <li>track album (it can be empty).</li>
 	 * <li>track state: a string that can be either "PLAYING" or "PAUSED".</li>
+	 * <li>current position: the time elapsed in seconds from when the track started.</li>
+	 * <li>duration: the total duration of the track.</li>
 	 * <p>
 	 * 
 	 * @param previousTrack
@@ -53,7 +55,7 @@ public class AppleScriptDiscordBridge
 			return null;
 		}
 		String[] fields = record.split(separator);
-		if(fields == null || fields.length != 4) {
+		if(fields == null || fields.length != 6) {
 			return null;
 		}
 		
@@ -63,8 +65,11 @@ public class AppleScriptDiscordBridge
 		}
 		
 		TrackState state = TrackState.fromString(fields[3]);
+		double currentPosition = Double.parseDouble(fields[4]);
+		double duration = Double.parseDouble(fields[5]);
 		
-		return new Track(fields[0], fields[1], fields[2], Application.ITUNES, state);
+		return new Track(fields[0], fields[1], fields[2], state,
+				currentPosition, duration, Application.ITUNES);
 	}
 
 }
