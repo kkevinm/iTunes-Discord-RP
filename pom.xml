@@ -62,7 +62,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>java/</classpathPrefix>
-                            <mainClass>com.github.kevinmussi.itunesrp.core.DiscordHelper</mainClass>
+                            <mainClass>com.github.kevinmussi.itunesrp.Main</mainClass>
                         </manifest>
                         <manifestEntries>
                             <Class-Path>lib/</Class-Path>
