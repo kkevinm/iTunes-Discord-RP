@@ -7,15 +7,16 @@ import java.util.logging.Logger;
 import com.github.kevinmussi.itunesrp.core.AppleScriptDiscordBridge;
 import com.github.kevinmussi.itunesrp.core.AppleScriptHelper;
 import com.github.kevinmussi.itunesrp.core.DiscordHelper;
+import com.github.kevinmussi.itunesrp.gui.MainFrame;
 
 public final class Main {
 	
-	private static final Logger logger;
-	private static final String scriptFileName;
+	private static final Logger LOG;
+	private static final String SCRIPT;
 	
 	static {
-		logger = Logger.getLogger("iTunesDiscordRP." + Main.class.getSimpleName() + " logger");
-		scriptFileName = "/itunes_track_info_script.applescript";
+		LOG = Logger.getLogger("iTunesDiscordRP." + Main.class.getSimpleName() + " logger");
+		SCRIPT = "/itunes_track_info_script.applescript";
 	}
 	
 	private Main() {
@@ -27,7 +28,7 @@ public final class Main {
 	}
 	
 	private static String getScript() {
-		Scanner scanner = new Scanner(Main.class.getResourceAsStream(scriptFileName));
+		Scanner scanner = new Scanner(Main.class.getResourceAsStream(SCRIPT));
 		scanner.useDelimiter("\\A");
 		String contents = scanner.hasNext() ? scanner.next() : "";
 		scanner.close();
@@ -36,17 +37,39 @@ public final class Main {
 	
 	public static void main(String[] args) {
 		if(!getOsVersion().startsWith("Mac OS X")) {
-			logger.log(Level.SEVERE, "This application works only on MacOS!");
+			LOG.log(Level.SEVERE, "This application works only on MacOS!");
 			return;
 		}
 		
+		// Load the script from the .applescript file
 		String script = getScript();
-		AppleScriptHelper scriptHelper = new AppleScriptHelper();
+		
+		// Create the AppleScriptHelper with the script
+		AppleScriptHelper scriptHelper = new AppleScriptHelper(script);
+		
+		// Create the AppleScriptDiscordBridge
 		AppleScriptDiscordBridge bridge = new AppleScriptDiscordBridge();
-		DiscordHelper discordHelper = new DiscordHelper();
+		
+		// The bridge observes the script helper to receive updates
+		// about the songs playing (in form of a String object).
 		scriptHelper.addObserver(bridge);
+		
+		// Create the MainFrame (GUI element).
+		MainFrame frame = new MainFrame();
+		
+		// Create the DiscordHelper passing the MainFrame to it
+		DiscordHelper discordHelper = new DiscordHelper(frame);
+		
+		// The Discord helper observes the bridge to receive updates
+		// about the songs playing (in form of a Track object).
 		bridge.addObserver(discordHelper);
-		new Thread(() -> scriptHelper.execute(script)).start();
+		
+		// The script helper observes the Discord helper to be notified
+		// when the script must be executed or stopped.
+		discordHelper.addObserver(scriptHelper);
+		
+		// Show the frame
+		frame.init();
 	}
 	
 }

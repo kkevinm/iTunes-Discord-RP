@@ -1,17 +1,23 @@
 package com.github.kevinmussi.itunesrp.data;
 
 public enum Application {
-    ITUNES("iTunes"),
-    SPOTIFY("Spotify");
+    ITUNES("iTunes", "itunes-logo"),
+    SPOTIFY("Spotify", "spotify-logo");
     
-    private String description;
+    private final String description;
+    private final String imageKey;
     
-    private Application(String description) {
+    private Application(String description, String imageKey) {
         this.description = description;
+        this.imageKey = imageKey;
     }
     
     public static Application fromString(String string) {
         return Application.valueOf(string.toUpperCase());
+    }
+    
+    public String getImageKey() {
+    	return imageKey;
     }
     
     @Override

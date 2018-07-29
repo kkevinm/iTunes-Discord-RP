@@ -1,65 +1,101 @@
 package com.github.kevinmussi.itunesrp.core;
 
-import javax.security.auth.login.LoginException;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
-import org.json.JSONObject;
-
-import com.github.kevinmussi.itunesrp.data.TrackMessage;
+import com.github.kevinmussi.itunesrp.data.ScriptCommand;
+import com.github.kevinmussi.itunesrp.data.Track;
+import com.github.kevinmussi.itunesrp.gui.MainFrame;
+import com.github.kevinmussi.itunesrp.observer.Observable;
 import com.github.kevinmussi.itunesrp.observer.Observer;
+import com.jagrosh.discordipc.IPCClient;
 
-import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.entities.EntityBuilder;
-import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.events.Event;
-import net.dv8tion.jda.core.hooks.EventListener;
-
-public class DiscordHelper implements Observer<TrackMessage> {
+public class DiscordHelper
+		extends Observable<ScriptCommand> implements Observer<Track> {
     
-	private JSONObject jsonGame;
+	private static final long APP_ID = 473069598804279309L;
 	
-    public DiscordHelper() {
-        this.jsonGame = new JSONObject();
+	private final MainFrame frame;
+	private IPCClient client;
+	
+    public DiscordHelper(MainFrame frame) {
+    	this.frame = frame;
+    	setWindowListener();
+    	frame.addOnConnectButtonClickedListener(e -> connect());
+    	frame.addOnDisconnectButtonClickedListener(e -> disconnect());
+    }
+    
+    private void setWindowListener() {
+    	frame.addWindowListener(new WindowListener() {
+			@Override
+			public void windowOpened(WindowEvent e) {/**/}
+			@Override
+			public void windowClosing(WindowEvent e) {
+				disconnect();
+				e.getWindow().dispose();
+			}
+			@Override
+			public void windowClosed(WindowEvent e) {/**/}
+			@Override
+			public void windowIconified(WindowEvent e) {/**/}
+			@Override
+			public void windowDeiconified(WindowEvent e) {/**/}
+			@Override
+			public void windowActivated(WindowEvent e) {/**/}
+			@Override
+			public void windowDeactivated(WindowEvent e) {/**/}
+    	});
     }
 
 	@Override
-	public void update(TrackMessage message) {
+	public void update(Track message) {
 		if(message == null) {
 			return;
 		}
 		
 	}
 	
-	public static void main(String[] args) {
-		try {
-			JDA jda = new JDABuilder(AccountType.CLIENT)
-					.setToken("token")
-					.buildBlocking();
-			jda.addEventListener(new EventListener() {
-
-				@Override
-				public void onEvent(Event event) {
-					System.out.println("ciaoo");
-				}
-				
-			});
-			//RichPresence rp = new RichPresence(null, null, null, 1L, null, null, null, null, null, null, 2, null, null, null, null);
-			jda.getPresence().setGame(Game.listening("iTunes"));
-			EntityBuilder eb = new EntityBuilder(jda);
-			JSONObject jsonGame = new JSONObject();
-			
-			eb.createGame(jsonGame);
-			//jda.getPresence().getGame().
-			
-		} catch (LoginException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+	private void connect() {
+		notifyObservers(ScriptCommand.EXECUTE);
+		frame.setConnected();
 	}
+	
+	private void disconnect() {
+		notifyObservers(ScriptCommand.KILL);
+		frame.setDisconnected();
+		if(client != null) {
+			client.sendRichPresence(null);
+			client.close();
+		}
+	}
+	
+	/*
+	public static void main(String[] args) {
+		try(IPCClient client = new IPCClient(APP_ID)) {
+			client.setListener(new IPCListener() {
+			    @Override
+			    public void onReady(IPCClient client)
+			    {
+			        RichPresence.Builder builder = new RichPresence.Builder();
+			        builder.setState("West of House")
+			            .setDetails("Frustration level: Over 9000")
+			            .setStartTimestamp(OffsetDateTime.now())
+			            .setLargeImage("canary-large", "Discord Canary")
+			            .setSmallImage("ptb-small", "Discord PTB")
+			            .setParty("party1234", 1, 6)
+			            .setMatchSecret("xyzzy")
+			            .setJoinSecret("join")
+			            .setSpectateSecret("look");
+			        client.sendRichPresence(builder.build());
+			    }
+			});
+			try {
+				client.connect();
+			} catch (NoDiscordClientException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}*/
     
 }

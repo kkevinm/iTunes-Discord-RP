@@ -5,24 +5,47 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.github.kevinmussi.itunesrp.data.ScriptCommand;
 import com.github.kevinmussi.itunesrp.observer.Observable;
+import com.github.kevinmussi.itunesrp.observer.Observer;
 
-public class AppleScriptHelper extends Observable<String> {
+public class AppleScriptHelper
+		extends Observable<String> implements Observer<ScriptCommand> {
 	
 	public static final String TRACK_RECORD_SEPARATOR = ";;";
 	
 	private final Logger logger;
+	private final ProcessBuilder builder;
+	private volatile Process process;
 	
-	public AppleScriptHelper() {
-		logger = Logger.getLogger("iTunesDiscordRP." + this.getClass().getSimpleName() + " logger");
+	public AppleScriptHelper(String script) {
+		this.logger = Logger.getLogger(this.getClass().getSimpleName() + "Logger");
+		this.builder = new ProcessBuilder("osascript", "-e", script);
+		// The script logs its messages to stderr, so we need to redirect it to the stdout
+		this.builder.redirectErrorStream(true);
+		this.process = null;
 	}
 	
-	public void execute(String script) {
+	@Override
+	public void update(ScriptCommand message) {
+		switch(message) {
+			case EXECUTE:
+				if(!(process != null && process.isAlive())) {
+					new Thread(this::executeScript);
+				}
+				break;
+			case KILL:
+				stopScript();
+				break;
+		}
+	}
+	
+	public void executeScript() {
+		if(process != null && process.isAlive()) {
+			return;
+		}
 		try {
-			ProcessBuilder builder = new ProcessBuilder("osascript", "-e", script);
-			// The script logs its messages to stderr, so we need to redirect it to the stdout
-			builder.redirectErrorStream(true);
-			Process process = builder.start();
+			process = builder.start();
 			Scanner scanner = new Scanner(process.getInputStream());
 			scanner.useDelimiter("\n");
 			while(process.isAlive()) {
@@ -32,8 +55,15 @@ public class AppleScriptHelper extends Observable<String> {
 			}
 			scanner.close();
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, "The script:\n " + script + "\ndid not execute correctly", e);
+			logger.log(Level.SEVERE, "The script did not execute correctly", e);
 		}
+	}
+	
+	public void stopScript() {
+		if(process != null && process.isAlive()) {
+			process.destroy();
+		}
+		process = null;
 	}
 	
 }

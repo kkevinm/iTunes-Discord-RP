@@ -24,10 +24,10 @@
     </repositories>
     <dependencies>
         <dependency>
-            <groupId>net.dv8tion</groupId>
-            <artifactId>JDA</artifactId>
-            <version>3.7.1_386</version>
-        </dependency>
+            <groupId>com.jagrosh</groupId>
+            <artifactId>DiscordIPC</artifactId>
+            <version>LATEST</version>
+        </dependency> 
     </dependencies>
     <build>
         <plugins>
@@ -52,6 +52,39 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>java/</classpathPrefix>
+                            <mainClass>com.github.kevinmussi.itunesrp.core.DiscordHelper</mainClass>
+                        </manifest>
+                        <manifestEntries>
+                            <Class-Path>lib/</Class-Path>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.1.1</version>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>shade</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <finalName>${project.artifactId}-${project.version}</finalName>
+                    </configuration>
             </plugin>
             <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
