@@ -1,21 +1,20 @@
 package com.github.kevinmussi.itunesrp.core;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.github.kevinmussi.itunesrp.data.ScriptCommand;
+import com.github.kevinmussi.itunesrp.commands.ScriptCommand;
+import com.github.kevinmussi.itunesrp.observer.Commanded;
 import com.github.kevinmussi.itunesrp.observer.Observable;
-import com.github.kevinmussi.itunesrp.observer.Observer;
 
 public class AppleScriptHelper
-		extends Observable<String> implements Observer<ScriptCommand> {
+		extends Observable<String> implements Commanded<ScriptCommand> {
 	
 	public static final String TRACK_RECORD_SEPARATOR = ";;";
 	
-	private final Logger logger = Logger.getLogger(getClass().getSimpleName() + "Logger");
+	private final Logger logger = Logger.getLogger(getClass().getName() + "Logger");
 	
 	private final ProcessBuilder builder;
 	private volatile Process process;
@@ -28,17 +27,20 @@ public class AppleScriptHelper
 	}
 	
 	@Override
-	public void update(ScriptCommand message) {
-		switch(message) {
-			case EXECUTE:
+	public boolean onCommand(ScriptCommand command) {
+		if(command != null) {
+			if(command == ScriptCommand.EXECUTE) {
 				if(!(process != null && process.isAlive())) {
 					new Thread(this::executeScript);
+					return true;
 				}
-				break;
-			case KILL:
+				return false;
+			} else {
 				stopScript();
-				break;
+				return true;
+			}
 		}
+		return false;
 	}
 	
 	public void executeScript() {
@@ -47,7 +49,7 @@ public class AppleScriptHelper
 		}
 		try {
 			process = builder.start();
-			logger.log(Level.INFO, () -> LocalDateTime.now().toString() + " The script started execution.");
+			logger.log(Level.INFO, "The script started execution.");
 			Scanner scanner = new Scanner(process.getInputStream());
 			scanner.useDelimiter("\n");
 			while(process.isAlive()) {
@@ -57,14 +59,14 @@ public class AppleScriptHelper
 			}
 			scanner.close();
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, LocalDateTime.now().toString() + " The script did not execute correctly", e);
+			logger.log(Level.SEVERE, "The script did not execute correctly", e);
 		}
 	}
 	
 	public void stopScript() {
 		if(process != null && process.isAlive()) {
 			process.destroy();
-			logger.log(Level.INFO, () -> LocalDateTime.now().toString() + " The script stopped execution.");
+			logger.log(Level.INFO, "The script stopped execution.");
 		}
 		process = null;
 	}

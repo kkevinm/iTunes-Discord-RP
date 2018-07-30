@@ -14,7 +14,7 @@
         <sonar.language>java</sonar.language>
         <sonar.host.url> http://localhost:9000/ </sonar.host.url>
     </properties>
-    <description></description>
+    <description>iTunes Rich Presence for Discord on MacOS</description>
     <repositories>
         <repository>
             <id>jcenter</id>
@@ -27,6 +27,11 @@
             <groupId>com.jagrosh</groupId>
             <artifactId>DiscordIPC</artifactId>
             <version>0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
         </dependency> 
     </dependencies>
     <build>
@@ -39,19 +44,6 @@
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -84,21 +76,10 @@
                     </executions>
                     <configuration>
                         <finalName>${project.artifactId}-${project.version}</finalName>
+                        <excludeScope>system</excludeScope>
+                        <excludeGroupIds>junit,org.mockito,org.hamcrest</excludeGroupIds>
                     </configuration>
             </plugin>
-            <!--<plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>-->
         </plugins>
     </build>
 </project>

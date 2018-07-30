@@ -1,19 +1,16 @@
 package com.github.kevinmussi.itunesrp.core;
 
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JOptionPane;
-
-import com.github.kevinmussi.itunesrp.data.ScriptCommand;
+import com.github.kevinmussi.itunesrp.commands.ConnectCommand;
+import com.github.kevinmussi.itunesrp.commands.ScriptCommand;
 import com.github.kevinmussi.itunesrp.data.Track;
 import com.github.kevinmussi.itunesrp.data.TrackState;
-import com.github.kevinmussi.itunesrp.gui.MainFrame;
-import com.github.kevinmussi.itunesrp.observer.Observable;
+import com.github.kevinmussi.itunesrp.gui.View;
+import com.github.kevinmussi.itunesrp.observer.Commanded;
+import com.github.kevinmussi.itunesrp.observer.Commander;
 import com.github.kevinmussi.itunesrp.observer.Observer;
 import com.github.kevinmussi.itunesrp.util.Pair;
 import com.jagrosh.discordipc.IPCClient;
@@ -21,53 +18,33 @@ import com.jagrosh.discordipc.entities.RichPresence;
 import com.jagrosh.discordipc.exceptions.NoDiscordClientException;
 
 public class DiscordHelper
-		extends Observable<ScriptCommand> implements Observer<Track> {
+		extends Commander<ScriptCommand> implements Observer<Track> {
     
 	private static final long APP_ID = 473069598804279309L;
 	
 	private static final String DISCORD_CONNECTION_ERROR_MESSAGE =
-			"An error occurred while trying to connect to Discord.\n"
-			+ "Make sure that you have the Discord app installed and "
-			+ "that you're logged in with your account.";
+			"<html>An <b>error</b> occurred while trying to connect to <b>Discord</b>.<br>Make sure that:<br>"
+			+ "<li>You have the Discord app installed and currently running.</li>"
+			+ "<li>You're logged in with your account.</li></html>";
 	
-	private final Logger logger = Logger.getLogger(getClass().getSimpleName() + "Logger");
+	private final Logger logger = Logger.getLogger(getClass().getName() + "Logger");
 	
-	private final MainFrame frame;
+	private final View view;
+	private final Commanded<ConnectCommand> connectObserver;
 	private final IPCClient client;
 	
-    public DiscordHelper(MainFrame frame) {
-    	this.frame = frame;
+    public DiscordHelper(View view) {
+    	this.view = view;
+    	this.connectObserver = new CommandReceiver();
     	this.client = new IPCClient(APP_ID);
-    	setListeners();
-    	frame.addOnConnectButtonClickedListener(e -> connect());
-    	frame.addOnDisconnectButtonClickedListener(e -> disconnect());
-    }
-    
-    private void setListeners() {
-    	frame.addWindowListener(new WindowListener() {
-			@Override
-			public void windowOpened(WindowEvent e) {/**/}
-			@Override
-			public void windowClosing(WindowEvent e) {
-				disconnect();
-				e.getWindow().dispose();
-			}
-			@Override
-			public void windowClosed(WindowEvent e) {/**/}
-			@Override
-			public void windowIconified(WindowEvent e) {/**/}
-			@Override
-			public void windowDeiconified(WindowEvent e) {/**/}
-			@Override
-			public void windowActivated(WindowEvent e) {/**/}
-			@Override
-			public void windowDeactivated(WindowEvent e) {/**/}
-    	});
+    	
+    	// Observe the view to receive the ConnectCommands
+    	view.setCommanded(connectObserver);
     }
 
 	@Override
 	public void update(Track message) {
-		logger.log(Level.INFO, () -> LocalDateTime.now().toString() + " Received new track.");
+		logger.log(Level.INFO, "Received new track.");
 		if(message == null) {
 			return;
 		}
@@ -91,32 +68,7 @@ public class DiscordHelper
 		builder.setLargeImage(message.getApplication().getImageKey(),
 				message.getApplication().toString());
 		client.sendRichPresence(builder.build());
-		logger.log(Level.INFO, () -> LocalDateTime.now().toString() + " Updated Rich Presence.");
-	}
-	
-	private void connect() {
-		try {
-			client.connect();
-		} catch (NoDiscordClientException e) {
-			logger.log(Level.INFO, e.getMessage(), e);
-			frame.showDialog("Error",
-					DISCORD_CONNECTION_ERROR_MESSAGE,
-					JOptionPane.WARNING_MESSAGE);
-			return;
-		}
-		logger.log(Level.INFO, () -> LocalDateTime.now().toString() + " Client successfully connected.");
-		notifyObservers(ScriptCommand.EXECUTE);
-		frame.setConnected();
-	}
-	
-	private void disconnect() {
-		notifyObservers(ScriptCommand.KILL);
-		frame.setDisconnected();
-		if(client != null) {
-			resetRichPresence();
-			client.close();
-		}
-		logger.log(Level.INFO, () -> LocalDateTime.now().toString() + " Client successfully disconnected.");
+		logger.log(Level.INFO, "Updated Rich Presence.");
 	}
 	
 	private void resetRichPresence() {
@@ -129,6 +81,46 @@ public class DiscordHelper
 		OffsetDateTime start = now.minusNanos((long)(currentPosition*1e+9));
 		OffsetDateTime end = start.plusNanos((long)(duration*1e+9));
 		return new Pair<>(start, end);
+	}
+	
+	private class CommandReceiver implements Commanded<ConnectCommand> {
+
+		@Override
+		public boolean onCommand(ConnectCommand command) {
+			if(command == null)
+	    		return false;
+	    	if(command == ConnectCommand.CONNECT)
+	    		return connect();
+	    	else
+	    		return disconnect();
+		}
+		
+		private boolean connect() {
+			try {
+				client.connect();
+			} catch (NoDiscordClientException|RuntimeException e) {
+				logger.log(Level.SEVERE, "Something went wrong while trying to connect: {0}", e.getMessage());
+				view.showMessage(DISCORD_CONNECTION_ERROR_MESSAGE);
+				return false;
+			}
+			logger.log(Level.INFO, "Client successfully connected.");
+			sendCommand(ScriptCommand.EXECUTE);
+			return true;
+		}
+		
+		private boolean disconnect() {
+			sendCommand(ScriptCommand.KILL);
+			try {
+				resetRichPresence();
+				client.close();
+			} catch(IllegalStateException e) {
+				logger.log(Level.INFO, "Client is already disconnected.");
+				return false;
+			}
+			logger.log(Level.INFO, "Client successfully disconnected.");
+			return true;
+		}
+		
 	}
     
 }

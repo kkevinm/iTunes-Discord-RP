@@ -1,18 +1,24 @@
 package com.github.kevinmussi.itunesrp.gui;
 
 import java.awt.Dimension;
-import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class MainFrame extends JFrame {
-	
-	private static final long serialVersionUID = -6959412269447126961L;
+import com.github.kevinmussi.itunesrp.commands.ConnectCommand;
+
+public class MainFrame extends View {
 	
 	private static final Dimension DIMENSION = new Dimension(400, 250);
+	
+	/**
+	 * The main frame of the GUI.
+	 */
+	private final JFrame frame;
 	
 	/**
 	 * Panel to be shown when the application is not
@@ -29,16 +35,16 @@ public class MainFrame extends JFrame {
 	private final JButton connectButton;
 	private final JButton disconnectButton;
 	
-	private boolean isConnected;
 	private boolean didInit;
 	
 	public MainFrame() {
 		this.didInit = false;
-		this.isConnected = false;
+		this.frame = new JFrame();
 		this.inactivePanel = new JPanel();
 		this.activePanel = new JPanel();
 		this.disconnectButton = new JButton("Disconnect from Discord");
 		this.connectButton = new JButton("Connect to Discord");
+		initListeners();
 	}
 	
 	public void init() {
@@ -67,40 +73,57 @@ public class MainFrame extends JFrame {
 		connectButton.setVisible(true);
 		inactivePanel.add(connectButton);
 		
-		this.setContentPane(contentPane);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setResizable(false);
-		this.pack();
-		this.setLocationRelativeTo(null);
-		this.setVisible(true);
+		frame.setContentPane(contentPane);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
 	}
 	
-	public void setConnected() {
-		if(!isConnected) {
-			isConnected = true;
+	private void initListeners() {
+		frame.addWindowListener(new WindowListener() {
+			@Override
+			public void windowOpened(WindowEvent e) {/**/}
+			@Override
+			public void windowClosing(WindowEvent e) {
+				sendCommand(ConnectCommand.DISCONNECT);
+				e.getWindow().dispose();
+			}
+			@Override
+			public void windowClosed(WindowEvent e) {/**/}
+			@Override
+			public void windowIconified(WindowEvent e) {/**/}
+			@Override
+			public void windowDeiconified(WindowEvent e) {/**/}
+			@Override
+			public void windowActivated(WindowEvent e) {/**/}
+			@Override
+			public void windowDeactivated(WindowEvent e) {/**/}
+    	});
+		connectButton.addActionListener(e -> setConnected());
+		disconnectButton.addActionListener(e -> setDisconnected());
+	}
+	
+	private void setConnected() {
+		boolean didConnect = sendCommand(ConnectCommand.CONNECT);
+		if(didConnect) {
 			inactivePanel.setVisible(false);
 			activePanel.setVisible(true);
 		}
 	}
 	
-	public void setDisconnected() {
-		if(isConnected) {
-			isConnected = false;
+	private void setDisconnected() {
+		boolean didDisconnect = sendCommand(ConnectCommand.DISCONNECT);
+		if(didDisconnect) {
 			activePanel.setVisible(false);
 			inactivePanel.setVisible(true);
 		}
 	}
 	
-	public void addOnConnectButtonClickedListener(ActionListener listener) {
-		this.connectButton.addActionListener(listener);
-	}
-	
-	public void addOnDisconnectButtonClickedListener(ActionListener listener) {
-		this.disconnectButton.addActionListener(listener);
-	}
-	
-	public void showDialog(String title, String message, int messageType) {
-		JOptionPane.showMessageDialog(null, message, title, messageType);
+	@Override
+	public void showMessage(String message) {
+		JOptionPane.showMessageDialog(null, message, "Message", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 }
