@@ -40,6 +40,8 @@ public class AppleScriptDiscordBridge
 	 * <li>track state: a string that can be either "PLAYING" or "PAUSED".</li>
 	 * <li>current position: the time elapsed in seconds from when the track started.</li>
 	 * <li>duration: the total duration of the track.</li>
+	 * <li>track index: the index of the track in its album.</li>
+	 * <li>track count: the amount of tracks in the current album.</li>
 	 * <p>
 	 * 
 	 * @param previousTrack
@@ -55,21 +57,25 @@ public class AppleScriptDiscordBridge
 			return null;
 		}
 		String[] fields = record.split(separator);
-		if(fields == null || fields.length != 6) {
+		if(fields == null || fields.length != 8) {
 			return null;
 		}
 		
-		if(fields[0].length() == 0) {
-			// The track name can't be empty
+		String name = fields[0];
+		if(name.length() == 0) {
 			return null;
 		}
+		String artist = fields[1].length() == 0 ? "Unknown Artist" : fields[1];
+		String album = fields[2].length() == 0 ? "Unknown Album" : fields[2];
 		
 		TrackState state = TrackState.fromString(fields[3]);
 		double currentPosition = Double.parseDouble(fields[4].replace(',', '.'));
 		double duration = Double.parseDouble(fields[5].replace(',', '.'));
+		int index = Integer.parseInt(fields[6]);
+		int albumSize = Integer.parseInt(fields[7]);
 		
-		return new Track(fields[0], fields[1], fields[2], state,
-				currentPosition, duration, Application.ITUNES);
+		return new Track(name, artist, album, state,
+				currentPosition, duration, index, albumSize, Application.ITUNES);
 	}
 
 }

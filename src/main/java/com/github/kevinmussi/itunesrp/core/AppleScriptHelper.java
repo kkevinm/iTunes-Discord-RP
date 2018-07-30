@@ -52,14 +52,18 @@ public class AppleScriptHelper
 			logger.log(Level.INFO, "The script started execution.");
 			Scanner scanner = new Scanner(process.getInputStream());
 			scanner.useDelimiter("\n");
-			while(process.isAlive()) {
+			while(process != null && process.isAlive()) {
 				if(scanner.hasNext()) {
 					sendUpdate(scanner.next());
 				}
+				Thread.sleep(1000);
 			}
 			scanner.close();
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "The script did not execute correctly", e);
+		} catch (InterruptedException e) {
+			logger.log(Level.WARNING, "An error occurred: ", e);
+			Thread.currentThread().interrupt();
 		}
 	}
 	

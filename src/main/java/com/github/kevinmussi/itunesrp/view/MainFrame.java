@@ -1,25 +1,29 @@
 package com.github.kevinmussi.itunesrp.view;
 
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-import javax.swing.Box;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 
 import com.github.kevinmussi.itunesrp.commands.ConnectCommand;
 import com.github.kevinmussi.itunesrp.data.Track;
 
 public class MainFrame extends View {
 	
-	private static final Dimension DIMENSION = new Dimension(400, 200);
+	private static final Dimension DIMENSION = new Dimension(400, 250);
 	private static final String ACTIVE_PANEL = "active";
 	private static final String INACTIVE_PANEL = "inactive";
 	
@@ -36,7 +40,7 @@ public class MainFrame extends View {
 	
 	private final JButton connectButton;
 	private final JButton disconnectButton;
-	private final TrackTextArea textArea;
+	private final TrackPane trackPane;
 	
 	private boolean isConnected;
 	private boolean didInit;
@@ -47,7 +51,7 @@ public class MainFrame extends View {
 		this.frame = new JFrame();
 		this.disconnectButton = new JButton("Disconnect from Discord");
 		this.connectButton = new JButton("Connect to Discord");
-		this.textArea = new TrackTextArea();
+		this.trackPane = new TrackPane();
 		this.cards = new CardLayout();
 		initListeners();
 	}
@@ -77,16 +81,18 @@ public class MainFrame extends View {
 		disconnectButton.setOpaque(true);
 		disconnectButton.setVisible(true);
 		
-		textArea.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
-		
 		connectButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		connectButton.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
 		connectButton.setOpaque(true);
 		connectButton.setVisible(true);
 		
 		activePanel.setLayout(new BoxLayout(activePanel, BoxLayout.Y_AXIS));
-		activePanel.add(textArea);
-		activePanel.add(Box.createVerticalGlue());
+		JScrollPane scrollPane = new JScrollPane(trackPane);
+		TitledBorder border = BorderFactory.createTitledBorder("Song playing");
+		border.setTitleFont(new Font(Font.SANS_SERIF, Font.BOLD, 13));
+		border.setBorder(new LineBorder(new Color(184, 206, 227), 1));
+		scrollPane.setBorder(border);
+		activePanel.add(scrollPane);
 		activePanel.add(disconnectButton);
 		
 		inactivePanel.add(connectButton);
@@ -138,7 +144,7 @@ public class MainFrame extends View {
 		boolean didDisconnect = sendCommand(ConnectCommand.DISCONNECT);
 		if(didDisconnect) {
 			isConnected = false;
-			textArea.setTrack(Track.NULL_TRACK);
+			trackPane.setTrack(Track.NULL_TRACK);
 			cards.show(frame.getContentPane(), INACTIVE_PANEL);
 		}
 	}
@@ -151,7 +157,7 @@ public class MainFrame extends View {
 	@Override
 	public void showTrack(Track track) {
 		if(isConnected) {
-			textArea.setTrack(track);
+			trackPane.setTrack(track);
 		}
 	}
 	

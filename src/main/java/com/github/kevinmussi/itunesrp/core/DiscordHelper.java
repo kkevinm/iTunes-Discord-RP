@@ -4,6 +4,8 @@ import java.time.OffsetDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.SwingUtilities;
+
 import com.github.kevinmussi.itunesrp.commands.ConnectCommand;
 import com.github.kevinmussi.itunesrp.commands.ScriptCommand;
 import com.github.kevinmussi.itunesrp.data.Track;
@@ -11,7 +13,6 @@ import com.github.kevinmussi.itunesrp.data.TrackState;
 import com.github.kevinmussi.itunesrp.observer.Commanded;
 import com.github.kevinmussi.itunesrp.observer.Commander;
 import com.github.kevinmussi.itunesrp.observer.Observer;
-import com.github.kevinmussi.itunesrp.util.Pair;
 import com.github.kevinmussi.itunesrp.view.View;
 import com.jagrosh.discordipc.IPCClient;
 import com.jagrosh.discordipc.entities.RichPresence;
@@ -47,7 +48,7 @@ public class DiscordHelper
 		logger.log(Level.INFO, "Received new track.");
 		
 		// Update the view
-		view.showTrack(message);
+		SwingUtilities.invokeLater(() -> view.showTrack(message));
 		
 		// Update Discord RP
 		if(message == null) {
@@ -60,32 +61,41 @@ public class DiscordHelper
 		
 		RichPresence.Builder builder = new RichPresence.Builder();
 		if(message.getState() == TrackState.PLAYING) {
-			Pair<OffsetDateTime, OffsetDateTime> times =
-					getTimestamps(message.getCurrentPosition(), message.getDuration());
-			builder.setStartTimestamp(times.first);
-			builder.setEndTimestamp(times.second);
-			builder.setDetails("Currently playing: " + message.getName());
+			OffsetDateTime start = OffsetDateTime.now()
+					.minusSeconds((long) message.getCurrentPosition());
+			builder.setStartTimestamp(start);
 			builder.setInstance(true);
-		} else {
-			builder.setDetails("Currently paused: " + message.getName());
 		}
-		builder.setState("By: " + message.getArtist());
+		builder.setDetails("🎶 " + message.getName());
+		String artist = message.getArtist();
+		String album = message.getAlbum();
+		
+		// Fix the fields' length to make everything stay in one line
+		int max = 46;
+		if(artist.length() > 27) {
+			artist = artist.substring(0, 26) + "...";
+			max = 50;
+		}
+		if(artist.length() + album.length() > max) {
+			album = album.substring(0, max-artist.length()) + "...";
+		}
+		
+		builder.setState("👤 " + artist + " 💿 " + album);
+		String state = message.getState().toString();
+		builder.setSmallImage(state.toLowerCase(), state);
 		builder.setLargeImage(message.getApplication().getImageKey(),
 				message.getApplication().toString());
+		int index = message.getIndex();
+		int size = message.getAlbumSize();
+		if(index > 0 && size > 0 && index <= size) {
+			builder.setParty("aa", index, size);
+		}
 		client.sendRichPresence(builder.build());
 		logger.log(Level.INFO, "Updated Rich Presence.");
 	}
 	
 	private void resetRichPresence() {
 		client.sendRichPresence(null);
-	}
-	
-	private Pair<OffsetDateTime, OffsetDateTime>
-			getTimestamps(double currentPosition, double duration) {
-		OffsetDateTime now = OffsetDateTime.now();
-		OffsetDateTime start = now.minusNanos((long)(currentPosition*1e+9));
-		OffsetDateTime end = start.plusNanos((long)(duration*1e+9));
-		return new Pair<>(start, end);
 	}
 	
 	private class CommandReceiver implements Commanded<ConnectCommand> {

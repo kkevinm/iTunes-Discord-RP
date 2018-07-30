@@ -1,9 +1,10 @@
 package com.github.kevinmussi.itunesrp;
 
-import java.awt.EventQueue;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.SwingUtilities;
 
 import com.github.kevinmussi.itunesrp.core.AppleScriptDiscordBridge;
 import com.github.kevinmussi.itunesrp.core.AppleScriptHelper;
@@ -73,7 +74,7 @@ public final class Main {
 		discordHelper.setCommanded(scriptHelper);
 		
 		// Show the frame
-		EventQueue.invokeLater(view::init);
+		SwingUtilities.invokeLater(view::init);
 		
 		LOGGER.log(Level.INFO, "View invoked.");
 	}
