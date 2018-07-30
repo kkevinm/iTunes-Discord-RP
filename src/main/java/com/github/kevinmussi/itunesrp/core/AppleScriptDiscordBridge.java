@@ -14,7 +14,7 @@ public class AppleScriptDiscordBridge
 	}
 	
 	@Override
-	public void update(String message) {
+	public void onUpdate(String message) {
 		if(message == null || message.length() == 0) {
 			return;
 		}
@@ -26,7 +26,7 @@ public class AppleScriptDiscordBridge
 			track = getTrackfromRecord(message, AppleScriptHelper.TRACK_RECORD_SEPARATOR);
 			
 		}
-		notifyObservers(track);
+		sendUpdate(track);
 	}
 	
 	/**
@@ -65,8 +65,8 @@ public class AppleScriptDiscordBridge
 		}
 		
 		TrackState state = TrackState.fromString(fields[3]);
-		double currentPosition = Double.parseDouble(fields[4]);
-		double duration = Double.parseDouble(fields[5]);
+		double currentPosition = Double.parseDouble(fields[4].replace(',', ','));
+		double duration = Double.parseDouble(fields[5].replace(',', '.'));
 		
 		return new Track(fields[0], fields[1], fields[2], state,
 				currentPosition, duration, Application.ITUNES);

@@ -19,10 +19,10 @@ public abstract class Observable<T> {
 		}
 	}
 	
-	public void notifyObservers(T message) {
+	public void sendUpdate(T message) {
 		synchronized(observers) {
 			for(Observer<T> observer: observers) {
-				observer.update(message);
+				observer.onUpdate(message);
 			}
 		}
 	}

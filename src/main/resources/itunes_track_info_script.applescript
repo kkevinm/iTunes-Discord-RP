@@ -16,7 +16,6 @@ repeat
             log state
         end if
     else
-        
         # If iTunes is running, execute the logic inside a try block so that, if iTunes is closed during the execution, the script doesn't launch an exception
         try
             tell application "iTunes"
@@ -50,8 +49,10 @@ repeat
             end tell
         on error
             # If iTunes is closed, set the state to "STOPPED" and do nothing
-            set state to STR_STOPPED
-            log state
+            if state is not STR_STOPPED then
+                set state to STR_STOPPED
+                log state
+            end if
         end try
     end if
 end repeat

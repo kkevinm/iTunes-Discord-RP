@@ -43,8 +43,13 @@ public class DiscordHelper
     }
 
 	@Override
-	public void update(Track message) {
+	public void onUpdate(Track message) {
 		logger.log(Level.INFO, "Received new track.");
+		
+		// Update the view
+		view.showTrack(message);
+		
+		// Update Discord RP
 		if(message == null) {
 			return;
 		}

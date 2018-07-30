@@ -54,7 +54,7 @@ public class AppleScriptHelper
 			scanner.useDelimiter("\n");
 			while(process.isAlive()) {
 				if(scanner.hasNext()) {
-					notifyObservers(scanner.next());
+					sendUpdate(scanner.next());
 				}
 			}
 			scanner.close();
