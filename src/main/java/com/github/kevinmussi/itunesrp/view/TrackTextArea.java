@@ -14,9 +14,9 @@ public class TrackTextArea extends JTextArea {
 	
 	private static final long serialVersionUID = -1373967048611694815L;
 	
-	private static final String NO_TRACK_TEXT = "Currently here's no song playing.";
-	private static final String TRACK_TEXT_FORMAT = "Currently %s on %s:<br>"
-			+ "Name: %s<br>Artist: %s<br>Album: %s <br>Duration: %d:%d";
+	private static final String NO_TRACK_TEXT = "Currently there's no song playing.";
+	private static final String TRACK_TEXT_FORMAT = "<html>Currently %s on %s:<br>"
+			+ "Name: %s<br>Artist: %s<br>Album: %s <br>Duration: %d:%d</html>";
 	
 	public TrackTextArea() {
 		TitledBorder border = BorderFactory.createTitledBorder("Song playing");

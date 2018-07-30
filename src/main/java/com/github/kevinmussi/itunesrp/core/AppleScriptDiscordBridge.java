@@ -65,7 +65,7 @@ public class AppleScriptDiscordBridge
 		}
 		
 		TrackState state = TrackState.fromString(fields[3]);
-		double currentPosition = Double.parseDouble(fields[4].replace(',', ','));
+		double currentPosition = Double.parseDouble(fields[4].replace(',', '.'));
 		double duration = Double.parseDouble(fields[5].replace(',', '.'));
 		
 		return new Track(fields[0], fields[1], fields[2], state,

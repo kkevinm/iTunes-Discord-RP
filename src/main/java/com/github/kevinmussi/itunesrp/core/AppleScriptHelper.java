@@ -30,8 +30,8 @@ public class AppleScriptHelper
 	public boolean onCommand(ScriptCommand command) {
 		if(command != null) {
 			if(command == ScriptCommand.EXECUTE) {
-				if(!(process != null && process.isAlive())) {
-					new Thread(this::executeScript);
+				if(process == null || !process.isAlive()) {
+					new Thread(this::executeScript).start();
 					return true;
 				}
 				return false;
