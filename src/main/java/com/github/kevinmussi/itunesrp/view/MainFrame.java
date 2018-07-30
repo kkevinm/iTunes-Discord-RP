@@ -1,4 +1,4 @@
-package com.github.kevinmussi.itunesrp.gui;
+package com.github.kevinmussi.itunesrp.view;
 
 import java.awt.Dimension;
 import java.awt.event.WindowEvent;

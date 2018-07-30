@@ -1,4 +1,4 @@
-package com.github.kevinmussi.itunesrp.gui;
+package com.github.kevinmussi.itunesrp.view;
 
 import com.github.kevinmussi.itunesrp.commands.ConnectCommand;
 import com.github.kevinmussi.itunesrp.observer.Commander;

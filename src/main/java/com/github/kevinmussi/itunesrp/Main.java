@@ -8,8 +8,8 @@ import java.util.logging.Logger;
 import com.github.kevinmussi.itunesrp.core.AppleScriptDiscordBridge;
 import com.github.kevinmussi.itunesrp.core.AppleScriptHelper;
 import com.github.kevinmussi.itunesrp.core.DiscordHelper;
-import com.github.kevinmussi.itunesrp.gui.MainFrame;
-import com.github.kevinmussi.itunesrp.gui.View;
+import com.github.kevinmussi.itunesrp.view.MainFrame;
+import com.github.kevinmussi.itunesrp.view.View;
 
 public final class Main {
 	
