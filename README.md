@@ -1,1 +1,1 @@
-# itunes-discord-rich-presence
+# iTunes Rich Presence for Discord
