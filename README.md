@@ -32,6 +32,9 @@
 * Spotify integration (easy but rather useless).
 * Command line only interface.
 
+## Acknowledgements
+* [DiscordIPC](https://github.com/jagrosh/DiscordIPC) by @jagrosh.
+
 ## Disclaimer
 iTunes is a trademark of Apple Inc., registered in the U.S. and other countries.\
 This application has not been authorized, sponsored, or otherwise approved by Apple Inc.
