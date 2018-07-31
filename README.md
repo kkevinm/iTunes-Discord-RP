@@ -14,7 +14,7 @@ This is an application that lets you have a personalized Discord status based on
 * iTunes and Discord applications.
 
 ## Usage
-* Download the *jar* package containing the application and its dependencies [here]().
+* Download the *jar* package containing the application and its dependencies [here](https://github.com/kevinmussi/iTunes-Discord-RP/releases/download/v0.1/iTunesDiscordRP-0.1.jar).
 * Double click on it (or launch it from the Terminal with `java -jar /path/to/jar`).
 * Done!
 
