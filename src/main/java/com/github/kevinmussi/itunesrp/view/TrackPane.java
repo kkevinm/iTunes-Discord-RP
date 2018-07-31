@@ -1,12 +1,10 @@
 package com.github.kevinmussi.itunesrp.view;
 
-import java.awt.Insets;
-
-import javax.swing.JEditorPane;
+import javax.swing.JTextPane;
 
 import com.github.kevinmussi.itunesrp.data.Track;
 
-public class TrackPane extends JEditorPane {
+public class TrackPane extends JTextPane {
 	
 	private static final long serialVersionUID = -1373967048611694815L;
 	
@@ -15,15 +13,13 @@ public class TrackPane extends JEditorPane {
 			+ "Currently there's no song playing.</div></html>";
 	private static final String TRACK_TEXT_FORMAT =
 			"<html><div style='font-family: sans-serif; font-size: 12px;'>"
-			+ "Currently <i>%s</i> on <b>%s</b>:<ul><li><b>Name</b>: %s</li><li><b>Artist</b>: %s</li>"
-			+ "<li><b>Album</b>: %s</li><li><b>Duration</b>: %d:%02d</li>"
+			+ "Currently <i>%s</i> on <b>%s</b>:<ul><li><b>Name</b>: %s</li>"
+			+ "<li><b>Artist</b>: %s</li><li><b>Album</b>: %s</li><li><b>Duration</b>: %d:%02d</li>"
 			+ "<li>Track %d of %d</li></ul></div></html>";
 	
 	public TrackPane() {
-		this.setMargin(new Insets(0, 10, 10, 10));
 		this.setContentType("text/html");
 		this.setEditable(false);
-		this.setOpaque(false);
 		this.setVisible(true);
 	}
 	

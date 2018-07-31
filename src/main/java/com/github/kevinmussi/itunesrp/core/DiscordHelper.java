@@ -21,6 +21,9 @@ import com.jagrosh.discordipc.exceptions.NoDiscordClientException;
 public class DiscordHelper
 		extends Commander<ScriptCommand> implements Observer<Track> {
     
+	/**
+	 * ClientId of my Discord application.
+	 */
 	private static final long APP_ID = 473069598804279309L;
 	
 	private static final String DISCORD_CONNECTION_ERROR_MESSAGE =

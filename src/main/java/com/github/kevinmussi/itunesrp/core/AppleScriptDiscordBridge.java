@@ -39,9 +39,9 @@ public class AppleScriptDiscordBridge
 	 * <li>track album (it can be empty).</li>
 	 * <li>track state: a string that can be either "PLAYING" or "PAUSED".</li>
 	 * <li>current position: the time elapsed in seconds from when the track started.</li>
-	 * <li>duration: the total duration of the track.</li>
+	 * <li>track duration: the total duration of the track.</li>
 	 * <li>track index: the index of the track in its album.</li>
-	 * <li>track count: the amount of tracks in the current album.</li>
+	 * <li>album size: the amount of tracks in the current album.</li>
 	 * <p>
 	 * 
 	 * @param previousTrack
