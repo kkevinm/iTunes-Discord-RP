@@ -74,10 +74,10 @@ public class DiscordHelper
 		String album = message.getAlbum();
 		
 		// Fix the fields' length to make everything stay in one line
-		int max = 46;
+		int max = 48;
 		if(artist.length() > 27) {
 			artist = artist.substring(0, 26) + "...";
-			max = 50;
+			max = 52;
 		}
 		if(artist.length() + album.length() > max) {
 			album = album.substring(0, max-artist.length()) + "...";

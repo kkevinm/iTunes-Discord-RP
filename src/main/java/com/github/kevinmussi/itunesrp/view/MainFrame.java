@@ -28,10 +28,9 @@ import com.github.kevinmussi.itunesrp.data.Track;
 
 public class MainFrame extends View {
 	
-	private static final Dimension DIMENSION = new Dimension(400, 250);
+	private static final Dimension DIMENSION = new Dimension(400, 255);
 	private static final LineBorder LINE_BORDER = new LineBorder(new Color(184, 206, 227), 1);
 	private static final Insets INSETS = new Insets(2, 10, 10, 10);
-	private static final Component RIGID_AREA = Box.createRigidArea(new Dimension(0, 5));
 	private static final Font TEXT_FONT_BIG = new Font(Font.SANS_SERIF, Font.PLAIN, 16);
 	private static final Font TEXT_FONT_SMALL = new Font(Font.SANS_SERIF, Font.BOLD, 13);
 	
@@ -117,9 +116,9 @@ public class MainFrame extends View {
 		border.setBorder(LINE_BORDER);
 		scrollPane.setBorder(border);
 		activePanel.add(scrollPane);
-		activePanel.add(RIGID_AREA);
+		activePanel.add(Box.createRigidArea(new Dimension(0, 5)));
 		activePanel.add(disconnectButton);
-		activePanel.add(RIGID_AREA);
+		activePanel.add(Box.createRigidArea(new Dimension(0, 5)));
 		
 		JTextPane textPane = new JTextPane();
 		SimpleAttributeSet attr = new SimpleAttributeSet();
@@ -140,9 +139,9 @@ public class MainFrame extends View {
 		border.setBorder(LINE_BORDER);
 		scrollPane.setBorder(border);
 		inactivePanel.add(scrollPane);
-		inactivePanel.add(RIGID_AREA);
+		inactivePanel.add(Box.createRigidArea(new Dimension(0, 5)));
 		inactivePanel.add(connectButton);
-		inactivePanel.add(RIGID_AREA);
+		inactivePanel.add(Box.createRigidArea(new Dimension(0, 5)));
 		
 		cards.show(contentPane, INACTIVE_PANEL);
 		
