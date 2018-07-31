@@ -2,7 +2,7 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.kevinmussi</groupId>
-    <artifactId>itunes-discord-rich-presence</artifactId>
+    <artifactId>itunes-discord-rp</artifactId>
     <version>0.1</version>
     <packaging>jar</packaging>
     <name>iTunes Discord RP</name>
@@ -11,10 +11,8 @@
         <exec.mainClass> </exec.mainClass>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <sonar.language>java</sonar.language>
-        <sonar.host.url> http://localhost:9000/ </sonar.host.url>
     </properties>
-    <description>iTunes Rich Presence for Discord on MacOS</description>
+    <description>iTunes Rich Presence for Discord made in Java (MacOS only)</description>
     <repositories>
         <repository>
             <id>jcenter</id>
@@ -75,7 +73,7 @@
                         </execution>
                     </executions>
                     <configuration>
-                        <finalName>${project.artifactId}-${project.version}</finalName>
+                        <finalName>iTunesDiscordRP-${project.version}</finalName>
                         <excludeScope>system</excludeScope>
                         <excludeGroupIds>junit,org.mockito,org.hamcrest</excludeGroupIds>
                     </configuration>
