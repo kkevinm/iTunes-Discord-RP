@@ -202,7 +202,6 @@ public class MainFrame extends View {
 		connectButton.addActionListener(e -> {
 			boolean autoConnect = checkBox.isSelected();
 			Preferences prefs = PreferencesManager.getPreferences();
-			System.out.println(prefs.getAutoConnect());
 			// Update the preferences when the user clicks the checkbox
 			if(prefs.getAutoConnect() != autoConnect) {
 				prefs.setAutoConnect(autoConnect);
