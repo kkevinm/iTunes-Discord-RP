@@ -28,4 +28,8 @@ public class Preferences implements Serializable {
 		this.autoConnect = autoConnect;
 	}
 	
+	public Preferences getCopy() {
+		return new Preferences(autoConnect);
+	}
+	
 }

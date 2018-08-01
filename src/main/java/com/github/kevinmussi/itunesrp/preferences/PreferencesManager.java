@@ -18,6 +18,8 @@ public final class PreferencesManager {
 	
 	private static final File FILE;
 	
+	private static Preferences prefs;
+	
 	static {
 		LOGGER = Logger.getLogger(PreferencesManager.class.getName());
 		
@@ -28,6 +30,8 @@ public final class PreferencesManager {
 		FILE = new File(PREFERENCES_PATH, PREFERENCES_FILE);
 		if(!FILE.exists()) {
 			setPreferences(Preferences.getDefault());
+		} else {
+			prefs = readPreferencesFromFile();
 		}
 	}
 	
@@ -36,6 +40,17 @@ public final class PreferencesManager {
 	}
 	
 	public static Preferences getPreferences() {
+		return prefs.getCopy();
+	}
+	
+	public static void setPreferences(Preferences preferences) {
+		if(preferences != null) {
+			prefs = preferences.getCopy();
+			writePreferencesToFile(preferences);
+		}
+	}
+	
+	private static Preferences readPreferencesFromFile() {
 		try(ObjectInputStream inputStream =
 				new ObjectInputStream(new FileInputStream(FILE))) {
 			Preferences pr = (Preferences) inputStream.readObject();
@@ -53,7 +68,7 @@ public final class PreferencesManager {
 		return pr;
 	}
 	
-	public static void setPreferences(Preferences preferences) {
+	private static void writePreferencesToFile(Preferences preferences) {
 		if(preferences == null)
 			return;
 		createFile(FILE);
