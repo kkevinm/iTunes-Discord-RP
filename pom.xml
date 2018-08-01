@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.kevinmussi</groupId>
     <artifactId>itunes-discord-rp</artifactId>
-    <version>0.1</version>
+    <version>0.2</version>
     <packaging>jar</packaging>
     <name>iTunes Discord RP</name>
     <properties>
