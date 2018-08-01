@@ -13,6 +13,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -25,6 +26,8 @@ import javax.swing.text.StyleConstants;
 
 import com.github.kevinmussi.itunesrp.commands.ConnectCommand;
 import com.github.kevinmussi.itunesrp.data.Track;
+import com.github.kevinmussi.itunesrp.preferences.Preferences;
+import com.github.kevinmussi.itunesrp.preferences.PreferencesManager;
 
 public class MainFrame extends View {
 	
@@ -63,6 +66,7 @@ public class MainFrame extends View {
 	
 	private final JButton connectButton;
 	private final JButton disconnectButton;
+	private final JCheckBox checkBox;
 	private final TrackPane trackPane;
 	
 	private boolean isConnected;
@@ -74,6 +78,7 @@ public class MainFrame extends View {
 		this.frame = new JFrame();
 		this.disconnectButton = new JButton("Disconnect from Discord");
 		this.connectButton = new JButton("Connect to Discord");
+		this.checkBox = new JCheckBox("Connect me automatically");
 		this.trackPane = new TrackPane();
 		this.cards = new CardLayout();
 		initListeners();
@@ -92,6 +97,7 @@ public class MainFrame extends View {
 		JPanel inactivePanel = new JPanel();
 		
 		JPanel contentPane = new JPanel(cards);
+		frame.setContentPane(contentPane);
 		contentPane.add(inactivePanel, INACTIVE_PANEL);
 		contentPane.add(activePanel, ACTIVE_PANEL);
 		contentPane.setPreferredSize(DIMENSION);
@@ -141,12 +147,20 @@ public class MainFrame extends View {
 		inactivePanel.add(scrollPane);
 		inactivePanel.add(Box.createRigidArea(new Dimension(0, 5)));
 		inactivePanel.add(connectButton);
+		inactivePanel.add(checkBox);
 		inactivePanel.add(Box.createRigidArea(new Dimension(0, 5)));
 		
 		cards.show(contentPane, INACTIVE_PANEL);
 		
+		boolean autoConnect = PreferencesManager.getPreferences().getAutoConnect();
+		checkBox.setSelected(autoConnect);
+		checkBox.setAlignmentX(Component.CENTER_ALIGNMENT);
+		if(autoConnect) {
+			// If autoConnect is "true", connect and show the right panel
+			setConnected();
+		}
+		
 		frame.setTitle("iTunes Rich Presence for Discord");
-		frame.setContentPane(contentPane);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
@@ -185,7 +199,17 @@ public class MainFrame extends View {
 			@Override
 			public void windowDeactivated(WindowEvent e) {/**/}
     	});
-		connectButton.addActionListener(e -> setConnected());
+		connectButton.addActionListener(e -> {
+			boolean autoConnect = checkBox.isSelected();
+			Preferences prefs = PreferencesManager.getPreferences();
+			System.out.println(prefs.getAutoConnect());
+			// Update the preferences when the user clicks the checkbox
+			if(prefs.getAutoConnect() != autoConnect) {
+				prefs.setAutoConnect(autoConnect);
+				PreferencesManager.setPreferences(prefs);
+			}
+			setConnected();
+		});
 		disconnectButton.addActionListener(e -> setDisconnected());
 	}
 	
