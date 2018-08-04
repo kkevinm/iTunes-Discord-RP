@@ -1,41 +1,23 @@
 package com.github.kevinmussi.itunesrp.view;
 
 import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Insets;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
 
 import com.github.kevinmussi.itunesrp.commands.ConnectCommand;
 import com.github.kevinmussi.itunesrp.data.Track;
-import com.github.kevinmussi.itunesrp.preferences.Preferences;
-import com.github.kevinmussi.itunesrp.preferences.PreferencesManager;
+import com.github.kevinmussi.itunesrp.observer.Commanded;
+import com.github.kevinmussi.itunesrp.view.panels.ActivePanel;
+import com.github.kevinmussi.itunesrp.view.panels.InactivePanel;
 
-public class MainFrame extends View {
+public class MainFrame extends View implements Commanded<ConnectCommand> {
 	
 	private static final Dimension DIMENSION = new Dimension(400, 255);
-	private static final LineBorder LINE_BORDER = new LineBorder(new Color(184, 206, 227), 1);
-	private static final Insets INSETS = new Insets(2, 10, 10, 10);
-	private static final Font TEXT_FONT_BIG = new Font(Font.SANS_SERIF, Font.PLAIN, 16);
-	private static final Font TEXT_FONT_SMALL = new Font(Font.SANS_SERIF, Font.BOLD, 13);
 	
 	/**
 	 * String identifier of the active panel for the CardLayout.
@@ -47,13 +29,6 @@ public class MainFrame extends View {
 	 */
 	private static final String INACTIVE_PANEL = "inactive";
 	
-	private static final String WELCOME_TEXT =
-			"To start using the application, make sure that you have the "
-			+ "Discord app running and that you're logged in with your account. "
-			+ "Then, you can just click the button below and wait for the connection "
-			+ "to establish. After that, all the sick tunes played on iTunes "
-			+ "will be shown here and on your Discord status!";
-	
 	/**
 	 * The main frame of the GUI.
 	 */
@@ -64,10 +39,8 @@ public class MainFrame extends View {
 	 */
 	private final CardLayout cards;
 	
-	private final JButton connectButton;
-	private final JButton disconnectButton;
-	private final JCheckBox checkBox;
-	private final TrackPane trackPane;
+	private final InactivePanel inactivePanel;
+	private final ActivePanel activePanel;
 	
 	private boolean isConnected;
 	private boolean didInit;
@@ -76,10 +49,8 @@ public class MainFrame extends View {
 		this.didInit = false;
 		this.isConnected = false;
 		this.frame = new JFrame();
-		this.disconnectButton = new JButton("Disconnect from Discord");
-		this.connectButton = new JButton("Connect to Discord");
-		this.checkBox = new JCheckBox("Connect me automatically");
-		this.trackPane = new TrackPane();
+		this.inactivePanel = new InactivePanel();
+		this.activePanel = new ActivePanel();
 		this.cards = new CardLayout();
 		initListeners();
 	}
@@ -91,74 +62,19 @@ public class MainFrame extends View {
 		
 		didInit = true;
 		
-		// Panel to be shown when the application has successfully connected to Discord.
-		JPanel activePanel = new JPanel();
-		// Panel to be shown when the application has not been connected to Discord yet.
-		JPanel inactivePanel = new JPanel();
+		inactivePanel.setCommanded(this);
+		activePanel.setCommanded(this);
+		inactivePanel.init();
+		activePanel.init();
 		
 		JPanel contentPane = new JPanel(cards);
 		frame.setContentPane(contentPane);
-		contentPane.add(inactivePanel, INACTIVE_PANEL);
-		contentPane.add(activePanel, ACTIVE_PANEL);
+		contentPane.add(inactivePanel.getPanel(), INACTIVE_PANEL);
+		contentPane.add(activePanel.getPanel(), ACTIVE_PANEL);
 		contentPane.setPreferredSize(DIMENSION);
 		contentPane.setVisible(true);
 		
-		disconnectButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		disconnectButton.setFont(TEXT_FONT_BIG);
-		disconnectButton.setOpaque(false);
-		disconnectButton.setVisible(true);
-		
-		connectButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		connectButton.setFont(TEXT_FONT_BIG);
-		connectButton.setOpaque(false);
-		connectButton.setVisible(true);
-		
-		activePanel.setBackground(Color.WHITE);
-		activePanel.setLayout(new BoxLayout(activePanel, BoxLayout.Y_AXIS));
-		trackPane.setMargin(INSETS);
-		JScrollPane scrollPane = new JScrollPane(trackPane);
-		TitledBorder border = BorderFactory.createTitledBorder("Song playing");
-		border.setTitleFont(TEXT_FONT_SMALL);
-		border.setBorder(LINE_BORDER);
-		scrollPane.setBorder(border);
-		activePanel.add(scrollPane);
-		activePanel.add(Box.createRigidArea(new Dimension(0, 5)));
-		activePanel.add(disconnectButton);
-		activePanel.add(Box.createRigidArea(new Dimension(0, 5)));
-		
-		JTextPane textPane = new JTextPane();
-		SimpleAttributeSet attr = new SimpleAttributeSet();
-		StyleConstants.setAlignment(attr, StyleConstants.ALIGN_JUSTIFIED);
-		StyleConstants.setFontFamily(attr, Font.SANS_SERIF);
-		StyleConstants.setFontSize(attr, 16);
-		textPane.setParagraphAttributes(attr, true);
-		textPane.setText(WELCOME_TEXT);
-		textPane.setEditable(false);
-		textPane.setMargin(INSETS);
-		textPane.setVisible(true);
-		
-		inactivePanel.setBackground(Color.WHITE);
-		inactivePanel.setLayout(new BoxLayout(inactivePanel, BoxLayout.Y_AXIS));
-		scrollPane = new JScrollPane(textPane);
-		border = BorderFactory.createTitledBorder("Welcome!");
-		border.setTitleFont(TEXT_FONT_SMALL);
-		border.setBorder(LINE_BORDER);
-		scrollPane.setBorder(border);
-		inactivePanel.add(scrollPane);
-		inactivePanel.add(Box.createRigidArea(new Dimension(0, 5)));
-		inactivePanel.add(connectButton);
-		inactivePanel.add(checkBox);
-		inactivePanel.add(Box.createRigidArea(new Dimension(0, 5)));
-		
 		cards.show(contentPane, INACTIVE_PANEL);
-		
-		boolean autoConnect = PreferencesManager.getPreferences().getAutoConnect();
-		checkBox.setSelected(autoConnect);
-		checkBox.setAlignmentX(Component.CENTER_ALIGNMENT);
-		if(autoConnect) {
-			// If autoConnect is "true", connect and show the right panel
-			setConnected();
-		}
 		
 		frame.setTitle("iTunes Rich Presence for Discord");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -175,7 +91,18 @@ public class MainFrame extends View {
 	@Override
 	public void showTrack(Track track) {
 		if(isConnected) {
-			trackPane.setTrack(track);
+			activePanel.setTrack(track);
+		}
+	}
+	
+	@Override
+	public boolean onCommand(ConnectCommand command) {
+		if(command == null) {
+			return false;
+		} else if(command == ConnectCommand.CONNECT) {
+			return setConnected();
+		} else {
+			return setDisconnected();
 		}
 	}
 	
@@ -199,34 +126,25 @@ public class MainFrame extends View {
 			@Override
 			public void windowDeactivated(WindowEvent e) {/**/}
     	});
-		connectButton.addActionListener(e -> {
-			boolean autoConnect = checkBox.isSelected();
-			Preferences prefs = PreferencesManager.getPreferences();
-			// Update the preferences when the user clicks the checkbox
-			if(prefs.getAutoConnect() != autoConnect) {
-				prefs.setAutoConnect(autoConnect);
-				PreferencesManager.setPreferences(prefs);
-			}
-			setConnected();
-		});
-		disconnectButton.addActionListener(e -> setDisconnected());
 	}
 	
-	private void setConnected() {
+	private boolean setConnected() {
 		boolean didConnect = sendCommand(ConnectCommand.CONNECT);
 		if(didConnect) {
 			isConnected = true;
 			cards.show(frame.getContentPane(), ACTIVE_PANEL);
 		}
+		return didConnect;
 	}
 	
-	private void setDisconnected() {
+	private boolean setDisconnected() {
 		boolean didDisconnect = sendCommand(ConnectCommand.DISCONNECT);
 		if(didDisconnect) {
 			isConnected = false;
-			trackPane.setTrack(Track.NULL_TRACK);
+			activePanel.setTrack(Track.NULL_TRACK);
 			cards.show(frame.getContentPane(), INACTIVE_PANEL);
 		}
+		return didDisconnect;
 	}
 	
 }

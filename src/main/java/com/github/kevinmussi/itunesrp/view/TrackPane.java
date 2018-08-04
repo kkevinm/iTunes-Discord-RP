@@ -29,14 +29,11 @@ public class TrackPane extends JTextPane {
 		if(track.isNull()) {
 			setText(NO_TRACK_TEXT);
 		} else {
-			double duration = track.getDuration();
-			int minutes = (int) duration/60;
-			int seconds = (int) (duration-minutes*60);
 			String text = String.format(TRACK_TEXT_FORMAT,
 					track.getState().toString().toLowerCase(),
 					track.getApplication(), track.getName(),
 					track.getArtist(), track.getAlbum(),
-					minutes, seconds,
+					track.getDurationMinutes(), track.getDurationSeconds(),
 					track.getIndex(), track.getAlbumSize());
 			setText(text);
 		}

@@ -13,6 +13,8 @@ public class Track {
 	private final TrackState state;
 	private final double currentPosition;
 	private final double duration;
+	private final int durationMinutes;
+	private final int durationSeconds;
 	private final int index;
 	private final int albumSize;
 	
@@ -26,6 +28,8 @@ public class Track {
 		this.duration = 0;
 		this.index = 0;
 		this.albumSize = 0;
+		this.durationMinutes = 0;
+		this.durationSeconds = 0;
 	}
 	
 	public Track(String name, String artist, String album, TrackState state,
@@ -37,6 +41,8 @@ public class Track {
 		this.state = Objects.requireNonNull(state);
 		this.currentPosition = currentPosition;
 		this.duration = duration;
+		this.durationMinutes = (int) duration/60;
+		this.durationSeconds = (int) (duration-durationMinutes*60);
 		this.index = index;
 		this.albumSize = albumSize;
 	}
@@ -69,6 +75,14 @@ public class Track {
 		return duration;
 	}
 	
+	public int getDurationMinutes() {
+		return durationMinutes;
+	}
+	
+	public int getDurationSeconds() {
+		return durationSeconds;
+	}
+	
 	public int getIndex() {
 		return index;
 	}
@@ -79,6 +93,17 @@ public class Track {
 	
 	public boolean isNull() {
 		return this == NULL_TRACK;
+	}
+	
+	@Override
+	public String toString() {
+		return new StringBuilder()
+				.append("Name: ").append(name)
+				.append("\nArtist: ").append(artist)
+				.append("\nAlbum: ").append(album)
+				.append("\nDuration: ").append(durationMinutes)
+				.append(String.format(":%02d", durationSeconds))
+				.toString();
 	}
 	
 	@Override
