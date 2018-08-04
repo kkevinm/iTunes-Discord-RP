@@ -1,11 +1,6 @@
 package com.github.kevinmussi.itunesrp.view.panels;
 
-import static com.github.kevinmussi.itunesrp.view.panels.PanelConstants.FONT_LIST;
-import static com.github.kevinmussi.itunesrp.view.panels.PanelConstants.INSETS;
-import static com.github.kevinmussi.itunesrp.view.panels.PanelConstants.LINE_BORDER;
-import static com.github.kevinmussi.itunesrp.view.panels.PanelConstants.LIST_BORDER;
-import static com.github.kevinmussi.itunesrp.view.panels.PanelConstants.PADDING_BORDER;
-import static com.github.kevinmussi.itunesrp.view.panels.PanelConstants.TEXT_FONT_BIG;
+import static com.github.kevinmussi.itunesrp.view.panels.PanelConstants.*;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
