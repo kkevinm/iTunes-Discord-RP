@@ -16,7 +16,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextPane;
+import javax.swing.JTextArea;
 import javax.swing.ListCellRenderer;
 import javax.swing.border.AbstractBorder;
 
@@ -87,12 +87,12 @@ public class ActivePanel extends Commander<ConnectCommand> implements Panel {
 			trackPane.setTrack(track);
 			if(track.getState() == TrackState.PLAYING) {
 				// Only show the played songs in the history
-				listModel.addElement(track);
+				listModel.add(0, track);
 			}
 		}
 	}
 	
-	private class MyCellRenderer extends JTextPane implements ListCellRenderer<Track> {
+	private class MyCellRenderer extends JTextArea implements ListCellRenderer<Track> {
 		
 		private static final long serialVersionUID = 7705270732207459385L;
 		
