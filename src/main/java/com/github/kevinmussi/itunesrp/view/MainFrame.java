@@ -62,19 +62,18 @@ public class MainFrame extends View implements Commanded<ConnectCommand> {
 		
 		didInit = true;
 		
-		inactivePanel.setCommanded(this);
-		activePanel.setCommanded(this);
-		inactivePanel.init();
-		activePanel.init();
-		
 		JPanel contentPane = new JPanel(cards);
 		frame.setContentPane(contentPane);
 		contentPane.add(inactivePanel.getPanel(), INACTIVE_PANEL);
 		contentPane.add(activePanel.getPanel(), ACTIVE_PANEL);
 		contentPane.setPreferredSize(DIMENSION);
 		contentPane.setVisible(true);
-		
 		cards.show(contentPane, INACTIVE_PANEL);
+		
+		inactivePanel.setCommanded(this);
+		activePanel.setCommanded(this);
+		inactivePanel.init();
+		activePanel.init();
 		
 		frame.setTitle("iTunes Rich Presence for Discord");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
