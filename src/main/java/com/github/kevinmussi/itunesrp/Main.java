@@ -1,90 +1,48 @@
 package com.github.kevinmussi.itunesrp;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.SwingUtilities;
+
+import com.github.kevinmussi.itunesrp.core.DiscordHelper;
+import com.github.kevinmussi.itunesrp.core.ScriptDiscordBridge;
+import com.github.kevinmussi.itunesrp.core.ScriptHelper;
+import com.github.kevinmussi.itunesrp.data.OperativeSystem;
+import com.github.kevinmussi.itunesrp.view.MainFrame;
+import com.github.kevinmussi.itunesrp.view.View;
+
 public final class Main {
 	
-	private static final Logger LOGGER;
-	private static final String SCRIPT;
-	
-	static {
-		LOGGER = Logger.getLogger(Main.class.getName() + "Logger");
-		SCRIPT = "/itunes_track_info_script.applescript";
-	}
+	private static final Logger LOGGER =
+			Logger.getLogger(Main.class.getName() + "Logger");
 	
 	private Main() {
 		super();
 	}
 	
-	private static String getOsVersion() {
-		return System.getProperty("os.name");
-	}
-	
-	private static String getScript() {
-		Scanner scanner = new Scanner(Main.class.getResourceAsStream(SCRIPT));
-		scanner.useDelimiter("\\A");
-		String contents = scanner.hasNext() ? scanner.next() : "";
-		scanner.close();
-		return contents;
-	}
-	
 	public static void main(String[] args) {
-		URL resource = Main.class.getResource("/windows/itunes_track_info_script.js");
-		File file;
-		try {
-			file = Paths.get(resource.toURI()).toFile();
-			String path = file.getAbsolutePath();
-			ProcessBuilder builder = new ProcessBuilder("Cscript.exe", path);
-			//builder.redirectErrorStream(true);
-			Process process;
-			try {
-				process = builder.start();
-				//logger.log(Level.INFO, "The script started execution.");
-				Scanner scanner = new Scanner(process.getErrorStream());
-				scanner.useDelimiter("\n");
-				while(process != null && process.isAlive()) {
-					if(scanner.hasNext()) {
-						//sendUpdate(scanner.next());
-						System.out.println(scanner.next());
-					}
-					Thread.sleep(1000);
-				}
-				scanner.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-				//logger.log(Level.SEVERE, "The script did not execute correctly", e);
-			} catch (InterruptedException e) {
-				//logger.log(Level.WARNING, "An error occurred: ", e);
-				e.printStackTrace();
-				Thread.currentThread().interrupt();
-			}
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		LOGGER.log(Level.INFO, "Application started running.");
 		
-		/*LOGGER.log(Level.INFO, "Application started running.");
-		
-		if(!getOsVersion().startsWith("Mac OS")) {
-			LOGGER.log(Level.SEVERE, "This application works only on MacOS!");
+		// Get the OperativeSystem object
+		OperativeSystem os = OperativeSystem.getOS();
+		if(os == OperativeSystem.OTHER) {
+			LOGGER.log(Level.SEVERE, "Your operative system is not supported!");
 			return;
 		}
 		
-		// Load the script from the .applescript file
-		String script = getScript();
+		// Create the ScriptHelper
+		ScriptHelper scriptHelper;
+		try {
+			scriptHelper = new ScriptHelper(os);
+		} catch (URISyntaxException e) {
+			LOGGER.log(Level.SEVERE, "Something went wrong: ", e);
+			return;
+		}
 		
-		// Create the AppleScriptHelper with the script
-		AppleScriptHelper scriptHelper = new AppleScriptHelper(script);
-		
-		// Create the AppleScriptDiscordBridge
-		AppleScriptDiscordBridge bridge = new AppleScriptDiscordBridge();
+		// Create the ScriptDiscordBridge
+		ScriptDiscordBridge bridge = new ScriptDiscordBridge();
 		
 		// The bridge observes the script helper to receive updates
 		// about the songs playing (in form of a String object).
@@ -107,7 +65,7 @@ public final class Main {
 		// Show the frame
 		SwingUtilities.invokeLater(view::init);
 		
-		LOGGER.log(Level.INFO, "View invoked.");*/
+		LOGGER.log(Level.INFO, "View invoked.");
 	}
 	
 }

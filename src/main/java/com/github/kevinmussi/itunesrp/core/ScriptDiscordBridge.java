@@ -6,10 +6,10 @@ import com.github.kevinmussi.itunesrp.data.TrackState;
 import com.github.kevinmussi.itunesrp.observer.Observable;
 import com.github.kevinmussi.itunesrp.observer.Observer;
 
-public class AppleScriptDiscordBridge 
+public class ScriptDiscordBridge 
 		extends Observable<Track> implements Observer<String> {
 	
-	public AppleScriptDiscordBridge() {
+	public ScriptDiscordBridge() {
 		super();
 	}
 	
@@ -23,7 +23,7 @@ public class AppleScriptDiscordBridge
 			// There's no song playing or paused
 			track = Track.NULL_TRACK;
 		} else {
-			track = getTrackfromRecord(message, AppleScriptHelper.TRACK_RECORD_SEPARATOR);
+			track = getTrackfromRecord(message, ScriptHelper.TRACK_RECORD_SEPARATOR);
 			
 		}
 		sendUpdate(track);

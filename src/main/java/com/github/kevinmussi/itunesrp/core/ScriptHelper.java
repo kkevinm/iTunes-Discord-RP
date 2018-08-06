@@ -1,15 +1,18 @@
 package com.github.kevinmussi.itunesrp.core;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.github.kevinmussi.itunesrp.commands.ScriptCommand;
+import com.github.kevinmussi.itunesrp.data.OperativeSystem;
 import com.github.kevinmussi.itunesrp.observer.Commanded;
 import com.github.kevinmussi.itunesrp.observer.Observable;
 
-public class AppleScriptHelper
+public class ScriptHelper
 		extends Observable<String> implements Commanded<ScriptCommand> {
 	
 	public static final String TRACK_RECORD_SEPARATOR = ";;";
@@ -19,9 +22,14 @@ public class AppleScriptHelper
 	private final ProcessBuilder builder;
 	private volatile Process process;
 	
-	public AppleScriptHelper(String script) {
-		this.builder = new ProcessBuilder("osascript", "-e", script);
-		this.builder.redirectErrorStream(true);
+	public ScriptHelper(OperativeSystem os) throws URISyntaxException {
+		String absolutePath = Paths
+				.get(ScriptHelper.class
+						.getResource(os.getScriptPath())
+						.toURI())
+				.toFile()
+				.getAbsolutePath();
+		this.builder = new ProcessBuilder(os.getCommandName(), absolutePath);
 		this.process = null;
 	}
 	
