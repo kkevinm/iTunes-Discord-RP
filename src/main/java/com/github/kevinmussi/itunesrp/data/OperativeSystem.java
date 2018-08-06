@@ -2,7 +2,7 @@ package com.github.kevinmussi.itunesrp.data;
 
 public enum OperativeSystem {
 	MACOS("MacOS", "macos", ".applescript", "osascript", "/Library/Application Support"),
-	WINDOWS("Windows", "windows", ".js", "cscript", "/AppData/Local"),
+	WINDOWS("Windows", "windows", ".js", "Cscript.exe", "/AppData/Local"),
 	OTHER("Other", "", "", "", "");
 	
 	private static final String BASEFOLDER = "/scripts";
@@ -39,6 +39,10 @@ public enum OperativeSystem {
 			return "";
 		}
 		return BASEFOLDER + "/" + scriptPath + "/" + SCRIPTNAME + scriptExtension;
+	}
+	
+	public String getScriptExtension() {
+		return scriptExtension;
 	}
 	
 	public String getCommandName() {

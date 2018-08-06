@@ -73,6 +73,7 @@ public class ActivePanel extends Commander<ConnectCommand> implements Panel {
 		panel.setBackground(Color.WHITE);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.add(tabbedPane);
+		panel.add(Box.createRigidArea(new Dimension(0, 5)));
 		panel.add(disconnectButton);
 		panel.add(Box.createRigidArea(new Dimension(0, 5)));
 	}

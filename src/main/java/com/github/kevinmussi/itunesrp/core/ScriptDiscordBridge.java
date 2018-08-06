@@ -19,6 +19,7 @@ public class ScriptDiscordBridge
 			return;
 		}
 		Track track;
+		System.out.println(message);
 		if(message.equals("STOPPED")) {
 			// There's no song playing or paused
 			track = Track.NULL_TRACK;
@@ -72,7 +73,7 @@ public class ScriptDiscordBridge
 		double currentPosition = Double.parseDouble(fields[4].replace(',', '.'));
 		double duration = Double.parseDouble(fields[5].replace(',', '.'));
 		int index = Integer.parseInt(fields[6]);
-		int albumSize = Integer.parseInt(fields[7]);
+		int albumSize = Integer.parseInt(fields[7].trim());
 		
 		return new Track(name, artist, album, state,
 				currentPosition, duration, index, albumSize, Application.ITUNES);
