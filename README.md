@@ -5,16 +5,17 @@ This is an application that lets you have a personalized Discord status based on
 * Simple to use.
 * No in-app login required.
 * Lightweight (~1.5MB jar file).
-* Based on **AppleScript**, so it should work for every version of MacOS and iTunes.
+* Same jar file works on both MacOS and Windows.
 * Ugly UI.
 
 ## Requirements
-* **MacOS** (tested on Sierra, should work for older versions too).
+* **MacOS** / **Windows**.
 * A Java Runtime Environment (**JRE**), minimum version: **8**.
 * iTunes and Discord applications.
+* For Windows users, the application should work for iTunes version 4.7 or later.
 
 ## Usage
-* Download the *jar* package containing the application and its dependencies [here](https://github.com/kevinmussi/iTunes-Discord-RP/releases/download/v0.1/iTunesDiscordRP-0.1.jar).
+* Download the *jar* package containing the application and its dependencies [here](https://github.com/kevinmussi/iTunes-Discord-RP/releases/download/v1.0/iTunesDiscordRP-1.0.jar).
 * Double click on it (or launch it from the Terminal with `java -jar /path/to/jar`).
 * Done!
 
