@@ -1,9 +1,9 @@
 package com.github.kevinmussi.itunesrp.data;
 
 public enum OperativeSystem {
-	MACOS("MacOS", "macos", ".applescript", "osascript"),
-	WINDOWS("Windows", "windows", ".js", "CScript.exe"),
-	OTHER("Other", "", "", "");
+	MACOS("MacOS", "macos", ".applescript", "osascript", "/Library/Application Support"),
+	WINDOWS("Windows", "windows", ".js", "cscript", "/AppData/Local"),
+	OTHER("Other", "", "", "", "");
 	
 	private static final String BASEFOLDER = "/scripts";
 	private static final String SCRIPTNAME = "itunes_track_info_script";
@@ -12,13 +12,15 @@ public enum OperativeSystem {
 	private final String scriptPath;
 	private final String scriptExtension;
 	private final String commandName;
+	private final String preferencesBaseFolder;
 	
 	private OperativeSystem(String description, String scriptPath,
-			String scriptExtension, String commandName) {
+			String scriptExtension, String commandName, String preferencesBaseFolder) {
 		this.description = description;
 		this.scriptPath = scriptPath;
 		this.scriptExtension = scriptExtension;
 		this.commandName = commandName;
+		this.preferencesBaseFolder = preferencesBaseFolder;
 	}
 	
 	public static OperativeSystem getOS() {
@@ -41,6 +43,10 @@ public enum OperativeSystem {
 	
 	public String getCommandName() {
 		return commandName;
+	}
+	
+	public String getPreferencesBaseFolder() {
+		return preferencesBaseFolder;
 	}
 	
 	@Override

@@ -76,10 +76,12 @@ public class InactivePanel extends Commander<ConnectCommand> implements Panel {
 		border.setTitleFont(TEXT_FONT_SMALL);
 		border.setBorder(LINE_BORDER);
 		scrollPane.setBorder(border);
+		scrollPane.setBackground(Color.WHITE);
 		
 		boolean autoConnect = PreferencesManager.getPreferences().getAutoConnect();
 		checkBox.setAlignmentX(Component.CENTER_ALIGNMENT);
 		checkBox.setSelected(autoConnect);
+		checkBox.setOpaque(false);
 		
 		panel.setBackground(Color.WHITE);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));

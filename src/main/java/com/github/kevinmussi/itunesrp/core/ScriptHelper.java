@@ -82,7 +82,7 @@ public class ScriptHelper
 			logger.log(Level.INFO, "The script started execution.");
 			// The script logs its messages to stderr
 			Scanner scanner = new Scanner(process.getErrorStream());
-			scanner.useDelimiter("\n");
+			scanner.useDelimiter("\\A");
 			while(process != null && process.isAlive()) {
 				if(scanner.hasNext()) {
 					sendUpdate(scanner.next());

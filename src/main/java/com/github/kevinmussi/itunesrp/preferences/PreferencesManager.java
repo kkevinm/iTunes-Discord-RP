@@ -9,9 +9,13 @@ import java.io.ObjectOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.github.kevinmussi.itunesrp.Main;
+
 public final class PreferencesManager {
 	
 	private static final Logger LOGGER;
+	
+	private static final String PREFERENCES_FOLDER_NAME;
 	
 	public static final String PREFERENCES_PATH;
 	public static final String PREFERENCES_FILE;
@@ -22,9 +26,11 @@ public final class PreferencesManager {
 	
 	static {
 		LOGGER = Logger.getLogger(PreferencesManager.class.getName());
+		PREFERENCES_FOLDER_NAME = "/com.github.kevinmussi.iTunesDiscordRP/";
 		
 		PREFERENCES_PATH = System.getProperty("user.home")
-				.concat("/Library/Application Support/com.github.kevinmussi.iTunesDiscordRP/");
+				.concat(Main.OS.getPreferencesBaseFolder())
+				.concat(PREFERENCES_FOLDER_NAME);
 		PREFERENCES_FILE = "preferences.dat";
 		
 		FILE = new File(PREFERENCES_PATH, PREFERENCES_FILE);
