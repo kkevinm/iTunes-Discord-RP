@@ -1,6 +1,6 @@
 package com.github.kevinmussi.itunesrp;
 
-import java.net.URISyntaxException;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,6 +18,8 @@ public final class Main {
 	private static final Logger LOGGER =
 			Logger.getLogger(Main.class.getName() + "Logger");
 	
+	public static final OperativeSystem OS = OperativeSystem.getOS();
+	
 	private Main() {
 		super();
 	}
@@ -26,8 +28,7 @@ public final class Main {
 		LOGGER.log(Level.INFO, "Application started running.");
 		
 		// Get the OperativeSystem object
-		OperativeSystem os = OperativeSystem.getOS();
-		if(os == OperativeSystem.OTHER) {
+		if(OS == OperativeSystem.OTHER) {
 			LOGGER.log(Level.SEVERE, "Your operative system is not supported!");
 			return;
 		}
@@ -35,8 +36,8 @@ public final class Main {
 		// Create the ScriptHelper
 		ScriptHelper scriptHelper;
 		try {
-			scriptHelper = new ScriptHelper(os);
-		} catch (URISyntaxException e) {
+			scriptHelper = new ScriptHelper(OS);
+		} catch (IOException e) {
 			LOGGER.log(Level.SEVERE, "Something went wrong: ", e);
 			return;
 		}

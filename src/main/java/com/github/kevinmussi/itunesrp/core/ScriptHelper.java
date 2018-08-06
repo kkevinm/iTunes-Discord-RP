@@ -1,8 +1,10 @@
 package com.github.kevinmussi.itunesrp.core;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,15 +24,36 @@ public class ScriptHelper
 	private final ProcessBuilder builder;
 	private volatile Process process;
 	
-	public ScriptHelper(OperativeSystem os) throws URISyntaxException {
-		String absolutePath = Paths
-				.get(ScriptHelper.class
-						.getResource(os.getScriptPath())
-						.toURI())
-				.toFile()
-				.getAbsolutePath();
-		this.builder = new ProcessBuilder(os.getCommandName(), absolutePath);
+	public ScriptHelper(OperativeSystem os) throws IOException {
+		File file = createTempFile(os);
+		this.builder = new ProcessBuilder(os.getCommandName(), file.getAbsolutePath());
 		this.process = null;
+	}
+	
+	/**
+	 * This method creates a temporary file in the default temporary-file
+	 * directory containing the contents of the script to execute.
+	 * This is done because the resources files in the packaged jar file
+	 * can be loaded only as {@code InputStream} objects, so we need to
+	 * first copy the contents of the stream to a temporary file, and then
+	 * launch the script reading it from that file.
+	 * 
+	 * @param os
+	 * @return the temporary file abstract reference.
+	 * @throws IOException If the creation of the temporary file fails.
+	 */
+	private File createTempFile(OperativeSystem os) throws IOException {
+		InputStream inputStream = ScriptHelper.class
+				.getResourceAsStream(os.getScriptPath());
+		File file = File.createTempFile("script", ".tmp");
+		try(OutputStream outputStream = new FileOutputStream(file)) {
+			byte[] buffer = new byte[inputStream.available()];
+			inputStream.read(buffer);
+			outputStream.write(buffer);
+		}
+		inputStream.close();
+		file.deleteOnExit();
+		return file;
 	}
 	
 	@Override
