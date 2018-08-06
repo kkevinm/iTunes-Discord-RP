@@ -43,7 +43,7 @@ public class ScriptHelper
 	 * @throws IOException If the creation of the temporary file fails.
 	 */
 	private File createTempFile(OperativeSystem os) throws IOException {
-		InputStream inputStream = ScriptHelper.class
+		InputStream inputStream = getClass()
 				.getResourceAsStream(os.getScriptPath());
 		File file = File.createTempFile("script", os.getScriptExtension());
 		try(OutputStream outputStream = new FileOutputStream(file)) {

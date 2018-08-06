@@ -31,6 +31,20 @@ public class DiscordHelper
 			+ "<li>You have the Discord app installed and currently running.</li>"
 			+ "<li>You're logged in with your account.</li></html>";
 	
+	private static final String songEmoji;
+	private static final String artistEmoji;
+	private static final String albumEmoji;
+	
+	static {
+		int songEmojiCodePoint = 127926;
+		int artistEmojiCodePoint = 128100;
+		int albumEmojiCodePoint = 128191;
+		
+		songEmoji = new String(Character.toChars(songEmojiCodePoint));
+		artistEmoji = new String(Character.toChars(artistEmojiCodePoint));
+		albumEmoji = new String(Character.toChars(albumEmojiCodePoint));
+	}
+	
 	private final Logger logger = Logger.getLogger(getClass().getName() + "Logger");
 	
 	private final View view;
@@ -69,7 +83,7 @@ public class DiscordHelper
 			builder.setStartTimestamp(start);
 			builder.setInstance(true);
 		}
-		builder.setDetails("🎶 " + message.getName());
+		builder.setDetails(songEmoji + " " + message.getName());
 		String artist = message.getArtist();
 		String album = message.getAlbum();
 		
@@ -83,7 +97,7 @@ public class DiscordHelper
 			album = album.substring(0, max-artist.length()) + "...";
 		}
 		
-		builder.setState("👤 " + artist + " 💿 " + album);
+		builder.setState(artistEmoji + " " + artist + " " + albumEmoji + " " + album);
 		String state = message.getState().toString();
 		builder.setSmallImage(state.toLowerCase(), state);
 		builder.setLargeImage(message.getApplication().getImageKey(),
