@@ -21,7 +21,6 @@ public class AppleScriptHelper
 	
 	public AppleScriptHelper(String script) {
 		this.builder = new ProcessBuilder("osascript", "-e", script);
-		// The script logs its messages to stderr, so we need to redirect it to the stdout
 		this.builder.redirectErrorStream(true);
 		this.process = null;
 	}
@@ -50,7 +49,8 @@ public class AppleScriptHelper
 		try {
 			process = builder.start();
 			logger.log(Level.INFO, "The script started execution.");
-			Scanner scanner = new Scanner(process.getInputStream());
+			// The script logs its messages to stderr
+			Scanner scanner = new Scanner(process.getErrorStream());
 			scanner.useDelimiter("\n");
 			while(process != null && process.isAlive()) {
 				if(scanner.hasNext()) {
