@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.kevinmussi</groupId>
     <artifactId>itunes-discord-rp</artifactId>
-    <version>0.3</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
     <name>iTunes Discord RP</name>
     <properties>
@@ -12,7 +12,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
-    <description>iTunes Rich Presence for Discord made in Java (MacOS only)</description>
+    <description>iTunes Rich Presence for Discord made in Java (for MacOS and Windows)</description>
     <repositories>
         <repository>
             <id>jcenter</id>
