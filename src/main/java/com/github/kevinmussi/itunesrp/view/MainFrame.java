@@ -83,6 +83,11 @@ public class MainFrame extends View implements Commanded<ConnectCommand> {
 	}
 	
 	@Override
+	public boolean isConnected() {
+		return isConnected;
+	}
+	
+	@Override
 	public void showMessage(String message) {
 		JOptionPane.showMessageDialog(null, message, "Message", JOptionPane.INFORMATION_MESSAGE);
 	}
@@ -103,6 +108,19 @@ public class MainFrame extends View implements Commanded<ConnectCommand> {
 		} else {
 			return setDisconnected();
 		}
+	}
+	
+	@Override
+	public void showConnected() {
+		isConnected = true;
+		cards.show(frame.getContentPane(), ACTIVE_PANEL);
+	}
+
+	@Override
+	public void showDisconnected() {
+		isConnected = false;
+		activePanel.setTrack(Track.NULL_TRACK);
+		cards.show(frame.getContentPane(), INACTIVE_PANEL);
 	}
 	
 	private void initListeners() {
@@ -130,8 +148,7 @@ public class MainFrame extends View implements Commanded<ConnectCommand> {
 	private boolean setConnected() {
 		boolean didConnect = sendCommand(ConnectCommand.CONNECT);
 		if(didConnect) {
-			isConnected = true;
-			cards.show(frame.getContentPane(), ACTIVE_PANEL);
+			showConnected();
 		}
 		return didConnect;
 	}
@@ -139,11 +156,9 @@ public class MainFrame extends View implements Commanded<ConnectCommand> {
 	private boolean setDisconnected() {
 		boolean didDisconnect = sendCommand(ConnectCommand.DISCONNECT);
 		if(didDisconnect) {
-			isConnected = false;
-			activePanel.setTrack(Track.NULL_TRACK);
-			cards.show(frame.getContentPane(), INACTIVE_PANEL);
+			showDisconnected();
 		}
 		return didDisconnect;
 	}
-	
+    
 }

@@ -19,7 +19,6 @@ public class ScriptDiscordBridge
 			return;
 		}
 		Track track;
-		System.out.println(message);
 		if(message.equals("STOPPED")) {
 			// There's no song playing or paused
 			track = Track.NULL_TRACK;

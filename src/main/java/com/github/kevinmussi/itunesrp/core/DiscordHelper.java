@@ -15,6 +15,7 @@ import com.github.kevinmussi.itunesrp.observer.Commander;
 import com.github.kevinmussi.itunesrp.observer.Observer;
 import com.github.kevinmussi.itunesrp.view.View;
 import com.jagrosh.discordipc.IPCClient;
+import com.jagrosh.discordipc.IPCListener;
 import com.jagrosh.discordipc.entities.RichPresence;
 import com.jagrosh.discordipc.exceptions.NoDiscordClientException;
 
@@ -27,22 +28,24 @@ public class DiscordHelper
 	private static final long APP_ID = 473069598804279309L;
 	
 	private static final String DISCORD_CONNECTION_ERROR_MESSAGE =
-			"<html>An <b>error</b> occurred while trying to connect to <b>Discord</b>.<br>Make sure that:<br>"
+			"<html>An <b>error</b> occurred while trying to connect to <b>Discord</b>!<br>Make sure that:<br>"
 			+ "<li>You have the Discord app installed and currently running.</li>"
 			+ "<li>You're logged in with your account.</li></html>";
+	private static final String DISCORD_ALREADY_DISCONNECTED_MESSAGE =
+			"<html>The connection with <b>Discord</b> ended!</html>";
 	
-	private static final String songEmoji;
-	private static final String artistEmoji;
-	private static final String albumEmoji;
+	private static final String EMOJI_SONG;
+	private static final String EMOJI_ARTIST;
+	private static final String EMOJI_ALBUM;
 	
 	static {
 		int songEmojiCodePoint = 127926;
 		int artistEmojiCodePoint = 128100;
 		int albumEmojiCodePoint = 128191;
 		
-		songEmoji = new String(Character.toChars(songEmojiCodePoint));
-		artistEmoji = new String(Character.toChars(artistEmojiCodePoint));
-		albumEmoji = new String(Character.toChars(albumEmojiCodePoint));
+		EMOJI_SONG = new String(Character.toChars(songEmojiCodePoint));
+		EMOJI_ARTIST = new String(Character.toChars(artistEmojiCodePoint));
+		EMOJI_ALBUM = new String(Character.toChars(albumEmojiCodePoint));
 	}
 	
 	private final Logger logger = Logger.getLogger(getClass().getName() + "Logger");
@@ -55,6 +58,20 @@ public class DiscordHelper
     	this.view = view;
     	this.connectObserver = new CommandReceiver();
     	this.client = new IPCClient(APP_ID);
+    	
+    	client.setListener(new IPCListener() {
+    		@Override
+			public void onDisconnect(IPCClient client, Throwable t) {
+    			// The connection with Discord ended, so we notify the view...
+    			if(view.isConnected()) {
+    				view.showDisconnected();
+    			}
+    			// ...terminate the script...
+    			sendCommand(ScriptCommand.KILL);
+    			// ...and show an alert.
+    			view.showMessage(DISCORD_ALREADY_DISCONNECTED_MESSAGE);
+    		}
+    	});
     	
     	// Observe the view to receive the ConnectCommands
     	view.setCommanded(connectObserver);
@@ -72,7 +89,7 @@ public class DiscordHelper
 			return;
 		}
 		if(message.isNull()) {
-			resetRichPresence();
+			client.sendRichPresence(null);
 			return;
 		}
 		
@@ -83,7 +100,7 @@ public class DiscordHelper
 			builder.setStartTimestamp(start);
 			builder.setInstance(true);
 		}
-		builder.setDetails(songEmoji + " " + message.getName());
+		builder.setDetails(EMOJI_SONG + " " + message.getName());
 		String artist = message.getArtist();
 		String album = message.getAlbum();
 		
@@ -97,7 +114,7 @@ public class DiscordHelper
 			album = album.substring(0, max-artist.length()) + "...";
 		}
 		
-		builder.setState(artistEmoji + " " + artist + " " + albumEmoji + " " + album);
+		builder.setState(EMOJI_ARTIST + " " + artist + " " + EMOJI_ALBUM + " " + album);
 		String state = message.getState().toString();
 		builder.setSmallImage(state.toLowerCase(), state);
 		builder.setLargeImage(message.getApplication().getImageKey(),
@@ -108,11 +125,8 @@ public class DiscordHelper
 			builder.setParty("aa", index, size);
 		}
 		client.sendRichPresence(builder.build());
+		
 		logger.log(Level.INFO, "Updated Rich Presence.");
-	}
-	
-	private void resetRichPresence() {
-		client.sendRichPresence(null);
 	}
 	
 	private class CommandReceiver implements Commanded<ConnectCommand> {
@@ -127,7 +141,7 @@ public class DiscordHelper
 	    		return disconnect();
 		}
 		
-		private boolean connect() {
+		boolean connect() {
 			try {
 				client.connect();
 			} catch (NoDiscordClientException|RuntimeException e) {
@@ -143,11 +157,10 @@ public class DiscordHelper
 		private boolean disconnect() {
 			sendCommand(ScriptCommand.KILL);
 			try {
-				resetRichPresence();
 				client.close();
 			} catch(IllegalStateException e) {
 				logger.log(Level.INFO, "Client is already disconnected.");
-				return false;
+				return true;
 			}
 			logger.log(Level.INFO, "Client successfully disconnected.");
 			return true;
