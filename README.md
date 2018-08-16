@@ -4,8 +4,8 @@ This is an application that lets you have a personalized Discord status based on
 ## Features
 * Simple to use.
 * No in-app login required.
-* Lightweight (~1.5MB jar file).
-* Same jar file works on both MacOS and Windows.
+* Lightweight (~1.5MB file).
+* Works on both MacOS and Windows.
 * Ugly UI.
 
 ## Requirements
