@@ -8,6 +8,7 @@
     <name>iTunes Discord RP</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.directory>target</project.build.directory>
         <exec.name>iTunesDiscordRP</exec.name>
         <exec.mainClass>com.github.kevinmussi.itunesrp.Main</exec.mainClass>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -84,10 +85,6 @@
                 <groupId>sh.tak.appbundler</groupId>
                 <artifactId>appbundle-maven-plugin</artifactId>
                 <version>1.2.0</version>
-                <configuration>
-                    <mainClass>${exec.mainClass}</mainClass>
-                    <generateDiskImageFile>true</generateDiskImageFile>
-                </configuration>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -96,8 +93,17 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <mainClass>${exec.mainClass}</mainClass>
+                    <bundleName>${exec.name}</bundleName>
+                    <buildDirectory>${project.build.directory}/appbundle</buildDirectory>
+                    <generateDiskImageFile>true</generateDiskImageFile>
+                    <diskImageFile>${project.build.directory}/${exec.name}-${project.version}.dmg</diskImageFile>
+                    <jvmVersion>1.8+</jvmVersion>
+                    <version>${project.version}</version>
+                </configuration>
             </plugin>
-            <!--<plugin>
+            <plugin>
                 <groupId>com.akathist.maven.plugins.launch4j</groupId>
                 <artifactId>launch4j-maven-plugin</artifactId>
                 <version>1.7.22</version>
@@ -108,43 +114,44 @@
                         <goals>
                             <goal>launch4j</goal>
                         </goals>
-                        <configuration>
-                            <headerType>gui</headerType>
-                            <outfile>target/${exec.name}.exe</outfile>
-                            <jar>target/${project.artifactId}-${project.version}.jar</jar>
-                            <dontWrapJar>false</dontWrapJar>
-                            <errTitle>Error in launch4j plugin</errTitle>
-                            <downloadUrl>http://java.com/download</downloadUrl>
-                            <priority>normal</priority>
-                            <stayAlive>false</stayAlive>
-                            <restartOnCrash>false</restartOnCrash>
-                            <classPath>
-                                <mainClass>${exec.mainClass}</mainClass>
-                                <addDependencies>true</addDependencies>
-                                <preCp>anything</preCp>
-                            </classPath>
-                            <icon></icon>
-                            <jre>
-                                <minVersion>1.8.0</minVersion>
-                                <maxVersion></maxVersion>
-                                <jdkPreference>preferJre</jdkPreference>
-                            </jre>
-                            <versionInfo>
-                                <fileVersion>${project.version}.0.0</fileVersion>
-                                <txtFileVersion>${project.version}</txtFileVersion>
-                                <fileDescription>${project.description}</fileDescription>
-                                <copyright>Copyright (c) 2018</copyright>
-                                <companyName>Kevin Mussi</companyName>
-                                <productVersion>3.0.0.0</productVersion>
-                                <txtProductVersion>${project.version}</txtProductVersion>
-                                <productName>${project.name}</productName>
-                                <internalName>launcher</internalName>
-                                <originalFilename>${exec.name}.exe</originalFilename>
-                            </versionInfo>
-                        </configuration>
                     </execution>
                 </executions>
-            </plugin>-->
+                <configuration>
+                    <headerType>gui</headerType>
+                    <outfile>${project.build.directory}/${exec.name}.exe</outfile>
+                    <jar>${project.build.directory}/${exec.name}-${project.version}.jar</jar>
+                    <dontWrapJar>false</dontWrapJar>
+                    <errTitle>Error in launch4j plugin</errTitle>
+                    <downloadUrl>http://java.com/download</downloadUrl>
+                    <priority>normal</priority>
+                    <stayAlive>false</stayAlive>
+                    <restartOnCrash>false</restartOnCrash>
+                    <classPath>
+                        <mainClass>${exec.mainClass}</mainClass>
+                        <addDependencies>false</addDependencies>
+                        <preCp>anything</preCp>
+                    </classPath>
+                    <icon></icon>
+                    <jre>
+                        <minVersion>1.8.0</minVersion>
+                        <jdkPreference>preferJre</jdkPreference>
+                        <bundledJre64Bit>false</bundledJre64Bit>
+                        <bundledJreAsFallback>false</bundledJreAsFallback>
+                    </jre>
+                    <versionInfo>
+                        <fileVersion>${project.version}.0.0</fileVersion>
+                        <txtFileVersion>${project.version}</txtFileVersion>
+                        <fileDescription>${project.description}</fileDescription>
+                        <copyright>Copyright (c) 2018</copyright>
+                        <companyName>Kevin Mussi</companyName>
+                        <productVersion>3.0.0.0</productVersion>
+                        <txtProductVersion>${project.version}</txtProductVersion>
+                        <productName>${project.name}</productName>
+                        <internalName>launcher</internalName>
+                        <originalFilename>${exec.name}.exe</originalFilename>
+                    </versionInfo>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
