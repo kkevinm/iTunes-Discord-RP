@@ -10,8 +10,8 @@ This is an application that lets you have a personalized Discord status based on
 
 ## Requirements
 * **MacOS** / **Windows**.
-* A Java Runtime Environment (**JRE**), minimum version: **8**.
-* iTunes and Discord applications.
+* A Java Runtime Environment (**JRE**), minimum version **1.8** (you can download it from [here](https://java.com/download/)).
+* [iTunes](https://www.apple.com/itunes/download/) and [Discord](https://discordapp.com/download) applications.
 * For **Windows** users: this application should work for iTunes version 4.7 or later.
 
 ## Usage
@@ -41,7 +41,6 @@ This is an application that lets you have a personalized Discord status based on
 * Unit tests.
 * Spotify integration (easy but rather useless).
 * Command line only interface.
-* Translation to native language (Objective-C/Swift).
 
 ## Acknowledgements
 * [DiscordIPC](https://github.com/jagrosh/DiscordIPC) by @jagrosh.
