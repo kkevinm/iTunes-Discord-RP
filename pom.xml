@@ -8,7 +8,8 @@
     <name>iTunes Discord RP</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <exec.mainClass> </exec.mainClass>
+        <exec.name>iTunesDiscordRP</exec.name>
+        <exec.mainClass>com.github.kevinmussi.itunesrp.Main</exec.mainClass>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
@@ -30,7 +31,7 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.2.3</version>
-        </dependency> 
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -39,8 +40,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -52,7 +53,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>java/</classpathPrefix>
-                            <mainClass>com.github.kevinmussi.itunesrp.Main</mainClass>
+                            <mainClass>${exec.mainClass}</mainClass>
                         </manifest>
                         <manifestEntries>
                             <Class-Path>lib/</Class-Path>
@@ -73,11 +74,77 @@
                         </execution>
                     </executions>
                     <configuration>
-                        <finalName>iTunesDiscordRP-${project.version}</finalName>
+                        <finalName>${exec.name}-${project.version}</finalName>
                         <excludeScope>system</excludeScope>
                         <excludeGroupIds>junit,org.mockito,org.hamcrest</excludeGroupIds>
+                        <createDependencyReducedPom>false</createDependencyReducedPom>
                     </configuration>
             </plugin>
+            <plugin>
+                <groupId>sh.tak.appbundler</groupId>
+                <artifactId>appbundle-maven-plugin</artifactId>
+                <version>1.2.0</version>
+                <configuration>
+                    <mainClass>${exec.mainClass}</mainClass>
+                    <generateDiskImageFile>true</generateDiskImageFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>bundle</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--<plugin>
+                <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                <artifactId>launch4j-maven-plugin</artifactId>
+                <version>1.7.22</version>
+                <executions>
+                    <execution>
+                        <id>l4j-gui</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>launch4j</goal>
+                        </goals>
+                        <configuration>
+                            <headerType>gui</headerType>
+                            <outfile>target/${exec.name}.exe</outfile>
+                            <jar>target/${project.artifactId}-${project.version}.jar</jar>
+                            <dontWrapJar>false</dontWrapJar>
+                            <errTitle>Error in launch4j plugin</errTitle>
+                            <downloadUrl>http://java.com/download</downloadUrl>
+                            <priority>normal</priority>
+                            <stayAlive>false</stayAlive>
+                            <restartOnCrash>false</restartOnCrash>
+                            <classPath>
+                                <mainClass>${exec.mainClass}</mainClass>
+                                <addDependencies>true</addDependencies>
+                                <preCp>anything</preCp>
+                            </classPath>
+                            <icon></icon>
+                            <jre>
+                                <minVersion>1.8.0</minVersion>
+                                <maxVersion></maxVersion>
+                                <jdkPreference>preferJre</jdkPreference>
+                            </jre>
+                            <versionInfo>
+                                <fileVersion>${project.version}.0.0</fileVersion>
+                                <txtFileVersion>${project.version}</txtFileVersion>
+                                <fileDescription>${project.description}</fileDescription>
+                                <copyright>Copyright (c) 2018</copyright>
+                                <companyName>Kevin Mussi</companyName>
+                                <productVersion>3.0.0.0</productVersion>
+                                <txtProductVersion>${project.version}</txtProductVersion>
+                                <productName>${project.name}</productName>
+                                <internalName>launcher</internalName>
+                                <originalFilename>${exec.name}.exe</originalFilename>
+                            </versionInfo>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>-->
         </plugins>
     </build>
 </project>
