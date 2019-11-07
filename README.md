@@ -9,7 +9,7 @@ This is an application that lets you have a personalized Discord status based on
 * Ugly UI.
 
 ## Requirements
-* **MacOS** / **Windows**.
+* **MacOS (<10.15)** / **Windows**.
 * A Java Runtime Environment (**JRE**), minimum version **1.8** (you can download it from [here](https://java.com/download/)).
 * If the application displays an error window even when everything is set up correctly, installing the Java Development Kit will fix the issue (you can download it from [here](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)).
 * [iTunes](https://www.apple.com/itunes/download/) and [Discord](https://discordapp.com/download) applications.
