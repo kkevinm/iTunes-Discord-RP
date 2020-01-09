@@ -10,7 +10,7 @@ property savedPlayerState : missing value
 repeat
     delay 1
     # If iTunes is not running, set the state to "STOPPED" and do nothing
-    if application "iTunes" is not running then
+    if application "Music" is not running then
         if state is not STR_STOPPED then
             set state to STR_STOPPED
             log state
@@ -18,7 +18,7 @@ repeat
     else
         # If iTunes is running, execute the logic inside a try block so that, if iTunes is closed during the execution, the script doesn't launch an exception
         try
-            tell application "iTunes"
+            tell application "Music"
                 set currentPlayerState to player state
                 
                 if currentPlayerState is not playing and currentPlayerState is not paused then
