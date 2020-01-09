@@ -1,5 +1,5 @@
 # iTunes Rich Presence for Discord
-This is an application that lets you have a personalized Discord status based on what you're listening to on iTunes. The status will show the song name, artist, album name, time elapsed since the track started playing and index of the track in the album. Additionally, an image with a "playing" or "paused" button will be shown in case the track is playing or paused. For some examples, see the [screenshots](#screenshots).
+This is an application that lets you have a personalized Discord status based on what you're listening to on iTunes (or Music, if you're on MacOS >=10.15). The status will show the song name, artist, album name, time elapsed since the track started playing and index of the track in the album. Additionally, an image with a "playing" or "paused" button will be shown in case the track is playing or paused. For some examples, see the [screenshots](#screenshots).
 
 ## Features
 * Simple to use.
@@ -9,7 +9,7 @@ This is an application that lets you have a personalized Discord status based on
 * Ugly UI.
 
 ## Requirements
-* **MacOS (<10.15)** / **Windows**.
+* **MacOS** / **Windows**.
 * A Java Runtime Environment (**JRE**), minimum version **1.8** (you can download it from [here](https://java.com/download/)).
 * If the application displays an error window even when everything is set up correctly, installing the Java Development Kit will fix the issue (you can download it from [here](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)).
 * [iTunes](https://www.apple.com/itunes/download/) and [Discord](https://discordapp.com/download) applications.
@@ -17,9 +17,9 @@ This is an application that lets you have a personalized Discord status based on
 
 ## Usage
 * Download the application as:
-  * [*jar*](https://github.com/kevinmussi/iTunes-Discord-RP/releases/download/v1.1/iTunesDiscordRP-1.1.jar): it can be run on either OS.
-  * [*dmg*](https://github.com/kevinmussi/iTunes-Discord-RP/releases/download/v1.1/iTunesDiscordRP-1.1.dmg): image that contains the *.app* bundle that can be run on **MacOS** as a native application (double click on the .dmg file, then extract the .app file to wherever you want).
-  * [*exe*](https://github.com/kevinmussi/iTunes-Discord-RP/releases/download/v1.1/iTunesDiscordRP.exe): executable that can be run on **Windows** as a native application.
+  * [*jar*](https://github.com/kevinmussi/iTunes-Discord-RP/releases/download/1.2/iTunesDiscordRP-1.2.jar): it can be run on either OS.
+  * [*dmg*](https://github.com/kevinmussi/iTunes-Discord-RP/releases/download/1.2/iTunesDiscordRP-1.2.dmg): image that contains the *.app* bundle that can be run on **MacOS** as a native application (double click on the .dmg file, then extract the .app file to wherever you want).
+  * [*exe*](https://github.com/kevinmussi/iTunes-Discord-RP/releases/download/1.2/iTunesDiscordRP.exe): executable that can be run on **Windows** as a native application.
 * Double click on it.
 * For **Mac** users: the first time you try to launch the app, it can happen that MacOS doesn't let you. If that's the case, you must open the file by right-clicking it, selecting "Open" and then selecting "Open" again on the dialog that appears (this must be done only once).
 * Done!
