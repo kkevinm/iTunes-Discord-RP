@@ -2,6 +2,7 @@ package com.github.kevinmussi.itunesrp.data;
 
 public enum OperativeSystem {
 	MACOS("MacOS", "macos", ".applescript", "osascript", "/Library/Application Support"),
+	MACOS15("MacOS", "macos15", ".applescript", "osascript", "/Library/Application Support"),
 	WINDOWS("Windows", "windows", ".js", "Cscript.exe", "/AppData/Local"),
 	OTHER("Other", "", "", "", "");
 	
@@ -26,7 +27,14 @@ public enum OperativeSystem {
 	public static OperativeSystem getOS() {
 		String os = System.getProperty("os.name");
 		if(os.startsWith("Mac OS")) {
-			return MACOS;
+			// Add check for OS X 10.15 or higher for the new music app
+			String version = System.getProperty("os.version");
+			int osxVersion = Integer.valueOf(version.split("\\.")[1]);
+			if(osxVersion >= 15) {
+				return MACOS15;
+			} else {
+				return MACOS;
+			}
 		} else if(os.startsWith("Windows")) {
 			return WINDOWS;
 		} else {
