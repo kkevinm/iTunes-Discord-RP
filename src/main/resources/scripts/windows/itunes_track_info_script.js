@@ -42,7 +42,7 @@ function MainLoop() {
                     }
                     
                     var output = currentTrack.Name + ";;" + currentTrack.Artist + ";;" + currentTrack.Album + ";;" + state + ";;" + iTunesApp.PlayerPosition + ";;" + currentTrack.Duration + ";;" + currentTrack.TrackNumber + ";;" + currentTrack.TrackCount;
-                    stderr.WriteLine(output);
+                    stderr.WriteLine(encodeURIComponent(output));
                 }
                 
                 WScript.sleep(1000);

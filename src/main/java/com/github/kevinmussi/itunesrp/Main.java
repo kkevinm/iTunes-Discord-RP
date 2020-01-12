@@ -34,15 +34,17 @@ public final class Main {
 		}
                 
         // Change the encoding to use emojis on Windows
-		System.setProperty("file.encoding", "UTF-8");
-        try {
-            java.lang.reflect.Field charset = null;
-            charset = java.nio.charset.Charset.class.getDeclaredField("defaultCharset");
-            charset.setAccessible(true);
-            charset.set(null, null);
-        } catch (NoSuchFieldException|IllegalAccessException e) {
-            LOGGER.log(Level.SEVERE, "An error occurred: ", e);
-            return;
+        if(OS == OperativeSystem.WINDOWS) {
+        	System.setProperty("file.encoding", "UTF-8");
+	        try {
+	            java.lang.reflect.Field charset = null;
+	            charset = java.nio.charset.Charset.class.getDeclaredField("defaultCharset");
+	            charset.setAccessible(true);
+	            charset.set(null, null);
+	        } catch (NoSuchFieldException|IllegalAccessException e) {
+	            LOGGER.log(Level.SEVERE, "An error occurred: ", e);
+	            return;
+	        }
         }
                 
 		// Create the ScriptHelper
