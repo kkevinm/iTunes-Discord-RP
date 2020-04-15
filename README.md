@@ -25,6 +25,10 @@ This is an application that lets you have a personalized Discord status based on
 * For **Mac** users: the first time you try to launch the app, it can happen that MacOS doesn't let you. If that's the case, you must open the file by right-clicking it, selecting "Open" and then selecting "Open" again on the dialog that appears (this must be done only once).
 * Done!
 
+## F.A.Q.
+1) * *Q*: The application runs fine, but my status won't update, what do I do?
+   * *A*: go to ```Settings -> Game Activity``` and make sure the option *Display currently running game as a status message* is on. Additionally, the status won't be displayed while your Discord status is set to **invisible**.
+
 ## Screenshots
 ### Status preview
 ![alt](screenshots/status-preview1.png)
