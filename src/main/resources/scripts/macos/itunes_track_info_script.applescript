@@ -28,8 +28,8 @@ repeat
                         log state
                     end if
                 else
-                    set currentTrack to current track
-                    
+                	set currentTrack to current track
+                	
                     # If the current song or the player status has changed, log the new track information
                     if currentPlayerState is not savedPlayerState or currentTrack is not savedTrack then
                         if currentPlayerState is playing then
@@ -39,7 +39,7 @@ repeat
                         end if
                         
                         # Write the track main information in the log
-                        log name of currentTrack & ";;" & artist of currentTrack & ";;" & album of currentTrack & ";;" & state & ";;" & player position & ";;" & duration of currentTrack & ";;" & track number of currentTrack & ";;" & track count of currentTrack
+                        log name of current track & ";;" & artist of current track & ";;" & album of current track & ";;" & state & ";;" & player position & ";;" & duration of current track & ";;" & track number of current track & ";;" & track count of current track
                     end if
                     
                     # Update the player state and song name to detect when the track changes
