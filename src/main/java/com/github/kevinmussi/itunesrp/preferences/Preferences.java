@@ -8,18 +8,20 @@ public class Preferences implements Serializable {
 	
 	private boolean autoConnect;
 	private int imageId;
+	private boolean useEmojis;
 	
 	Preferences() {
 		super();
 	}
 	
-	Preferences(boolean autoConnect, int imageId) {
+	Preferences(boolean autoConnect, int imageId, boolean useEmojis) {
 		this.autoConnect = autoConnect;
 		this.imageId = imageId;
+		this.useEmojis = useEmojis;
 	}
 	
 	public static Preferences getDefault() {
-		return new Preferences(false, 1);
+		return new Preferences(false, 1, true);
 	}
 	
 	public boolean getAutoConnect() {
@@ -38,8 +40,16 @@ public class Preferences implements Serializable {
 		this.imageId = imageId;
 	}
 	
+	public boolean getUseEmojis() {
+		return useEmojis;
+	}
+	
+	public void setUseEmojis(boolean useEmojis) {
+		this.useEmojis = useEmojis;
+	}
+	
 	public Preferences getCopy() {
-		return new Preferences(autoConnect, imageId);
+		return new Preferences(autoConnect, imageId, useEmojis);
 	}
 	
 }

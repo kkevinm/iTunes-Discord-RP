@@ -34,6 +34,7 @@ public class SettingsFrame {
 	
 	private final JFrame frame;
 	private int selectedImage;
+	private boolean emojiUsage;
 	
 	public SettingsFrame() {
 		this.frame = new JFrame();
@@ -41,9 +42,12 @@ public class SettingsFrame {
 	}
 	
 	private void init() {
-		int currentImage = PreferencesManager.getPreferences().getImageId();
+		Preferences pref = PreferencesManager.getPreferences();
+		int currentImage = pref.getImageId();
+		boolean useEmojis = pref.getUseEmojis();
 		this.selectedImage = currentImage;
-		ButtonGroup group = new ButtonGroup();
+		this.emojiUsage = useEmojis;
+		
 		JPanel mainPanel = new JPanel();
 		frame.setContentPane(mainPanel);
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -54,10 +58,11 @@ public class SettingsFrame {
 		JPanel imagePanelTop = new JPanel();
 		imagePanelTop.setLayout(new GridLayout(2, 2));
 		imagePanel.add(imagePanelTop);
-		TitledBorder border = BorderFactory.createTitledBorder("Set status image");
+		TitledBorder border = BorderFactory.createTitledBorder("Status image");
 		border.setTitleFont(new Font(Font.SANS_SERIF, Font.BOLD, 13));
 		imagePanel.setBorder(border);
 		
+		ButtonGroup group = new ButtonGroup();
 		for(int i = 0; i < NUM_IMAGES; i++) {
 			ImageIcon icon = getCurrentIcon(i);
 			JLabel label = new JLabel(icon);
@@ -84,6 +89,26 @@ public class SettingsFrame {
 		group.add(button);
 		imagePanel.add(button);
 		
+		JPanel emojiPanel = new JPanel();
+		border = BorderFactory.createTitledBorder("Emoji usage");
+		border.setTitleFont(new Font(Font.SANS_SERIF, Font.BOLD, 13));
+		emojiPanel.setBorder(border);
+		emojiPanel.setLayout(new GridLayout(1, 2));
+		group = new ButtonGroup();
+		JRadioButton button1 = new JRadioButton("Enabled");
+		JRadioButton button2 = new JRadioButton("Disabled");
+		if(useEmojis) {
+			button1.setSelected(true);
+		} else {
+			button2.setSelected(true);
+		}
+		button1.addActionListener(e -> setEmojiUsage(true));
+		button2.addActionListener(e -> setEmojiUsage(false));
+		group.add(button1);
+		group.add(button2);
+		emojiPanel.add(button1);
+		emojiPanel.add(button2);
+		
 		JButton saveButton = new JButton("Apply");
 		saveButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		saveButton.setFont(TEXT_FONT_BIG);
@@ -92,6 +117,8 @@ public class SettingsFrame {
 		saveButton.addActionListener(e -> saveSettings());
 		
 		mainPanel.add(imagePanel);
+		mainPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+		mainPanel.add(emojiPanel);
 		mainPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 		mainPanel.add(saveButton);
 		mainPanel.add(Box.createRigidArea(new Dimension(0, 5)));
@@ -125,9 +152,14 @@ public class SettingsFrame {
 		this.selectedImage = i;
 	}
 	
+	private void setEmojiUsage(boolean emojiUsage) {
+		this.emojiUsage = emojiUsage;
+	}
+	
 	private void saveSettings() {
 		Preferences pref = PreferencesManager.getPreferences();
 		pref.setImageId(this.selectedImage);
+		pref.setUseEmojis(this.emojiUsage);
 		PreferencesManager.setPreferences(pref);
 	}
 	

@@ -13,6 +13,7 @@ import com.github.kevinmussi.itunesrp.data.TrackState;
 import com.github.kevinmussi.itunesrp.observer.Commanded;
 import com.github.kevinmussi.itunesrp.observer.Commander;
 import com.github.kevinmussi.itunesrp.observer.Observer;
+import com.github.kevinmussi.itunesrp.preferences.PreferencesManager;
 import com.github.kevinmussi.itunesrp.view.View;
 import com.jagrosh.discordipc.IPCClient;
 import com.jagrosh.discordipc.IPCListener;
@@ -93,16 +94,13 @@ public class DiscordHelper
 			return;
 		}
 		
+		boolean useEmojis = PreferencesManager.getPreferences().getUseEmojis();
+		
 		RichPresence.Builder builder = new RichPresence.Builder();
-		if(message.getState() == TrackState.PLAYING) {
-			OffsetDateTime start = OffsetDateTime.now()
-					.minusSeconds((long) message.getCurrentPosition());
-			builder.setStartTimestamp(start);
-			builder.setInstance(true);
-		}
-		builder.setDetails(EMOJI_SONG + " " + message.getName());
+		
 		String artist = message.getArtist();
 		String album = message.getAlbum();
+		String state = message.getState().toString();
 		
 		// Fix the fields' length to make everything stay in one line
 		int max = 48;
@@ -114,8 +112,25 @@ public class DiscordHelper
 			album = album.substring(0, max-artist.length()) + "...";
 		}
 		
-		builder.setState(EMOJI_ARTIST + " " + artist + " " + EMOJI_ALBUM + " " + album);
-		String state = message.getState().toString();
+		String rpDetails;
+		String rpState;
+		if(useEmojis) {
+			rpDetails = EMOJI_SONG + " " + message.getName();
+			rpState = EMOJI_ARTIST + " " + artist + " " + EMOJI_ALBUM + " " + album;
+		} else {
+			rpDetails = message.getName();
+			rpState = "By " + artist + ", from " + album;
+		}
+		
+		if(message.getState() == TrackState.PLAYING) {
+			OffsetDateTime start = OffsetDateTime.now()
+					.minusSeconds((long) message.getCurrentPosition());
+			builder.setStartTimestamp(start);
+			builder.setInstance(true);
+		}
+		
+		builder.setDetails(rpDetails);
+		builder.setState(rpState);
 		builder.setSmallImage(state.toLowerCase(), state);
 		builder.setLargeImage(message.getApplication().getImageKey(),
 				message.getApplication().toString());
