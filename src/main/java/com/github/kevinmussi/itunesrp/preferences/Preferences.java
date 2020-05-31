@@ -4,20 +4,22 @@ import java.io.Serializable;
 
 public class Preferences implements Serializable {
 	
-	private static final long serialVersionUID = -7150420841855273495L;
+	private static final long serialVersionUID = 8564842536502299868L;
 	
 	private boolean autoConnect;
+	private int imageId;
 	
 	Preferences() {
 		super();
 	}
 	
-	Preferences(boolean autoConnect) {
+	Preferences(boolean autoConnect, int imageId) {
 		this.autoConnect = autoConnect;
+		this.imageId = imageId;
 	}
 	
 	public static Preferences getDefault() {
-		return new Preferences(false);
+		return new Preferences(false, 1);
 	}
 	
 	public boolean getAutoConnect() {
@@ -28,8 +30,16 @@ public class Preferences implements Serializable {
 		this.autoConnect = autoConnect;
 	}
 	
+	public int getImageId() {
+		return imageId;
+	}
+	
+	public void setImageId(int imageId) {
+		this.imageId = imageId;
+	}
+	
 	public Preferences getCopy() {
-		return new Preferences(autoConnect);
+		return new Preferences(autoConnect, imageId);
 	}
 	
 }

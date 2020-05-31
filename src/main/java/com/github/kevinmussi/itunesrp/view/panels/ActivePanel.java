@@ -1,6 +1,11 @@
 package com.github.kevinmussi.itunesrp.view.panels;
 
-import static com.github.kevinmussi.itunesrp.view.panels.PanelConstants.*;
+import static com.github.kevinmussi.itunesrp.view.panels.PanelConstants.FONT_LIST;
+import static com.github.kevinmussi.itunesrp.view.panels.PanelConstants.INSETS;
+import static com.github.kevinmussi.itunesrp.view.panels.PanelConstants.LINE_BORDER;
+import static com.github.kevinmussi.itunesrp.view.panels.PanelConstants.LIST_BORDER;
+import static com.github.kevinmussi.itunesrp.view.panels.PanelConstants.PADDING_BORDER;
+import static com.github.kevinmussi.itunesrp.view.panels.PanelConstants.TEXT_FONT_BIG;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -25,6 +30,7 @@ import com.github.kevinmussi.itunesrp.data.Track;
 import com.github.kevinmussi.itunesrp.data.TrackState;
 import com.github.kevinmussi.itunesrp.observer.Commander;
 import com.github.kevinmussi.itunesrp.view.Panel;
+import com.github.kevinmussi.itunesrp.view.SettingsFrame;
 import com.github.kevinmussi.itunesrp.view.TrackPane;
 
 public class ActivePanel extends Commander<ConnectCommand> implements Panel {
@@ -32,6 +38,7 @@ public class ActivePanel extends Commander<ConnectCommand> implements Panel {
 	private final JPanel panel;
 	private final TrackPane trackPane;
 	private final DefaultListModel<Track> listModel;
+	private SettingsFrame settingsFrame;
 	
 	public ActivePanel() {
 		this.panel = new JPanel();
@@ -49,12 +56,19 @@ public class ActivePanel extends Commander<ConnectCommand> implements Panel {
 		tabbedPane.addTab("Song playing", trackPanel);
 		tabbedPane.addTab("History", listPanel);
 		
-		JButton disconnectButton = new JButton("Disconnect from Discord");
-		disconnectButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		JButton disconnectButton = new JButton("Disconnect");
+		disconnectButton.setAlignmentX(Component.LEFT_ALIGNMENT);
 		disconnectButton.setFont(TEXT_FONT_BIG);
 		disconnectButton.setOpaque(false);
 		disconnectButton.setVisible(true);
 		disconnectButton.addActionListener(e -> sendCommand(ConnectCommand.DISCONNECT));
+		
+		JButton settingsButton = new JButton("Settings");
+		settingsButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		settingsButton.setFont(TEXT_FONT_BIG);
+		settingsButton.setOpaque(false);
+		settingsButton.setVisible(true);
+		settingsButton.addActionListener(e -> showSettings());
 		
 		JScrollPane scrollPane = new JScrollPane(trackPane);
 		scrollPane.setBorder(LINE_BORDER);
@@ -70,11 +84,15 @@ public class ActivePanel extends Commander<ConnectCommand> implements Panel {
 		listPanel.setLayout(new BorderLayout());
 		listPanel.add(scrollPane, BorderLayout.CENTER);
 		
+		Box buttons = Box.createHorizontalBox();
+		buttons.add(disconnectButton);
+		buttons.add(settingsButton);
+		
 		panel.setBackground(Color.WHITE);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.add(tabbedPane);
 		panel.add(Box.createRigidArea(new Dimension(0, 5)));
-		panel.add(disconnectButton);
+		panel.add(buttons);
 		panel.add(Box.createRigidArea(new Dimension(0, 5)));
 	}
 	
@@ -90,6 +108,14 @@ public class ActivePanel extends Commander<ConnectCommand> implements Panel {
 				// Only show the played songs in the history
 				listModel.add(0, track);
 			}
+		}
+	}
+	
+	public void showSettings() {
+		if(settingsFrame == null) {
+			settingsFrame = new SettingsFrame();
+		} else {
+			settingsFrame.setVisible(true);
 		}
 	}
 	

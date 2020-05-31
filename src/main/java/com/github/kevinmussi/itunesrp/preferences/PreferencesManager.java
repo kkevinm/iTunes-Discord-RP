@@ -91,7 +91,10 @@ public final class PreferencesManager {
 		if(!file.exists()) {
 			file.getParentFile().mkdirs();
 			try {
-				file.createNewFile();
+				boolean success = file.createNewFile();
+				if(!success) {
+					LOGGER.log(Level.SEVERE, "An error occurred while creating new file.");
+				}
 			} catch (IOException e) {
 				LOGGER.log(Level.SEVERE, "An error occurred while creating new file: ", e);
 			}
