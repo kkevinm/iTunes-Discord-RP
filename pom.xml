@@ -60,26 +60,27 @@
                             <Class-Path>lib/</Class-Path>
                         </manifestEntries>
                     </archive>
+                    <forceCreation>true</forceCreation>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.3</version>
-                    <executions>
-                        <execution>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>shade</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <finalName>${exec.name}-${project.version}</finalName>
-                        <excludeScope>system</excludeScope>
-                        <excludeGroupIds>junit,org.mockito,org.hamcrest</excludeGroupIds>
-                        <createDependencyReducedPom>false</createDependencyReducedPom>
-                    </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <finalName>${exec.name}-${project.version}</finalName>
+                    <excludeScope>system</excludeScope>
+                    <excludeGroupIds>junit,org.mockito,org.hamcrest</excludeGroupIds>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>sh.tak.appbundler</groupId>
