@@ -19,11 +19,10 @@ public class ScriptDiscordBridge extends Observable<Track> implements Observer<S
 		}
 		Track track;
 		if(message.equals("STOPPED")) {
-			// There's no song playing or paused
+			// There's no playing/paused song
 			track = Track.NULL_TRACK;
 		} else {
 			track = getTrackfromRecord(message, ScriptHelper.TRACK_RECORD_SEPARATOR);
-			
 		}
 		sendUpdate(track);
 	}

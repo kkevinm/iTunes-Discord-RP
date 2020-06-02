@@ -18,6 +18,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingUtilities;
@@ -90,7 +91,7 @@ public class SettingsFrame {
 		}
 		
 		JRadioButton button = new JRadioButton("No image");
-		button.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		button.setAlignmentX(Component.CENTER_ALIGNMENT);
 		if(currentImage == 0) {
 			button.setSelected(true);
 		}
@@ -211,12 +212,17 @@ public class SettingsFrame {
 	}
 	
 	private void saveSettings() {
+		if(this.artistPosition == FieldPosition.TOP && this.albumPosition == FieldPosition.TOP) {
+			JOptionPane.showMessageDialog(frame, "You can't set both artist and album positions to \"top line\"!");
+			return;
+		}
 		Preferences pref = PreferencesManager.getPreferences();
 		pref.setImageId(this.selectedImage);
 		pref.setUseEmojis(this.emojiUsage);
 		pref.setArtistPosition(this.artistPosition);
 		pref.setAlbumPosition(this.albumPosition);
 		PreferencesManager.setPreferences(pref);
+		frame.setVisible(false);
 	}
 	
 }

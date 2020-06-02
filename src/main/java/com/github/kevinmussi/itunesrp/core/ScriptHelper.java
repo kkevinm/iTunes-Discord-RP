@@ -44,16 +44,30 @@ public class ScriptHelper extends Observable<String> implements Commanded<Script
 	 * @throws IOException If the creation of the temporary file fails.
 	 */
 	private File createTempFile(OperativeSystem os) throws IOException {
-		InputStream inputStream = getClass().getResourceAsStream(os.getScriptPath());
-		File file = File.createTempFile("script", os.getScriptExtension());
-		try(OutputStream outputStream = new FileOutputStream(file)) {
-			byte[] buffer = new byte[inputStream.available()];
-			inputStream.read(buffer);
-			outputStream.write(buffer);
+		try(InputStream inputStream = getClass().getResourceAsStream(os.getScriptPath())) {
+			File file = File.createTempFile("script", os.getScriptExtension());
+			try(OutputStream outputStream = new FileOutputStream(file)) {
+				copyIO(inputStream, outputStream);
+			}
+			file.deleteOnExit();
+			return file;
 		}
-		inputStream.close();
-		file.deleteOnExit();
-		return file;
+	}
+	
+	/**
+	 * Copies the contents of the input stream into the output stream.
+	 * 
+	 * @param input An {@link InputStream}.
+	 * @param output An {@link OutputStream}.
+	 * @throws IOException If the copy isn't successful.
+	 */
+	private void copyIO(InputStream input, OutputStream output) throws IOException {
+		byte[] buffer = new byte[input.available()];
+		int bytesNum = input.read(buffer);
+		if(bytesNum != buffer.length) {
+			throw new IOException("Couldn't copy the contents of the script file.");
+		}
+		output.write(buffer);
 	}
 	
 	@Override

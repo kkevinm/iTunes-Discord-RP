@@ -1,6 +1,5 @@
 package com.github.kevinmussi.itunesrp.core;
 
-import java.time.OffsetDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -9,11 +8,9 @@ import javax.swing.SwingUtilities;
 import com.github.kevinmussi.itunesrp.commands.ConnectCommand;
 import com.github.kevinmussi.itunesrp.commands.ScriptCommand;
 import com.github.kevinmussi.itunesrp.data.Track;
-import com.github.kevinmussi.itunesrp.data.TrackState;
 import com.github.kevinmussi.itunesrp.observer.Commanded;
 import com.github.kevinmussi.itunesrp.observer.Commander;
 import com.github.kevinmussi.itunesrp.observer.Observer;
-import com.github.kevinmussi.itunesrp.preferences.PreferencesManager;
 import com.github.kevinmussi.itunesrp.view.View;
 import com.jagrosh.discordipc.IPCClient;
 import com.jagrosh.discordipc.IPCListener;
@@ -31,20 +28,6 @@ public class DiscordHelper extends Commander<ScriptCommand> implements Observer<
 			+ "<li>You have the Discord app installed and currently running.</li>"
 			+ "<li>You're logged in with your account.</li></html>";
 	private static final String DISCORD_ALREADY_DISCONNECTED_MESSAGE = "<html>The connection with <b>Discord</b> ended!</html>";
-	
-	private static final String EMOJI_SONG;
-	private static final String EMOJI_ARTIST;
-	private static final String EMOJI_ALBUM;
-	
-	static {
-		int songEmojiCodePoint = 127926;
-		int artistEmojiCodePoint = 128100;
-		int albumEmojiCodePoint = 128191;
-		
-		EMOJI_SONG = new String(Character.toChars(songEmojiCodePoint));
-		EMOJI_ARTIST = new String(Character.toChars(artistEmojiCodePoint));
-		EMOJI_ALBUM = new String(Character.toChars(albumEmojiCodePoint));
-	}
 	
 	private final Logger logger = Logger.getLogger(getClass().getName() + "Logger");
 	
@@ -91,50 +74,8 @@ public class DiscordHelper extends Commander<ScriptCommand> implements Observer<
 			return;
 		}
 		
-		boolean useEmojis = PreferencesManager.getPreferences().getUseEmojis();
-		
-		RichPresence.Builder builder = new RichPresence.Builder();
-		
-		String artist = message.getArtist();
-		String album = message.getAlbum();
-		String state = message.getState().toString();
-		
-		// Fix the fields' length to make everything stay in one line
-		int max = 48;
-		if(artist.length() > 27) {
-			artist = artist.substring(0, 26) + "...";
-			max = 52;
-		}
-		if(artist.length() + album.length() > max) {
-			album = album.substring(0, max - artist.length()) + "...";
-		}
-		
-		String rpDetails;
-		String rpState;
-		if(useEmojis) {
-			rpDetails = EMOJI_SONG + " " + message.getName();
-			rpState = EMOJI_ARTIST + " " + artist + " " + EMOJI_ALBUM + " " + album;
-		} else {
-			rpDetails = message.getName();
-			rpState = "By " + artist + ", from " + album;
-		}
-		
-		if(message.getState() == TrackState.PLAYING) {
-			OffsetDateTime start = OffsetDateTime.now().minusSeconds((long) message.getCurrentPosition());
-			builder.setStartTimestamp(start);
-			builder.setInstance(true);
-		}
-		
-		builder.setDetails(rpDetails);
-		builder.setState(rpState);
-		builder.setSmallImage(state.toLowerCase(), state);
-		builder.setLargeImage(message.getApplication().getImageKey(), message.getApplication().toString());
-		int index = message.getIndex();
-		int size = message.getAlbumSize();
-		if(index > 0 && size > 0 && index <= size) {
-			builder.setParty("aa", index, size);
-		}
-		client.sendRichPresence(builder.build());
+		RichPresence rp = new RichPresenceBuilder(message).build();
+		client.sendRichPresence(rp);
 		
 		logger.log(Level.INFO, "Updated Rich Presence.");
 	}
