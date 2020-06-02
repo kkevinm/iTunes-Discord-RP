@@ -6,8 +6,7 @@ import com.github.kevinmussi.itunesrp.data.TrackState;
 import com.github.kevinmussi.itunesrp.observer.Observable;
 import com.github.kevinmussi.itunesrp.observer.Observer;
 
-public class ScriptDiscordBridge 
-		extends Observable<Track> implements Observer<String> {
+public class ScriptDiscordBridge extends Observable<Track> implements Observer<String> {
 	
 	public ScriptDiscordBridge() {
 		super();
@@ -30,15 +29,18 @@ public class ScriptDiscordBridge
 	}
 	
 	/**
-	 * <p>This method attempts to create a new {@link Track} object based on the
+	 * <p>
+	 * This method attempts to create a new {@link Track} object based on the
 	 * {@code record} and {@code separator} provided.
-	 * <p>This method expects a record that contains 4 field separated by the separator
+	 * <p>
+	 * This method expects a record that contains 4 field separated by the separator
 	 * provided, where the fields are:
 	 * <li>track name (it <b>cannot</b> be empty).</li>
 	 * <li>track artist (it can be empty).</li>
 	 * <li>track album (it can be empty).</li>
 	 * <li>track state: a string that can be either "PLAYING" or "PAUSED".</li>
-	 * <li>current position: the time elapsed in seconds from when the track started.</li>
+	 * <li>current position: the time elapsed in seconds from when the track
+	 * started.</li>
 	 * <li>track duration: the total duration of the track.</li>
 	 * <li>track index: the index of the track in its album.</li>
 	 * <li>album size: the amount of tracks in the current album.</li>
@@ -47,10 +49,10 @@ public class ScriptDiscordBridge
 	 * @param previousTrack
 	 * @param record
 	 * @param separator
-	 * @return {@code null} if the record or the separator have length equal to 0
-	 *         or if the result of splitting the record based on the separator has
-	 *         an incorrect format.
-	 *         Otherwise, the {@code Track} with the fields contained in the record.
+	 * @return {@code null} if the record or the separator have length equal to 0 or
+	 *         if the result of splitting the record based on the separator has an
+	 *         incorrect format. Otherwise, the {@code Track} with the fields
+	 *         contained in the record.
 	 */
 	private Track getTrackfromRecord(String record, String separator) {
 		if(record.length() == 0 || separator.length() == 0) {
@@ -74,8 +76,7 @@ public class ScriptDiscordBridge
 		int index = Integer.parseInt(fields[6]);
 		int albumSize = Integer.parseInt(fields[7].trim());
 		
-		return new Track(name, artist, album, state,
-				currentPosition, duration, index, albumSize, Application.ITUNES);
+		return new Track(name, artist, album, state, currentPosition, duration, index, albumSize, Application.ITUNES);
 	}
-
+	
 }

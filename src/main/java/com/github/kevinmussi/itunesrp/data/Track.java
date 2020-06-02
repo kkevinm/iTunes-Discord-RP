@@ -32,8 +32,8 @@ public class Track {
 		this.durationSeconds = 0;
 	}
 	
-	public Track(String name, String artist, String album, TrackState state,
-			double currentPosition, double duration, int index, int albumSize, Application app) {
+	public Track(String name, String artist, String album, TrackState state, double currentPosition, double duration,
+			int index, int albumSize, Application app) {
 		this.name = Objects.requireNonNull(name);
 		this.artist = Objects.requireNonNull(artist);
 		this.album = Objects.requireNonNull(album);
@@ -41,8 +41,8 @@ public class Track {
 		this.state = Objects.requireNonNull(state);
 		this.currentPosition = currentPosition;
 		this.duration = duration;
-		this.durationMinutes = (int) duration/60;
-		this.durationSeconds = (int) (duration-durationMinutes*60);
+		this.durationMinutes = (int) duration / 60;
+		this.durationSeconds = (int) (duration - durationMinutes * 60);
 		this.index = index;
 		this.albumSize = albumSize;
 	}
@@ -54,13 +54,13 @@ public class Track {
 	public String getArtist() {
 		return artist;
 	}
-
+	
 	public String getAlbum() {
 		return album;
 	}
 	
 	public Application getApplication() {
-	    return app;
+		return app;
 	}
 	
 	public TrackState getState() {
@@ -97,31 +97,21 @@ public class Track {
 	
 	@Override
 	public String toString() {
-		return new StringBuilder()
-				.append("Name: ").append(name)
-				.append("\nArtist: ").append(artist)
-				.append("\nAlbum: ").append(album)
-				.append("\nDuration: ").append(durationMinutes)
-				.append(String.format(":%02d", durationSeconds))
-				.toString();
+		return new StringBuilder().append("Name: ").append(name).append("\nArtist: ").append(artist).append("\nAlbum: ")
+				.append(album).append("\nDuration: ").append(durationMinutes)
+				.append(String.format(":%02d", durationSeconds)).toString();
 	}
 	
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if(this == obj)
 			return true;
-		if (obj == null || getClass() != obj.getClass())
+		if(obj == null || getClass() != obj.getClass())
 			return false;
 		Track other = (Track) obj;
-		return name.equals(other.name) &&
-				album.equals(other.album) &&
-				artist.equals(other.artist) &&
-				app == other.app &&
-				state == other.state &&
-				currentPosition == other.currentPosition &&
-				duration == other.duration &&
-				index == other.index &&
-				albumSize == other.albumSize;
+		return name.equals(other.name) && album.equals(other.album) && artist.equals(other.artist) && app == other.app
+				&& state == other.state && currentPosition == other.currentPosition && duration == other.duration
+				&& index == other.index && albumSize == other.albumSize;
 	}
 	
 	@Override

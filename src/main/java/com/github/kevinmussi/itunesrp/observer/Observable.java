@@ -21,7 +21,7 @@ public abstract class Observable<T> {
 	
 	public void sendUpdate(T message) {
 		synchronized(observers) {
-			for(Observer<T> observer: observers) {
+			for(Observer<T> observer : observers) {
 				observer.onUpdate(message);
 			}
 		}

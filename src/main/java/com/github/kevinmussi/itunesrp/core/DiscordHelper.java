@@ -20,20 +20,17 @@ import com.jagrosh.discordipc.IPCListener;
 import com.jagrosh.discordipc.entities.RichPresence;
 import com.jagrosh.discordipc.exceptions.NoDiscordClientException;
 
-public class DiscordHelper
-		extends Commander<ScriptCommand> implements Observer<Track> {
-    
+public class DiscordHelper extends Commander<ScriptCommand> implements Observer<Track> {
+	
 	/**
 	 * ClientId of my Discord application.
 	 */
 	private static final long APP_ID = 473069598804279309L;
 	
-	private static final String DISCORD_CONNECTION_ERROR_MESSAGE =
-			"<html>An <b>error</b> occurred while trying to connect to <b>Discord</b>!<br>Make sure that:<br>"
+	private static final String DISCORD_CONNECTION_ERROR_MESSAGE = "<html>An <b>error</b> occurred while trying to connect to <b>Discord</b>!<br>Make sure that:<br>"
 			+ "<li>You have the Discord app installed and currently running.</li>"
 			+ "<li>You're logged in with your account.</li></html>";
-	private static final String DISCORD_ALREADY_DISCONNECTED_MESSAGE =
-			"<html>The connection with <b>Discord</b> ended!</html>";
+	private static final String DISCORD_ALREADY_DISCONNECTED_MESSAGE = "<html>The connection with <b>Discord</b> ended!</html>";
 	
 	private static final String EMOJI_SONG;
 	private static final String EMOJI_ARTIST;
@@ -55,29 +52,29 @@ public class DiscordHelper
 	private final Commanded<ConnectCommand> connectObserver;
 	private final IPCClient client;
 	
-    public DiscordHelper(View view) {
-    	this.view = view;
-    	this.connectObserver = new CommandReceiver();
-    	this.client = new IPCClient(APP_ID);
-    	
-    	client.setListener(new IPCListener() {
-    		@Override
+	public DiscordHelper(View view) {
+		this.view = view;
+		this.connectObserver = new CommandReceiver();
+		this.client = new IPCClient(APP_ID);
+		
+		client.setListener(new IPCListener() {
+			@Override
 			public void onDisconnect(IPCClient client, Throwable t) {
-    			// The connection with Discord ended, so we notify the view...
-    			if(view.isConnected()) {
-    				view.showDisconnected();
-    			}
-    			// ...terminate the script...
-    			sendCommand(ScriptCommand.KILL);
-    			// ...and show an alert.
-    			view.showMessage(DISCORD_ALREADY_DISCONNECTED_MESSAGE);
-    		}
-    	});
-    	
-    	// Observe the view to receive the ConnectCommands
-    	view.setCommanded(connectObserver);
-    }
-
+				// The connection with Discord ended, so we notify the view...
+				if(view.isConnected()) {
+					view.showDisconnected();
+				}
+				// ...terminate the script...
+				sendCommand(ScriptCommand.KILL);
+				// ...and show an alert.
+				view.showMessage(DISCORD_ALREADY_DISCONNECTED_MESSAGE);
+			}
+		});
+		
+		// Observe the view to receive the ConnectCommands
+		view.setCommanded(connectObserver);
+	}
+	
 	@Override
 	public void onUpdate(Track message) {
 		logger.log(Level.INFO, "Received new track.");
@@ -109,7 +106,7 @@ public class DiscordHelper
 			max = 52;
 		}
 		if(artist.length() + album.length() > max) {
-			album = album.substring(0, max-artist.length()) + "...";
+			album = album.substring(0, max - artist.length()) + "...";
 		}
 		
 		String rpDetails;
@@ -123,8 +120,7 @@ public class DiscordHelper
 		}
 		
 		if(message.getState() == TrackState.PLAYING) {
-			OffsetDateTime start = OffsetDateTime.now()
-					.minusSeconds((long) message.getCurrentPosition());
+			OffsetDateTime start = OffsetDateTime.now().minusSeconds((long) message.getCurrentPosition());
 			builder.setStartTimestamp(start);
 			builder.setInstance(true);
 		}
@@ -132,8 +128,7 @@ public class DiscordHelper
 		builder.setDetails(rpDetails);
 		builder.setState(rpState);
 		builder.setSmallImage(state.toLowerCase(), state);
-		builder.setLargeImage(message.getApplication().getImageKey(),
-				message.getApplication().toString());
+		builder.setLargeImage(message.getApplication().getImageKey(), message.getApplication().toString());
 		int index = message.getIndex();
 		int size = message.getAlbumSize();
 		if(index > 0 && size > 0 && index <= size) {
@@ -145,21 +140,21 @@ public class DiscordHelper
 	}
 	
 	private class CommandReceiver implements Commanded<ConnectCommand> {
-
+		
 		@Override
 		public boolean onCommand(ConnectCommand command) {
 			if(command == null)
-	    		return false;
-	    	if(command == ConnectCommand.CONNECT)
-	    		return connect();
-	    	else
-	    		return disconnect();
+				return false;
+			if(command == ConnectCommand.CONNECT)
+				return connect();
+			else
+				return disconnect();
 		}
 		
 		boolean connect() {
 			try {
 				client.connect();
-			} catch (NoDiscordClientException|RuntimeException e) {
+			} catch(NoDiscordClientException | RuntimeException e) {
 				logger.log(Level.SEVERE, "Something went wrong while trying to connect: {0}", e.getMessage());
 				view.showMessage(DISCORD_CONNECTION_ERROR_MESSAGE);
 				return false;
@@ -182,5 +177,5 @@ public class DiscordHelper
 		}
 		
 	}
-    
+	
 }

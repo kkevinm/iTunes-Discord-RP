@@ -15,9 +15,8 @@ public final class PanelConstants {
 	private static final Color myColor = new Color(184, 206, 227);
 	
 	public static final LineBorder LINE_BORDER = new LineBorder(myColor, 1);
-	public static final CompoundBorder LIST_BORDER = BorderFactory.createCompoundBorder(
-			new MatteBorder(0, 0, 1, 0, myColor),
-			new EmptyBorder(5, 5, 5, 5));
+	public static final CompoundBorder LIST_BORDER = BorderFactory
+			.createCompoundBorder(new MatteBorder(0, 0, 1, 0, myColor), new EmptyBorder(5, 5, 5, 5));
 	public static final EmptyBorder PADDING_BORDER = new EmptyBorder(0, 1, 1, 1);
 	public static final Insets INSETS = new Insets(2, 10, 10, 10);
 	public static final Font TEXT_FONT_BIG = new Font(Font.SANS_SERIF, Font.PLAIN, 16);

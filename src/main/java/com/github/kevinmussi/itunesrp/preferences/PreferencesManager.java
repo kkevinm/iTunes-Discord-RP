@@ -28,8 +28,7 @@ public final class PreferencesManager {
 		LOGGER = Logger.getLogger(PreferencesManager.class.getName());
 		PREFERENCES_FOLDER_NAME = "/com.github.kevinmussi.iTunesDiscordRP/";
 		
-		PREFERENCES_PATH = System.getProperty("user.home")
-				.concat(Main.OS.getPreferencesBaseFolder())
+		PREFERENCES_PATH = System.getProperty("user.home").concat(Main.OS.getPreferencesBaseFolder())
 				.concat(PREFERENCES_FOLDER_NAME);
 		PREFERENCES_FILE = "preferences.dat";
 		
@@ -57,14 +56,13 @@ public final class PreferencesManager {
 	}
 	
 	private static Preferences readPreferencesFromFile() {
-		try(ObjectInputStream inputStream =
-				new ObjectInputStream(new FileInputStream(FILE))) {
+		try(ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(FILE))) {
 			Preferences pr = (Preferences) inputStream.readObject();
 			LOGGER.log(Level.INFO, "Preferences correctly read from file.");
 			return pr;
-		} catch (IOException e) {
+		} catch(IOException e) {
 			LOGGER.log(Level.WARNING, "Something went wrong while reading from the preferences file: ", e);
-		} catch (ClassNotFoundException e) {
+		} catch(ClassNotFoundException e) {
 			LOGGER.log(Level.SEVERE, "Unexpected error: ", e);
 		}
 		
@@ -78,11 +76,10 @@ public final class PreferencesManager {
 		if(preferences == null)
 			return;
 		createFile(FILE);
-		try(ObjectOutputStream outputStream =
-				new ObjectOutputStream(new FileOutputStream(FILE))) {
+		try(ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(FILE))) {
 			outputStream.writeObject(preferences);
 			LOGGER.log(Level.INFO, "The preferences file has been updated.");
-		} catch (IOException e) {
+		} catch(IOException e) {
 			LOGGER.log(Level.WARNING, "Something went wrong while writing to the preferences file: ", e);
 		}
 	}
@@ -95,7 +92,7 @@ public final class PreferencesManager {
 				if(!success) {
 					LOGGER.log(Level.SEVERE, "An error occurred while creating new file.");
 				}
-			} catch (IOException e) {
+			} catch(IOException e) {
 				LOGGER.log(Level.SEVERE, "An error occurred while creating new file: ", e);
 			}
 		}

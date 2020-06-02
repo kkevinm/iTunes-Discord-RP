@@ -15,8 +15,8 @@ public enum OperativeSystem {
 	private final String commandName;
 	private final String preferencesBaseFolder;
 	
-	private OperativeSystem(String description, String scriptPath,
-			String scriptExtension, String commandName, String preferencesBaseFolder) {
+	private OperativeSystem(String description, String scriptPath, String scriptExtension, String commandName,
+			String preferencesBaseFolder) {
 		this.description = description;
 		this.scriptPath = scriptPath;
 		this.scriptExtension = scriptExtension;

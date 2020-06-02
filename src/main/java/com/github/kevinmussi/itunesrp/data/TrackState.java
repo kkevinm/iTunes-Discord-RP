@@ -11,7 +11,7 @@ public enum TrackState {
 	}
 	
 	public static TrackState fromString(String string) {
-	    return TrackState.valueOf(string.toUpperCase());
+		return TrackState.valueOf(string.toUpperCase());
 	}
 	
 	@Override

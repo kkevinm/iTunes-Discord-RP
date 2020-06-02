@@ -15,8 +15,7 @@ import com.github.kevinmussi.itunesrp.view.View;
 
 public final class Main {
 	
-	private static final Logger LOGGER =
-			Logger.getLogger(Main.class.getName() + "Logger");
+	private static final Logger LOGGER = Logger.getLogger(Main.class.getName() + "Logger");
 	
 	public static final OperativeSystem OS = OperativeSystem.getOS();
 	
@@ -32,26 +31,26 @@ public final class Main {
 			LOGGER.log(Level.SEVERE, "Your operative system is not supported!");
 			return;
 		}
-                
-        // Change the encoding to use emojis on Windows
-        if(OS == OperativeSystem.WINDOWS) {
-        	System.setProperty("file.encoding", "UTF-8");
-	        try {
-	            java.lang.reflect.Field charset = null;
-	            charset = java.nio.charset.Charset.class.getDeclaredField("defaultCharset");
-	            charset.setAccessible(true);
-	            charset.set(null, null);
-	        } catch (NoSuchFieldException|IllegalAccessException e) {
-	            LOGGER.log(Level.SEVERE, "An error occurred: ", e);
-	            return;
-	        }
-        }
-                
+		
+		// Change the encoding to use emojis on Windows
+		if(OS == OperativeSystem.WINDOWS) {
+			System.setProperty("file.encoding", "UTF-8");
+			try {
+				java.lang.reflect.Field charset = null;
+				charset = java.nio.charset.Charset.class.getDeclaredField("defaultCharset");
+				charset.setAccessible(true);
+				charset.set(null, null);
+			} catch(NoSuchFieldException | IllegalAccessException e) {
+				LOGGER.log(Level.SEVERE, "An error occurred: ", e);
+				return;
+			}
+		}
+		
 		// Create the ScriptHelper
 		ScriptHelper scriptHelper;
 		try {
 			scriptHelper = new ScriptHelper(OS);
-		} catch (IOException e) {
+		} catch(IOException e) {
 			LOGGER.log(Level.SEVERE, "Something went wrong: ", e);
 			return;
 		}

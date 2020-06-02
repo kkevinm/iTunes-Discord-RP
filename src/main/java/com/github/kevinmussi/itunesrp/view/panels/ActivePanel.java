@@ -12,6 +12,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -25,6 +27,7 @@ import javax.swing.JTextArea;
 import javax.swing.ListCellRenderer;
 import javax.swing.border.AbstractBorder;
 
+import com.github.kevinmussi.itunesrp.Main;
 import com.github.kevinmussi.itunesrp.commands.ConnectCommand;
 import com.github.kevinmussi.itunesrp.data.Track;
 import com.github.kevinmussi.itunesrp.data.TrackState;
@@ -34,6 +37,8 @@ import com.github.kevinmussi.itunesrp.view.SettingsFrame;
 import com.github.kevinmussi.itunesrp.view.TrackPane;
 
 public class ActivePanel extends Commander<ConnectCommand> implements Panel {
+	
+	private static final Logger LOGGER = Logger.getLogger(Main.class.getName() + "Logger");
 	
 	private final JPanel panel;
 	private final TrackPane trackPane;
@@ -117,6 +122,7 @@ public class ActivePanel extends Commander<ConnectCommand> implements Panel {
 		} else {
 			settingsFrame.setVisible(true);
 		}
+		LOGGER.log(Level.INFO, "Settings view invoked.");
 	}
 	
 	private class MyCellRenderer extends JTextArea implements ListCellRenderer<Track> {
@@ -128,7 +134,7 @@ public class ActivePanel extends Commander<ConnectCommand> implements Panel {
 			this.setFont(font);
 			this.setEditable(false);
 		}
-
+		
 		@Override
 		public Component getListCellRendererComponent(JList<? extends Track> list, Track value, int index,
 				boolean isSelected, boolean cellHasFocus) {

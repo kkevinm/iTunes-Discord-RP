@@ -24,6 +24,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
+import com.github.kevinmussi.itunesrp.data.FieldPosition;
 import com.github.kevinmussi.itunesrp.preferences.Preferences;
 import com.github.kevinmussi.itunesrp.preferences.PreferencesManager;
 
@@ -31,10 +32,13 @@ public class SettingsFrame {
 	
 	private static final int NUM_IMAGES = 4;
 	private static final String IMAGE_BASE_PATH = "/images/itunes-logo/";
+	private static final String[] FIELD_POSITION_LABELS = {"Top line", "Bottom line", "Don't show"};
 	
 	private final JFrame frame;
 	private int selectedImage;
 	private boolean emojiUsage;
+	private FieldPosition artistPosition;
+	private FieldPosition albumPosition;
 	
 	public SettingsFrame() {
 		this.frame = new JFrame();
@@ -45,8 +49,13 @@ public class SettingsFrame {
 		Preferences pref = PreferencesManager.getPreferences();
 		int currentImage = pref.getImageId();
 		boolean useEmojis = pref.getUseEmojis();
+		FieldPosition currentArtistPosition = pref.getArtistPosition();
+		FieldPosition currentAlbumPosition = pref.getAlbumPosition();
+		
 		this.selectedImage = currentImage;
 		this.emojiUsage = useEmojis;
+		this.artistPosition = currentArtistPosition;
+		this.albumPosition = currentAlbumPosition;
 		
 		JPanel mainPanel = new JPanel();
 		frame.setContentPane(mainPanel);
@@ -71,9 +80,9 @@ public class SettingsFrame {
 			JRadioButton button = new JRadioButton();
 			panel.add(button);
 			panel.add(label);
-			final int n = i+1;
+			final int n = i + 1;
 			button.addActionListener(e -> setSelectedImage(n));
-			if(i == currentImage-1) {
+			if(i == currentImage - 1) {
 				button.setSelected(true);
 			}
 			group.add(button);
@@ -109,6 +118,41 @@ public class SettingsFrame {
 		emojiPanel.add(button1);
 		emojiPanel.add(button2);
 		
+		JPanel positionPanel = new JPanel();
+		positionPanel.setLayout(new BoxLayout(positionPanel, BoxLayout.X_AXIS));
+		JPanel artistPanel = new JPanel();
+		border = BorderFactory.createTitledBorder("Artist field");
+		border.setTitleFont(new Font(Font.SANS_SERIF, Font.BOLD, 13));
+		artistPanel.setBorder(border);
+		artistPanel.setLayout(new BoxLayout(artistPanel, BoxLayout.Y_AXIS));
+		JPanel albumPanel = new JPanel();
+		border = BorderFactory.createTitledBorder("Album field");
+		border.setTitleFont(new Font(Font.SANS_SERIF, Font.BOLD, 13));
+		albumPanel.setBorder(border);
+		albumPanel.setLayout(new BoxLayout(albumPanel, BoxLayout.Y_AXIS));
+		positionPanel.add(artistPanel);
+		positionPanel.add(albumPanel);
+		
+		ButtonGroup artistGroup = new ButtonGroup();
+		ButtonGroup albumGroup = new ButtonGroup();
+		for(int i = 0; i < 3; i++) {
+			JRadioButton currentArtistButton = new JRadioButton(FIELD_POSITION_LABELS[i]);
+			JRadioButton currentAlbumButton = new JRadioButton(FIELD_POSITION_LABELS[i]);
+			artistGroup.add(currentArtistButton);
+			albumGroup.add(currentAlbumButton);
+			artistPanel.add(currentArtistButton);
+			albumPanel.add(currentAlbumButton);
+			if(i == currentArtistPosition.ordinal()) {
+				currentArtistButton.setSelected(true);
+			}
+			if(i == currentAlbumPosition.ordinal()) {
+				currentAlbumButton.setSelected(true);
+			}
+			final int n = i;
+			currentArtistButton.addActionListener(e -> setArtistPosition(n));
+			currentAlbumButton.addActionListener(e -> setAlbumPosition(n));
+		}
+		
 		JButton saveButton = new JButton("Apply");
 		saveButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		saveButton.setFont(TEXT_FONT_BIG);
@@ -119,6 +163,8 @@ public class SettingsFrame {
 		mainPanel.add(imagePanel);
 		mainPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 		mainPanel.add(emojiPanel);
+		mainPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+		mainPanel.add(positionPanel);
 		mainPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 		mainPanel.add(saveButton);
 		mainPanel.add(Box.createRigidArea(new Dimension(0, 5)));
@@ -132,13 +178,13 @@ public class SettingsFrame {
 	}
 	
 	private ImageIcon getCurrentIcon(int i) {
-		int imageId = i+1;
+		int imageId = i + 1;
 		String imagePath = IMAGE_BASE_PATH + "itunes-logo-" + imageId + ".png";
 		InputStream imageStream = getClass().getResourceAsStream(imagePath);
 		ImageIcon icon;
 		try {
 			icon = new ImageIcon(ImageIO.read(imageStream));
-		} catch (IOException e) {
+		} catch(IOException e) {
 			throw new IllegalArgumentException("Something went wrong: ", e);
 		}
 		return icon;
@@ -156,10 +202,20 @@ public class SettingsFrame {
 		this.emojiUsage = emojiUsage;
 	}
 	
+	private void setArtistPosition(int i) {
+		this.artistPosition = FieldPosition.values()[i];
+	}
+	
+	private void setAlbumPosition(int i) {
+		this.albumPosition = FieldPosition.values()[i];
+	}
+	
 	private void saveSettings() {
 		Preferences pref = PreferencesManager.getPreferences();
 		pref.setImageId(this.selectedImage);
 		pref.setUseEmojis(this.emojiUsage);
+		pref.setArtistPosition(this.artistPosition);
+		pref.setAlbumPosition(this.albumPosition);
 		PreferencesManager.setPreferences(pref);
 	}
 	

@@ -27,8 +27,7 @@ import com.github.kevinmussi.itunesrp.view.Panel;
 
 public class InactivePanel extends Commander<ConnectCommand> implements Panel {
 	
-	private static final String WELCOME_TEXT =
-			"To start using the application, make sure that you have the "
+	private static final String WELCOME_TEXT = "To start using the application, make sure that you have the "
 			+ "Discord app running and that you're logged in with your account. "
 			+ "Then, you can just click the button below and wait for the connection "
 			+ "to establish. After that, all the sick tunes played on iTunes "
