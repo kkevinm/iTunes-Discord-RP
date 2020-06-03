@@ -1,5 +1,5 @@
 # iTunes Rich Presence for Discord
-This is an application that lets you have a personalized Discord status based on what you're listening to on iTunes (or Music, if you're on MacOS >=10.15). The status will show the song name, artist, album name, time elapsed since the track started playing and index of the track in the album. Additionally, an image with a "playing" or "paused" button will be shown in case the track is playing or paused. For some examples, see the [screenshots](#screenshots).
+This is an application that lets you have a personalized Discord status based on what you're listening to on iTunes (or Music, if you're on MacOS 10.15+). The status will show the song name, artist, album name, time elapsed since the track started playing and index of the track in the album. Additionally, an image with a "playing" or "paused" button will be shown in case the track is playing or paused. For some examples, see the [screenshots](#screenshots).
 
 ## Features
 * Simple to use.
@@ -7,12 +7,13 @@ This is an application that lets you have a personalized Discord status based on
 * Lightweight (~1.5MB file).
 * Works on both MacOS and Windows.
 * Ugly UI.
+* Some customization options on how the Discord status will be displayed.
 
 ## Requirements
 * **MacOS** / **Windows**.
 * A Java Runtime Environment (**JRE**), minimum version **1.8** (you can download it from [here](https://java.com/download/)).
 * If the application displays an error window even when everything is set up correctly, installing the Java Development Kit will fix the issue (you can download it from [here](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)).
-* [iTunes](https://www.apple.com/itunes/download/) and [Discord](https://discordapp.com/download) applications.
+* [iTunes](https://www.apple.com/itunes/download/) (or *Music*, if using MacOS 10.15+) and [Discord](https://discordapp.com/download) applications.
 * For **Windows** users: this application should work for iTunes version 4.7 or later.
 
 ## Usage
@@ -29,6 +30,8 @@ This is an application that lets you have a personalized Discord status based on
    * *A*: go to ```Settings -> Game Activity``` and make sure the option *Display currently running game as a status message* is on. Additionally, the status won't be displayed while your Discord status is set to **invisible**.
 2) * *Q*: Gatekeeper won't let me run the app/jar on my Mac!
    * *A*: Right-click on the app/jar file and hit **Open**. Then hit **Open** in the dialog that appears. After doing it this way, the app should open fine just by double clicking on it.
+3) * *Q*: Can I hide the app's window?
+   * *A*: Yes, if your system supports it, the app will show a button on the menu bar. Clicking on it will hide (or show, if clicking it again) the main window.
 
 ## Screenshots
 ### Status preview
