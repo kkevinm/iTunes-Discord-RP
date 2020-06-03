@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.kevinmussi</groupId>
     <artifactId>itunes-discord-rp</artifactId>
-    <version>1.5</version>
+    <version>1.5.1</version>
     <packaging>jar</packaging>
     <name>iTunes Discord RP</name>
     <properties>
@@ -32,6 +32,16 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.kohlschutter.junixsocket</groupId>
+            <artifactId>junixsocket-common</artifactId>
+            <version>2.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.kohlschutter.junixsocket</groupId>
+            <artifactId>junixsocket-native-common</artifactId>
+            <version>2.3.2</version>
         </dependency>
     </dependencies>
     <build>
@@ -152,10 +162,10 @@
                         <bundledJreAsFallback>false</bundledJreAsFallback>
                     </jre>
                     <versionInfo>
-                        <fileVersion>${project.version}.0.0</fileVersion>
+                        <fileVersion>${project.version}.0</fileVersion>
                         <txtFileVersion>${project.version}</txtFileVersion>
                         <fileDescription>${project.description}</fileDescription>
-                        <copyright>Copyright (c) 2018</copyright>
+                        <copyright>Copyright (c) 2020</copyright>
                         <companyName>Kevin Mussi</companyName>
                         <productVersion>3.0.0.0</productVersion>
                         <txtProductVersion>${project.version}</txtProductVersion>
