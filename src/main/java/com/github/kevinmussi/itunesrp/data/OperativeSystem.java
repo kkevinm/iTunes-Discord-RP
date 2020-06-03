@@ -61,6 +61,10 @@ public enum OperativeSystem {
 		return preferencesBaseFolder;
 	}
 	
+	public boolean isMac() {
+		return this == MACOS || this == MACOS15;
+	}
+	
 	@Override
 	public String toString() {
 		return description;

@@ -1,10 +1,21 @@
 package com.github.kevinmussi.itunesrp.view;
 
+import java.awt.AWTException;
 import java.awt.CardLayout;
 import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.SystemTray;
+import java.awt.TrayIcon;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -16,6 +27,10 @@ import com.github.kevinmussi.itunesrp.view.panels.ActivePanel;
 import com.github.kevinmussi.itunesrp.view.panels.InactivePanel;
 
 public class MainFrame extends View implements Commanded<ConnectCommand> {
+	
+	private static final Logger LOGGER = Logger.getLogger(MainFrame.class.getName() + "Logger");
+	
+	private static final String ICON_PATH = "/images/menu-bar/icon.png";
 	
 	private static final Dimension DIMENSION = new Dimension(400, 255);
 	
@@ -80,6 +95,34 @@ public class MainFrame extends View implements Commanded<ConnectCommand> {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+		
+		initTray();
+	}
+	
+	private void initTray() {
+		if(SystemTray.isSupported()) {
+			SystemTray tray = SystemTray.getSystemTray();
+			InputStream imageStream = getClass().getResourceAsStream(ICON_PATH);
+			Image image;
+			try {
+				image = ImageIO.read(imageStream);
+			} catch(IOException e) {
+				throw new IllegalArgumentException("Something went wrong: ", e);
+			}
+			
+			TrayIcon trayIcon = new TrayIcon(image, "iTunes Discord Rich Presence");
+			trayIcon.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					frame.setVisible(!frame.isVisible());
+				}
+			});
+			try {
+				tray.add(trayIcon);
+			} catch(AWTException e) {
+				LOGGER.log(Level.WARNING, "An error occurred while initializing tray icon: ", e);
+			}
+		}
 	}
 	
 	@Override
@@ -91,7 +134,7 @@ public class MainFrame extends View implements Commanded<ConnectCommand> {
 	public void showMessage(String message) {
 		JOptionPane.showMessageDialog(null, message, "Message", JOptionPane.INFORMATION_MESSAGE);
 	}
-
+	
 	@Override
 	public void showTrack(Track track) {
 		if(isConnected) {
@@ -115,7 +158,7 @@ public class MainFrame extends View implements Commanded<ConnectCommand> {
 		isConnected = true;
 		cards.show(frame.getContentPane(), ACTIVE_PANEL);
 	}
-
+	
 	@Override
 	public void showDisconnected() {
 		isConnected = false;
@@ -126,23 +169,35 @@ public class MainFrame extends View implements Commanded<ConnectCommand> {
 	private void initListeners() {
 		frame.addWindowListener(new WindowListener() {
 			@Override
-			public void windowOpened(WindowEvent e) {/**/}
+			public void windowOpened(WindowEvent e) {
+				/**/}
+				
 			@Override
 			public void windowClosing(WindowEvent e) {
 				sendCommand(ConnectCommand.DISCONNECT);
 				e.getWindow().dispose();
 			}
+			
 			@Override
-			public void windowClosed(WindowEvent e) {/**/}
+			public void windowClosed(WindowEvent e) {
+				/**/}
+				
 			@Override
-			public void windowIconified(WindowEvent e) {/**/}
+			public void windowIconified(WindowEvent e) {
+				/**/}
+				
 			@Override
-			public void windowDeiconified(WindowEvent e) {/**/}
+			public void windowDeiconified(WindowEvent e) {
+				/**/}
+				
 			@Override
-			public void windowActivated(WindowEvent e) {/**/}
+			public void windowActivated(WindowEvent e) {
+				/**/}
+				
 			@Override
-			public void windowDeactivated(WindowEvent e) {/**/}
-    	});
+			public void windowDeactivated(WindowEvent e) {
+				/**/}
+		});
 	}
 	
 	private boolean setConnected() {
@@ -160,5 +215,5 @@ public class MainFrame extends View implements Commanded<ConnectCommand> {
 		}
 		return didDisconnect;
 	}
-    
+	
 }

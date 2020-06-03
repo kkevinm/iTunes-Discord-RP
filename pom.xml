@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.kevinmussi</groupId>
     <artifactId>itunes-discord-rp</artifactId>
-    <version>1.5.1</version>
+    <version>1.5.2</version>
     <packaging>jar</packaging>
     <name>iTunes Discord RP</name>
     <properties>
@@ -124,6 +124,7 @@
                     <diskImageFile>${project.build.directory}/${exec.name}-${project.version}.dmg</diskImageFile>
                     <jvmVersion>1.8+</jvmVersion>
                     <version>${project.version}</version>
+                    <iconFile>icons/mac_icon.icns</iconFile>
                 </configuration>
             </plugin>
             <plugin>
@@ -154,7 +155,7 @@
                         <addDependencies>false</addDependencies>
                         <preCp>anything</preCp>
                     </classPath>
-                    <icon></icon>
+                    <icon>icons/windows_icon.ico</icon>
                     <jre>
                         <minVersion>1.8.0</minVersion>
                         <jdkPreference>preferJre</jdkPreference>
