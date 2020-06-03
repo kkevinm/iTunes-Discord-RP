@@ -48,7 +48,7 @@ This is an application that lets you have a personalized Discord status based on
 * Unit tests.
 * Spotify integration (easy but rather useless).
 * Command line only interface.
-* Allow customization of the rich presence elements.
+* ~~Allow customization of the rich presence elements.~~
 * Make it a menu bar app for MacOS.
 
 ## Acknowledgements
