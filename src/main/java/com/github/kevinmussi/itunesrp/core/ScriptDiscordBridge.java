@@ -55,16 +55,16 @@ public class ScriptDiscordBridge extends Observable<Track> implements Observer<S
 	 */
 	private Track getTrackfromRecord(String record, String separator) {
 		if(record.length() == 0 || separator.length() == 0) {
-			return null;
+			return Track.NULL_TRACK;
 		}
 		String[] fields = record.split(separator);
 		if(fields == null || fields.length != 8) {
-			return null;
+			return Track.NULL_TRACK;
 		}
 		
 		String name = fields[0];
 		if(name.length() == 0) {
-			return null;
+			return Track.NULL_TRACK;
 		}
 		String artist = fields[1].length() == 0 ? "Unknown Artist" : fields[1];
 		String album = fields[2].length() == 0 ? "Unknown Album" : fields[2];

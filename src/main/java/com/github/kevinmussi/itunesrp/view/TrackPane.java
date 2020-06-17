@@ -22,8 +22,9 @@ public class TrackPane extends JTextPane {
 	}
 	
 	public void setTrack(Track track) {
-		if(track == null)
+		if(track == null) {
 			return;
+		}
 		if(track.isNull()) {
 			setText(NO_TRACK_TEXT);
 		} else {

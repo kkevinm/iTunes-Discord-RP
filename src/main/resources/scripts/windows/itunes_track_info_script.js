@@ -29,7 +29,7 @@ function MainLoop() {
             try {
                 var currentTrack = iTunesApp.CurrentTrack;
                 var playerState = iTunesApp.PlayerState;
-                if(currentTrack == null) {
+                if(currentTrack == null || playerState == null) {
                     LogStopped();
                 } else if(!EqualTracks(currentTrack, savedTrack) || playerState != savedState) {
                     savedTrack = currentTrack;
