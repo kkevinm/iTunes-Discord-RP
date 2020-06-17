@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import com.github.kevinmussi.itunesrp.Main;
 import com.github.kevinmussi.itunesrp.commands.ConnectCommand;
 import com.github.kevinmussi.itunesrp.data.Track;
 import com.github.kevinmussi.itunesrp.observer.Commanded;
@@ -30,7 +31,7 @@ public class MainFrame extends View implements Commanded<ConnectCommand> {
 	
 	private static final Logger LOGGER = Logger.getLogger(MainFrame.class.getName() + "Logger");
 	
-	private static final String ICON_PATH = "/images/menu-bar/icon.png";
+	private static final String ICON_PATH = "/images/menu-bar/";
 	
 	private static final Dimension DIMENSION = new Dimension(400, 255);
 	
@@ -102,7 +103,8 @@ public class MainFrame extends View implements Commanded<ConnectCommand> {
 	private void initTray() {
 		if(SystemTray.isSupported()) {
 			SystemTray tray = SystemTray.getSystemTray();
-			InputStream imageStream = getClass().getResourceAsStream(ICON_PATH);
+			String iconPath = ICON_PATH + Main.OS.getTrayIconName();
+			InputStream imageStream = getClass().getResourceAsStream(iconPath);
 			Image image;
 			try {
 				image = ImageIO.read(imageStream);

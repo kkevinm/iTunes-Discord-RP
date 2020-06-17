@@ -1,10 +1,10 @@
 package com.github.kevinmussi.itunesrp.data;
 
 public enum OperativeSystem {
-	MACOS("MacOS", "macos", ".applescript", "osascript", "/Library/Application Support"),
-	MACOS15("MacOS", "macos15", ".applescript", "osascript", "/Library/Application Support"),
-	WINDOWS("Windows", "windows", ".js", "Cscript.exe", "/AppData/Local"),
-	OTHER("Other", "", "", "", "");
+	MACOS("MacOS", "macos", ".applescript", "osascript", "/Library/Application Support", "icon.png"),
+	MACOS15("MacOS", "macos15", ".applescript", "osascript", "/Library/Application Support", "icon.png"),
+	WINDOWS("Windows", "windows", ".js", "Cscript.exe", "/AppData/Local", "icon16.png"),
+	OTHER("Other", "", "", "", "", "");
 	
 	private static final String BASEFOLDER = "/scripts";
 	private static final String SCRIPTNAME = "itunes_track_info_script";
@@ -14,14 +14,16 @@ public enum OperativeSystem {
 	private final String scriptExtension;
 	private final String commandName;
 	private final String preferencesBaseFolder;
+	private final String trayIconName;
 	
 	private OperativeSystem(String description, String scriptPath, String scriptExtension, String commandName,
-			String preferencesBaseFolder) {
+			String preferencesBaseFolder, String trayIconName) {
 		this.description = description;
 		this.scriptPath = scriptPath;
 		this.scriptExtension = scriptExtension;
 		this.commandName = commandName;
 		this.preferencesBaseFolder = preferencesBaseFolder;
+		this.trayIconName = trayIconName;
 	}
 	
 	public static OperativeSystem getOS() {
@@ -59,6 +61,10 @@ public enum OperativeSystem {
 	
 	public String getPreferencesBaseFolder() {
 		return preferencesBaseFolder;
+	}
+	
+	public String getTrayIconName() {
+		return trayIconName;
 	}
 	
 	public boolean isMac() {
