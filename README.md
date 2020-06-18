@@ -31,7 +31,7 @@ This is an application that lets you have a personalized Discord status based on
 2) * *Q*: Gatekeeper won't let me run the app/jar on my Mac!
    * *A*: Right-click on the app/jar file and hit **Open**. Then hit **Open** in the dialog that appears. After doing it this way, the app should open fine just by double clicking on it.
 3) * *Q*: Can I hide the app's window?
-   * *A*: Yes, if your system supports it, the app will show a button on the menu bar. Clicking on it will hide (or show, if clicking it again) the main window.
+   * *A*: Yes, if your system supports it, the app will show a button on the menu bar / system tray. Clicking on it will hide (or show, if clicking it again) the main window.
 
 ## Screenshots
 ### Status preview
