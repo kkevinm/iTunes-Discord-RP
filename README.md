@@ -33,7 +33,7 @@ This is an application that lets you have a personalized Discord status based on
 3) * *Q*: Can I hide the app's window?
    * *A*: Yes, if your system supports it, the app will show a button on the menu bar / system tray. Clicking on it will hide (or show, if clicking it again) the main window.
 4) * *Q*: I get "JRELoadError" when trying to open the .app!
-   * *A*: You need to install the latest version of the JRE. More details [here](https://github.com/kevinmussi/iTunes-Discord-RP/issues/9#issuecomment-655647641).
+   * *A*: This should be fixed by installing the [latest version of the JRE](https://www.java.com/download/).
 
 ## Screenshots
 ### Status preview
