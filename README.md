@@ -32,6 +32,8 @@ This is an application that lets you have a personalized Discord status based on
    * *A*: Right-click on the app/jar file and hit **Open**. Then hit **Open** in the dialog that appears. After doing it this way, the app should open fine just by double clicking on it.
 3) * *Q*: Can I hide the app's window?
    * *A*: Yes, if your system supports it, the app will show a button on the menu bar / system tray. Clicking on it will hide (or show, if clicking it again) the main window.
+4) * *Q*: I get "JRELoadError" when trying to open the .app!
+   * *A*: You need to install the latest version of the JRE. More details [here](https://github.com/kevinmussi/iTunes-Discord-RP/issues/9#issuecomment-655647641).
 
 ## Screenshots
 ### Status preview
