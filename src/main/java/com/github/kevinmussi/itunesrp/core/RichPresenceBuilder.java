@@ -101,24 +101,21 @@ public class RichPresenceBuilder {
 	
 	// Fix the fields' length to make everything stay in one line
 	private void buildFields() {
-		int max = 48;
-		if(field2.length() != 0) {
-			// Trim field1 and field2
-			if(field1.length() > 27) {
-				field1 = field1.substring(0, 26) + "...";
-				max = 52;
+		if(!" ".equals(field2)) {
+			if(field1.length() + field2.length() > 74) {
+				if(field2.length() > 37) {
+					field1 = field1.substring(0, 35) + "...";
+				} else {
+					field1 = field1.substring(0, 74 - field2.length()) + "...";
+				}
 			}
-			if(field1.length() + field2.length() > max) {
-				field2 = field2.substring(0, max - field1.length()) + "...";
-			}
-		} else if(field3.length() != 0 && field4.length() != 0) {
-			// Trim field3 and field4
-			if(field3.length() > 27) {
-				field3 = field3.substring(0, 26) + "...";
-				max = 52;
-			}
-			if(field3.length() + field4.length() > max) {
-				field4 = field4.substring(0, max - field4.length()) + "...";
+		} else if(!" ".equals(field4)) {
+			if(field3.length() + field4.length() > 74) {
+				if(field4.length() > 37) {
+					field3 = field3.substring(0, 35) + "...";
+				} else {
+					field3 = field3.substring(0, 74 - field4.length()) + "...";
+				}
 			}
 		}
 	}
