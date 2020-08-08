@@ -4,9 +4,6 @@ set STR_PAUSED to "PAUSED"
 
 set state to ""
 
-property savedTrack : missing value
-property savedPlayerState : missing value
-
 repeat
     delay 1
     # If iTunes is not running, set the state to "STOPPED" and do nothing
@@ -28,23 +25,14 @@ repeat
                         log state
                     end if
                 else
-                	set currentTrack to current track
-                	
-                    # If the current song or the player status has changed, log the new track information
-                    if currentPlayerState is not savedPlayerState or currentTrack is not savedTrack then
-                        if currentPlayerState is playing then
-                            set state to STR_PLAYING
-                        else
-                            set state to STR_PAUSED
-                        end if
-                        
-                        # Write the track main information in the log
-                        log name of current track & ";;" & artist of current track & ";;" & album of current track & ";;" & state & ";;" & player position & ";;" & duration of current track & ";;" & track number of current track & ";;" & track count of current track
+                    if currentPlayerState is playing then
+                        set state to STR_PLAYING
+                    else
+                        set state to STR_PAUSED
                     end if
-                    
-                    # Update the player state and song name to detect when the track changes
-                    set savedPlayerState to currentPlayerState
-                    set savedTrack to currentTrack
+                        
+                    # Write the track main information in the log
+                    log name of current track & ";;" & artist of current track & ";;" & album of current track & ";;" & state & ";;" & player position & ";;" & duration of current track & ";;" & track number of current track & ";;" & track count of current track
                 end if
             end tell
         on error
