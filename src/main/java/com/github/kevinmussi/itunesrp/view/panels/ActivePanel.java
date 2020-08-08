@@ -43,6 +43,7 @@ public class ActivePanel extends Commander<ConnectCommand> implements Panel {
 	private final JPanel panel;
 	private final TrackPane trackPane;
 	private final DefaultListModel<Track> listModel;
+	private Track latestTrack = Track.NULL_TRACK;
 	private SettingsFrame settingsFrame;
 	
 	public ActivePanel() {
@@ -109,9 +110,9 @@ public class ActivePanel extends Commander<ConnectCommand> implements Panel {
 	public void setTrack(Track track) {
 		if(track != null) {
 			trackPane.setTrack(track);
-			if(track.getState() == TrackState.PLAYING) {
-				// Only show the played songs in the history
+			if(track.getState() == TrackState.PLAYING && !track.isSameTrack(latestTrack)) {
 				listModel.add(0, track);
+				latestTrack = track;
 			}
 		}
 	}

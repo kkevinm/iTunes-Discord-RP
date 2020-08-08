@@ -95,6 +95,11 @@ public class Track {
 		return this == NULL_TRACK;
 	}
 	
+	public boolean isSameTrack(Track other) {
+		return name.equals(other.name) && album.equals(other.album) && artist.equals(other.artist) && app == other.app
+				&& duration == other.duration && index == other.index && albumSize == other.albumSize;
+	}
+	
 	@Override
 	public String toString() {
 		return new StringBuilder().append("Name: ").append(name).append("\nArtist: ").append(artist).append("\nAlbum: ")
