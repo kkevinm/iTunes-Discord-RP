@@ -92,7 +92,7 @@ public class MainFrame extends View implements Commanded<ConnectCommand> {
 		activePanel.init();
 		
 		frame.setTitle("iTunes Rich Presence for Discord");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
@@ -176,13 +176,13 @@ public class MainFrame extends View implements Commanded<ConnectCommand> {
 				
 			@Override
 			public void windowClosing(WindowEvent e) {
-				sendCommand(ConnectCommand.DISCONNECT);
-				e.getWindow().dispose();
-			}
+				/**/}
 			
 			@Override
 			public void windowClosed(WindowEvent e) {
-				/**/}
+				sendCommand(ConnectCommand.DISCONNECT);
+				e.getWindow().dispose();
+			}
 				
 			@Override
 			public void windowIconified(WindowEvent e) {
