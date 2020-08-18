@@ -20,6 +20,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import com.apple.eawt.AppReOpenedListener;
+import com.apple.eawt.Application;
 import com.github.kevinmussi.itunesrp.Main;
 import com.github.kevinmussi.itunesrp.commands.ConnectCommand;
 import com.github.kevinmussi.itunesrp.data.Track;
@@ -92,7 +94,11 @@ public class MainFrame extends View implements Commanded<ConnectCommand> {
 		activePanel.init();
 		
 		frame.setTitle("iTunes Rich Presence for Discord");
-		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		if(Main.OS.isMac()) {
+			frame.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+		} else {
+			frame.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+		}
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
@@ -172,34 +178,55 @@ public class MainFrame extends View implements Commanded<ConnectCommand> {
 		frame.addWindowListener(new WindowListener() {
 			@Override
 			public void windowOpened(WindowEvent e) {
-				/**/}
-				
+				/**/
+			}
+			
 			@Override
 			public void windowClosing(WindowEvent e) {
-				/**/}
+				if(Main.OS.isMac()) {
+					frame.setVisible(false);
+				}
+			}
 			
 			@Override
 			public void windowClosed(WindowEvent e) {
 				sendCommand(ConnectCommand.DISCONNECT);
 				e.getWindow().dispose();
 			}
-				
+			
 			@Override
 			public void windowIconified(WindowEvent e) {
-				/**/}
-				
+				/**/
+			}
+			
 			@Override
 			public void windowDeiconified(WindowEvent e) {
-				/**/}
-				
+				/**/
+			}
+			
 			@Override
 			public void windowActivated(WindowEvent e) {
-				/**/}
-				
+				/**/
+			}
+			
 			@Override
 			public void windowDeactivated(WindowEvent e) {
-				/**/}
+				/**/
+			}
 		});
+		
+		if(Main.OS.isMac()) {
+			Application app = Application.getApplication();
+			
+			app.setQuitHandler((e, response) -> {
+				sendCommand(ConnectCommand.DISCONNECT);
+				response.performQuit();
+			});
+			
+			app.addAppEventListener((AppReOpenedListener) e -> {
+				frame.setVisible(true);
+			});
+		}
 	}
 	
 	private boolean setConnected() {
