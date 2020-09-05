@@ -34,6 +34,8 @@ This is an application that lets you have a personalized Discord status based on
    * *A*: Yes, if your system supports it, the app will show a button on the menu bar / system tray. Clicking on it will hide (or show, if clicking it again) the main window.
 4) * *Q*: I get "JRELoadError" when trying to open the .app!
    * *A*: This should be fixed by installing the [latest version of the JRE](https://www.java.com/download/).
+5) * *Q*: I'm on Mac and the app seems to freeze often (for example, the status on Discord doesn't update after a while).
+   * *A*: This can be caused by App Nap, a feature that puts apps to sleep when they're in the background. You can try disabling App Nap by pasting this line in the Terminal: `defaults write NSGlobalDomain NSAppSleepDisabled -bool YES` (restart the system to make it take effect).
 
 ## Screenshots
 ### Status preview
