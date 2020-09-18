@@ -35,7 +35,7 @@ This is an application that lets you have a personalized Discord status based on
 4) * *Q*: I get "JRELoadError" when trying to open the .app!
    * *A*: This should be fixed by installing the [latest version of the JRE](https://www.java.com/download/).
 5) * *Q*: I'm on Mac and the app seems to freeze often (for example, the status on Discord doesn't update after a while).
-   * *A*: This can be caused by App Nap, a feature that puts apps to sleep when they're in the background. To disable App Nap for this application, paste this line in the Terminal and hit <kbd>enter</kbd>: `defaults write com.github.kevinmussi.itunesrp.Main NSAppSleepDisable -bool YES` (restart the app to make it take effect).
+   * *A*: This can be caused by App Nap, a feature that puts apps to sleep when they're in the background. To disable App Nap for this application, paste this line in the Terminal and hit <kbd>enter</kbd>: `defaults write com.github.kevinmussi.itunesrp.Main NSAppSleepDisable -bool YES` (restart the computer to make it take effect).
 6) * *Q*: Can you make so the album cover of the playing song is shown in the status?
    * *A*: no, Discord doesn't allow you to upload pictures dynamically (outside of special applications like Spotify).
 
