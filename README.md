@@ -25,6 +25,13 @@ This is an application that lets you have a personalized Discord status based on
 * Double click on it.
 * Done!
 
+### Homebrew
+If you're a Mac user and have [homebrew](http://brew.sh/) installed, you can easily install this app as a Cask (it'll also update automatically when using the cask upgrade command, and it doesn't require you to bypass Gatekeeper). All you need to do is run this command:
+
+`brew cask install kkevinm/itunes-discord-rp/itunesdiscordrp`
+
+This will tap the itunes-discord-rp repository and then install the cask like normal.
+
 ## F.A.Q.
 1) * *Q*: The application runs fine, but my status won't update, what do I do?
    * *A*: go to ```Settings -> Game Activity``` and make sure the option *Display currently running game as a status message* is on. Additionally, the status won't be displayed while your Discord status is set to **invisible**.
