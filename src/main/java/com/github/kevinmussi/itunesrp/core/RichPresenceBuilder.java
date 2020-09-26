@@ -48,7 +48,7 @@ public class RichPresenceBuilder {
 		int size = preferences.getAlbumPosition() == FieldPosition.NONE ? 0 : track.getAlbumSize();
 		if (index > 0 && size > 0 && index <= size) {
 			builder.setParty("aa", index, size);
-			sizeLength = 7 + (int) Math.log10(index) + (int) Math.log10(size);
+			sizeLength = 7 + (int) Math.ceil(Math.log10(index)) + (int) Math.ceil(Math.log10(size));
 		}
 		
 		initFields();
