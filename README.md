@@ -46,7 +46,9 @@ This will tap the itunes-discord-rp repository and then install the cask like no
    
      `defaults write NSGlobalDomain NSAppSleepDisabled -bool YES`
 6) * *Q*: Can you make so the album cover of the playing song is shown in the status?
-   * *A*: no, Discord doesn't allow you to upload pictures dynamically (outside of special applications like Spotify).
+   * *A*: No, Discord doesn't allow you to upload pictures dynamically (outside of special applications like Spotify).
+7) * *Q*: Can you change "Playing Music" to "Listening to Music"?
+   * *A*: No, the public Rich Presence API currently doesn't let you change the type of activity in the status.
 
 ## Screenshots
 ### Status preview
