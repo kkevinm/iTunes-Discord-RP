@@ -28,7 +28,7 @@ This is an application that lets you have a personalized Discord status based on
 ### Homebrew
 If you're a Mac user and have [homebrew](http://brew.sh/) installed, you can easily install this app as a Cask (it'll also update automatically when using the cask upgrade command, and it doesn't require you to bypass Gatekeeper). All you need to do is run this command:
 
-`brew cask install kkevinm/itunes-discord-rp/itunesdiscordrp`
+`brew install --cask kkevinm/itunes-discord-rp/itunesdiscordrp`
 
 This will tap the itunes-discord-rp repository and then install the cask like normal.
 
