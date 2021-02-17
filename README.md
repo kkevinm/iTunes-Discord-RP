@@ -32,7 +32,7 @@ If you're a Mac user and have [homebrew](http://brew.sh/) installed, you can eas
 
 This will tap the itunes-discord-rp repository and then install the cask like normal.
 
-_Note: If you're using Brew 2.6.0+, you need to use `brew install --cask kkevinm/itunes-discord-rp/itunesdiscordrp` instead._
+_Note: If you're using Homebrew 2.6.0+, you need to use `brew install --cask kkevinm/itunes-discord-rp/itunesdiscordrp` instead._
 
 ## F.A.Q.
 1) * *Q*: The application runs fine, but my status won't update, what do I do?
