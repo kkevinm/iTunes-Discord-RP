@@ -72,7 +72,7 @@ This will tap the itunes-discord-rp repository and then install the cask like no
 * Make it a menu bar app for MacOS.
 
 ## Acknowledgements
-* [DiscordIPC](https://github.com/jagrosh/DiscordIPC) by @jagrosh.
+* Made By Armaan with love <3.
 
 ## Disclaimer
 iTunes is a trademark of Apple Inc., registered in the U.S. and other countries.\
